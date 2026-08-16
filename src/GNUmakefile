@@ -11,7 +11,7 @@ endif # ?amd64
 AR:=ar
 ARFLAGS:=rsv
 ifndef LIBPVN
-LIBPVN=../../libpvn
+LIBPVN:=../../libpvn
 endif # !LIBPVN
 M=$(LIBPVN)/src/pvn.mk
 include $(M)
@@ -637,5 +637,6 @@ $(O)/yqscal.o: hgscal.F90 $(M)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DHGSCAL=YQSCAL -c $< -o $@
 
 clean:
+	@-rm -fv $(E)
 	@-rm -fv $(L)
 	@-rm -rfv $(O)

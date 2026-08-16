@@ -1,0 +1,20 @@
+! by venovako
+PROGRAM TGNRM2
+  IMPLICIT NONE
+  INTEGER, PARAMETER :: N = 2 * 3 * 5 * 7
+  REAL(KIND=BLAS_REAL_KIND), EXTERNAL :: GNRM2
+  REAL(KIND=BLAS_REAL_KIND) :: X(N)
+  CALL RANDOM_INIT(.FALSE., .TRUE.)
+  CALL RANDOM_NUMBER(X)
+  WRITE (*,*) 'NORM2 intrinsic:', NORM2(X)
+  WRITE (*,*) 'GNRM2, INCX=  1:', GNRM2(N, X, 1)
+  WRITE (*,*) 'GNRM2, INCX= -1:', GNRM2(N, X, -1)
+  WRITE (*,*) 'GNRM2, INCX=  2:', GNRM2(N/2, X, 2)
+  WRITE (*,*) 'GNRM2, INCX= -2:', GNRM2(N/2, X, -2)
+  WRITE (*,*) 'GNRM2, INCX=  3:', GNRM2(N/3, X, 3)
+  WRITE (*,*) 'GNRM2, INCX= -3:', GNRM2(N/3, X, -3)
+  WRITE (*,*) 'GNRM2, INCX=  5:', GNRM2(N/5, X, 5)
+  WRITE (*,*) 'GNRM2, INCX= -5:', GNRM2(N/5, X, -5)
+  WRITE (*,*) 'GNRM2, INCX=  7:', GNRM2(N/7, X, 7)
+  WRITE (*,*) 'GNRM2, INCX= -7:', GNRM2(N/7, X, -7)
+END PROGRAM TGNRM2

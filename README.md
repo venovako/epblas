@@ -24,4 +24,6 @@ make [LIBPVN=../../libpvn] [INT=4|8] [IEEE=0] [all|help|clean]
 ```
 where `LIBPVN` is the libpvn's directory, `INT` specifies the default integer width (4 or 8 bytes), and `IEEE` set to a non-zero value allows the intrinsic module `IEEE_ARITHMETIC` to be used.
 
+On Windows, use `nmake` instead of `make`.
+
 (... work in progress ...)

@@ -55,10 +55,11 @@ HAVE_FMA:=3
 endif # ?ppc64
 endif # ?x86_64
 FCFLAGS += -DBLAS_INT_KIND=$(INT) -DHAVE_FMA=$(HAVE_FMA)
-ifdef IEEE
-FCFLAGS += -DUSE_IEEE_INTRINSIC=$(IEEE)
-else # !IEEE
+ifndef IEEE
 IEEE:=0
+endif # !IEEE
+ifneq ($(IEEE),0)
+FCFLAGS += -DUSE_IEEE_INTRINSIC=$(IEEE)
 endif # ?IEEE
 FCFLAGS += $(PVN_CPPFLAGS)
 LDFLAGS:=$(PVN_LDFLAGS) -L.. -lepblas$(INT)$(IEEE) $(PVN_LIBS)

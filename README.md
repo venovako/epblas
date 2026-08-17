@@ -8,11 +8,18 @@ Currently, the following parts are in progress of being converted, alongside som
 * BLAS (TBD, started),
 * MATGEN (TBD).
 
-The original source code has been modified and adapted, but the existing interfaces will stay unchanged.
+The original source code has been modified and adapted, but the existing interfaces will remain unchanged.
 
 Sometimes a new algorithm has been implemented for an existing interface, e.g., `NRM2` has been provided following [VecNrmP](https://github.com/venovako/VecNrmP).
 
 In several other cases, the basic algorithm has been heavily reworked, but remained in the same spirit, e.g., `AXPBY`, the complex `IAMAX`, and `XERBLA`.
+
+The aim is to have (most of) the routines in single, double, and extended precisions not dependent on the Fortran library when `IEEE=0` (see below), but many routines instead depend on `libpvn`.
+
+In extended (80-bit Intel) precision, available only with `gfortran`, the real and complex routines have the prefixes `x` and `w`, respectively.
+In quadruple (128-bit IEEE) precision, the prefixes are `q` and `y`.
+
+Please adjust `src/GNUmakefile` according to the comments within.
 
 ## Building
 
@@ -24,6 +31,6 @@ make [LIBPVN=../../libpvn] [INT=4|8] [IEEE=0] [all|help|clean]
 ```
 where `LIBPVN` is the libpvn's directory, `INT` specifies the default integer width (4 or 8 bytes), and `IEEE` set to a non-zero value allows the intrinsic module `IEEE_ARITHMETIC` to be used.
 
-On Windows, use `nmake` instead of `make`.
+On Windows, please use `nmake` instead of `make`, which in turn processes `src/Makefile`.
 
 (... work in progress ...)

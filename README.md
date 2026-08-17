@@ -16,14 +16,19 @@ In several other cases, the basic algorithm has been heavily reworked, but remai
 
 The aim is to have (most of) the routines in single, double, and extended precisions not dependent on the Fortran library when `IEEE=0` (see below), but many routines instead depend on `libpvn`.
 
-In extended (80-bit Intel) precision, available only with `gfortran`, the real and complex routines have the prefixes `x` and `w`, respectively.
+In extended (80-bit Intel) precision, available only with `gfortran` on Intel-compatible platforms, the real and complex routines have the prefixes `x` and `w`, respectively.
 In quadruple (128-bit IEEE) precision, the prefixes are `q` and `y`.
+The type-generic prefixes are `g` and `h`.
 
-Please adjust `src/GNUmakefile` according to the comments within.
+Note that `XERBLA` no longer stops the program.
+Please see in `src/xerbla.F90` how the error handling is meant to work.
 
 ## Building
 
 First, clone and build [libpvn](https://github.com/venovako/libpvn).
+
+Please adjust `src/GNUmakefile` according to the comments within.
+Only `gfortran`, `ifx`, and `nvfortran` compilers will be supported.
 
 Then, from within the `src` subdirectory, call
 ```bash
@@ -31,6 +36,10 @@ make [LIBPVN=../../libpvn] [INT=4|8] [IEEE=0] [all|help|clean]
 ```
 where `LIBPVN` is the libpvn's directory, `INT` specifies the default integer width (4 or 8 bytes), and `IEEE` set to a non-zero value allows the intrinsic module `IEEE_ARITHMETIC` to be used.
 
-On Windows, please use `nmake.exe` instead of `make` (or `gmake`), which in turn processes `src\Makefile`.
+On Windows, please use `nmake.exe` instead of `make` (or `gmake`), which in turn processes `src\Makefile` and expects the Intel's oneAPI toolchain.
+
+The outputs are `epblas$(INT)$(IEEE).lib` on Windows, or `libepblas$(INT)$(IEEE).a` otherwise, and several `t*$(INT)$(IEEE).exe` testing executables.
+
+It is intended for the static library to be a drop-in replacement for the LAPACK's `librefblas.a`, as well as for the `INSTALL` and `MATGEN` objects, in single and double precisions, while extending those interfaces to other compiler-supported precisions.
 
 (... work in progress ...)

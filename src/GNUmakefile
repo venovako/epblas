@@ -71,47 +71,45 @@ endif # ?ppc64
 endif # ?x86_64
 FCFLAGS += -DBLAS_INT_KIND=$(INT) -DHAVE_FMA=$(HAVE_FMA)
 FCFLAGS += $(PVN_CPPFLAGS)
-LDFLAGS:=$(PVN_LDFLAGS) -L.. -lepblas$(INT)$(IEEE) $(PVN_LIBS)
+LDFLAGS:=$(PVN_LDFLAGS) -L.. -leplapack_$(INT)$(IEEE) -lepblas_$(INT)$(IEEE) $(PVN_LIBS)
 
 M += GNUmakefile
 
-O:=../obj$(INT)$(IEEE)
-L:=../libepblas$(INT)$(IEEE).a
+O:=../obj_$(INT)$(IEEE)
+T:=../exe_$(INT)$(IEEE)
+L:=../libepblas_$(INT)$(IEEE).a ../libeplapack_$(INT)$(IEEE)
 
 E=\
-../tsecond$(INT)$(IEEE).exe\
-../tdsecnd$(INT)$(IEEE).exe\
-../tslamch$(INT)$(IEEE).exe\
-../tdlamch$(INT)$(IEEE).exe\
-../tsnrm2$(INT)$(IEEE).exe\
-../tdnrm2$(INT)$(IEEE).exe\
-../ticmax2$(INT)$(IEEE).exe\
-../tizmax2$(INT)$(IEEE).exe
+$(T)/tsecond.exe\
+$(T)/tdsecnd.exe\
+$(T)/tslamch.exe\
+$(T)/tdlamch.exe\
+$(T)/tsnrm2.exe\
+$(T)/tdnrm2.exe\
+$(T)/ticmax2.exe\
+$(T)/tizmax2.exe
 ifeq ($(findstring 10,$(REAL_KINDS)),10)
 E += \
-../txsecnd$(INT)$(IEEE).exe\
-../txlamch$(INT)$(IEEE).exe\
-../txnrm2$(INT)$(IEEE).exe\
-../tiwmax2$(INT)$(IEEE).exe
+$(T)/txsecnd.exe\
+$(T)/txlamch.exe\
+$(T)/txnrm2.exe\
+$(T)/tiwmax2.exe
 endif # 10
 ifeq ($(findstring 16,$(REAL_KINDS)),16)
 E += \
-../tqsecnd$(INT)$(IEEE).exe\
-../tqlamch$(INT)$(IEEE).exe\
-../tqnrm2$(INT)$(IEEE).exe\
-../tiymax2$(INT)$(IEEE).exe
+$(T)/tqsecnd.exe\
+$(T)/tqlamch.exe\
+$(T)/tqnrm2.exe\
+$(T)/tiymax2.exe
 endif # 16
 
 F=\
-$(O)/lsame.o\
 $(O)/slamch.o\
 $(O)/dlamch.o\
 $(O)/sroundup_lwork.o\
 $(O)/droundup_lwork.o\
 $(O)/second.o\
-$(O)/dsecnd.o\
-$(O)/xerbla.o\
-$(O)/xerbla_array.o
+$(O)/dsecnd.o
 ifeq ($(findstring 10,$(REAL_KINDS)),10)
 F += \
 $(O)/xlamch.o\
@@ -274,7 +272,7 @@ endif # 16
 all: dirs $(L) $(E)
 
 help:
-	@echo "$(MAKE) [LIBPVN=../../libpvn] [INT=4|8] [IEEE=0|-1|...] [all|help|clean]"
+	@echo "$(MAKE) [LIBPVN=../../libpvn] [INT=4|8] [IEEE=0|-1|1|2] [all|help|clean]"
 
 dirs:
 	@echo "ARCH=$(ARCH)"
@@ -284,44 +282,48 @@ dirs:
 	@echo "REAL_KINDS=$(REAL_KINDS)"
 	@echo "HAVE_FMA=$(HAVE_FMA)"
 	@mkdir -pv $(O)
+	@mkdir -pv $(T)
 
-$(L): $(F) $(G) $(H)
+../libepblas_$(INT)$(IEEE).a: $(G) $(H) $(O)/lsame.o $(O)/xerbla.o $(O)/xerbla_array.o
 	$(AR) $(ARFLAGS) $@ $^
 
-../tsecond$(INT)$(IEEE).exe: tgsecnd.F90 $(L) $(M)
+../libeplapack_$(INT)$(IEEE).a: $(F)
+	$(AR) $(ARFLAGS) $@ $^
+
+$(T)/tsecond.exe: tgsecnd.F90 $(L) $(M)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGSECND=SECOND $< -o $@ $(LDFLAGS)
-../tdsecnd$(INT)$(IEEE).exe: tgsecnd.F90 $(L) $(M)
+$(T)/tdsecnd.exe: tgsecnd.F90 $(L) $(M)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGSECND=DSECND $< -o $@ $(LDFLAGS)
-../txsecnd$(INT)$(IEEE).exe: tgsecnd.F90 $(L) $(M)
+$(T)/txsecnd.exe: tgsecnd.F90 $(L) $(M)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGSECND=XSECND $< -o $@ $(LDFLAGS)
-../tqsecnd$(INT)$(IEEE).exe: tgsecnd.F90 $(L) $(M)
+$(T)/tqsecnd.exe: tgsecnd.F90 $(L) $(M)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGSECND=QSECND $< -o $@ $(LDFLAGS)
 
-../tslamch$(INT)$(IEEE).exe: tglamch.F90 $(L) $(M)
+$(T)/tslamch.exe: tglamch.F90 $(L) $(M)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGLAMCH=SLAMCH $< -o $@ $(LDFLAGS)
-../tdlamch$(INT)$(IEEE).exe: tglamch.F90 $(L) $(M)
+$(T)/tdlamch.exe: tglamch.F90 $(L) $(M)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGLAMCH=DLAMCH $< -o $@ $(LDFLAGS)
-../txlamch$(INT)$(IEEE).exe: tglamch.F90 $(L) $(M)
+$(T)/txlamch.exe: tglamch.F90 $(L) $(M)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGLAMCH=XLAMCH $< -o $@ $(LDFLAGS)
-../tqlamch$(INT)$(IEEE).exe: tglamch.F90 $(L) $(M)
+$(T)/tqlamch.exe: tglamch.F90 $(L) $(M)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGLAMCH=QLAMCH $< -o $@ $(LDFLAGS)
 
-../tsnrm2$(INT)$(IEEE).exe: tgnrm2.F90 $(L) $(M)
+$(T)/tsnrm2.exe: tgnrm2.F90 $(L) $(M)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGNRM2=SNRM2 $< -o $@ $(LDFLAGS)
-../tdnrm2$(INT)$(IEEE).exe: tgnrm2.F90 $(L) $(M)
+$(T)/tdnrm2.exe: tgnrm2.F90 $(L) $(M)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGNRM2=DNRM2 $< -o $@ $(LDFLAGS)
-../txnrm2$(INT)$(IEEE).exe: tgnrm2.F90 $(L) $(M)
+$(T)/txnrm2.exe: tgnrm2.F90 $(L) $(M)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGNRM2=XNRM2 $< -o $@ $(LDFLAGS)
-../tqnrm2$(INT)$(IEEE).exe: tgnrm2.F90 $(L) $(M)
+$(T)/tqnrm2.exe: tgnrm2.F90 $(L) $(M)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGNRM2=QNRM2 $< -o $@ $(LDFLAGS)
 
-../ticmax2$(INT)$(IEEE).exe: tihmax2.F90 $(L) $(M)
+$(T)/ticmax2.exe: tihmax2.F90 $(L) $(M)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DIHAMAX=ICAMAX -DIHMAX2=ICMAX2 $< -o $@ $(LDFLAGS)
-../tizmax2$(INT)$(IEEE).exe: tihmax2.F90 $(L) $(M)
+$(T)/tizmax2.exe: tihmax2.F90 $(L) $(M)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DIHAMAX=IZAMAX -DIHMAX2=IZMAX2 $< -o $@ $(LDFLAGS)
-../tiwmax2$(INT)$(IEEE).exe: tihmax2.F90 $(L) $(M)
+$(T)/tiwmax2.exe: tihmax2.F90 $(L) $(M)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DIHAMAX=IWAMAX -DIHMAX2=IWMAX2 $< -o $@ $(LDFLAGS)
-../tiymax2$(INT)$(IEEE).exe: tihmax2.F90 $(L) $(M)
+$(T)/tiymax2.exe: tihmax2.F90 $(L) $(M)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DIHAMAX=IYAMAX -DIHMAX2=IYMAX2 $< -o $@ $(LDFLAGS)
 
 $(O)/lsame.o: lsame.F90 $(M)
@@ -649,4 +651,5 @@ $(O)/yqscal.o: hgscal.F90 $(M)
 clean:
 	@-rm -fv $(E)
 	@-rm -fv $(L)
+	@-rm -rfv $(T)
 	@-rm -rfv $(O)

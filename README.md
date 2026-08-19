@@ -40,8 +40,8 @@ For the meaning of `IEEE=-1` please consult the makefile.
 
 On Windows, please use `nmake.exe` instead of `make` (or `gmake`), which in turn processes `src\Makefile` and expects the Intel's oneAPI toolchain.
 
-The outputs are `epblas$(INT)$(IEEE).lib` on Windows, or `libepblas$(INT)$(IEEE).a` otherwise, and several `t*$(INT)$(IEEE).exe` testing executables.
+The outputs are `epblas_$(INT)$(IEEE).lib` and `eplapack_$(INT)$(IEEE).lib` on Windows, or `libepblas_$(INT)$(IEEE).a` and `libeplapack_$(INT)$(IEEE).a` otherwise, and several `t*_$(INT)$(IEEE).exe` testing executables.
 
-It is intended for the static library to be a drop-in replacement for the LAPACK's `librefblas.a`, as well as for the `INSTALL` and `MATGEN` objects, in single and double precisions, while extending those interfaces to other compiler-supported precisions.
+It is intended for the static libraries to be a drop-in replacement for the LAPACK's `librefblas.a` and parts of `liblapack.a`, respectively, as well as for the `MATGEN` objects, in single and double precisions, while extending those interfaces to other compiler-supported precisions.
 
 (... work in progress ...)

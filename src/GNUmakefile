@@ -77,7 +77,7 @@ M += GNUmakefile
 
 O:=../obj_$(INT)$(IEEE)
 T:=../exe_$(INT)$(IEEE)
-L:=../libepblas_$(INT)$(IEEE).a ../libeplapack_$(INT)$(IEEE)
+L:=../libepblas_$(INT)$(IEEE).a ../libeplapack_$(INT)$(IEEE).a
 
 E=\
 $(T)/tsecond.exe\

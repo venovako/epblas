@@ -179,32 +179,32 @@ dirs:
 ..\eptmglib_$(INT)$(IEEE).lib: $(M)
 	$(AR) $(ARFLAGS) /OUT:$@ $**
 
-$(T)\tsecond.exe: tgsecnd.F90 $(L)
+$(T)\tsecond.exe: tgsecnd.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGSECND=SECOND $? /Fe$@ $(LDFLAGS)
-$(T)\tdsecnd.exe: tgsecnd.F90 $(L)
+$(T)\tdsecnd.exe: tgsecnd.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DGSECND=DSECND $? /Fe$@ $(LDFLAGS)
-$(T)\tqsecnd.exe: tgsecnd.F90 $(L)
+$(T)\tqsecnd.exe: tgsecnd.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGSECND=QSECND $? /Fe$@ $(LDFLAGS)
 
-$(T)\tslamch.exe: tglamch.F90 $(L)
+$(T)\tslamch.exe: tglamch.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGLAMCH=SLAMCH $? /Fe$@ $(LDFLAGS)
-$(T)\tdlamch.exe: tglamch.F90 $(L)
+$(T)\tdlamch.exe: tglamch.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DGLAMCH=DLAMCH $? /Fe$@ $(LDFLAGS)
-$(T)\tqlamch.exe: tglamch.F90 $(L)
+$(T)\tqlamch.exe: tglamch.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGLAMCH=QLAMCH $? /Fe$@ $(LDFLAGS)
 
-$(T)\tsnrm2.exe: tgnrm2.F90 $(L)
+$(T)\tsnrm2.exe: tgnrm2.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGNRM2=SNRM2 $? /Fe$@ $(LDFLAGS)
-$(T)\tdnrm2.exe: tgnrm2.F90 $(L)
+$(T)\tdnrm2.exe: tgnrm2.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DGNRM2=DNRM2 $? /Fe$@ $(LDFLAGS)
-$(T)\tqnrm2.exe: tgnrm2.F90 $(L)
+$(T)\tqnrm2.exe: tgnrm2.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGNRM2=QNRM2 $? /Fe$@ $(LDFLAGS)
 
-$(T)\ticmax2.exe: tihmax2.F90 $(L)
+$(T)\ticmax2.exe: tihmax2.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DIHAMAX=ICAMAX /DIHMAX2=ICMAX2 $? /Fe$@ $(LDFLAGS)
-$(T)\tizmax2.exe: tihmax2.F90 $(L)
+$(T)\tizmax2.exe: tihmax2.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DIHAMAX=IZAMAX /DIHMAX2=IZMAX2 $? /Fe$@ $(LDFLAGS)
-$(T)\tiymax2.exe: tihmax2.F90 $(L)
+$(T)\tiymax2.exe: tihmax2.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DIHAMAX=IYAMAX /DIHMAX2=IYMAX2 $? /Fe$@ $(LDFLAGS)
 
 $(O)\slaran.obj: glaran.F90

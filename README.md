@@ -40,14 +40,16 @@ For the meaning of `IEEE=-1` please consult the makefile.
 
 On Windows, please use `nmake.exe` instead of `make` (or `gmake`), which in turn processes `src\Makefile` and expects the Intel's oneAPI toolchain.
 
-The outputs are:
+The outputs on Windows are:
 * `epblas_$(INT)$(IEEE).lib`,
 * `eplapack_$(INT)$(IEEE).lib`, and
-* `eptmglib_$(INT)$(IEEE).lib`
-on Windows, or otherwise
+* `eptmglib_$(INT)$(IEEE).lib`.
+
+Otherwise, the outputs are:
 * `libepblas_$(INT)$(IEEE).a`,
 * `libeplapack_$(INT)$(IEEE).a`, and
-* `libeptmglib_$(INT)$(IEEE).a`,
-alongside several testing executables.
+* `libeptmglib_$(INT)$(IEEE).a`.
+
+Several testing executables are also generated in the `exe_$(INT)$(IEEE)` subdirectory.
 
 (... work in progress ...)

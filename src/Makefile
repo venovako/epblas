@@ -22,36 +22,11 @@ IEEE=0
 FCFLAGS=$(FCFLAGS) /DUSE_IEEE_INTRINSIC=$(IEEE)
 !ENDIF # ?IEEE
 FCFLAGS=$(FCFLAGS) $(PVN_CPPFLAGS)
-LDFLAGS=$(PVN_LDFLAGS) /LIBPATH:.. eplapack_$(INT)$(IEEE).lib epblas_$(INT)$(IEEE).lib $(PVN_LIBS)
+LDFLAGS=$(PVN_LDFLAGS) /LIBPATH:.. eptmglib_$(INT)$(IEEE).lib eplapack_$(INT)$(IEEE).lib epblas_$(INT)$(IEEE).lib $(PVN_LIBS)
 
 O=..\obj_$(INT)$(IEEE)
 T=..\exe_$(INT)$(IEEE)
-L=..\epblas_$(INT)$(IEEE).lib ..\eplapack_$(INT)$(IEEE).lib
-
-E= \
-$(T)\tsecond.exe \
-$(T)\tdsecnd.exe \
-$(T)\tqsecnd.exe \
-$(T)\tslamch.exe \
-$(T)\tdlamch.exe \
-$(T)\tqlamch.exe \
-$(T)\tsnrm2.exe \
-$(T)\tdnrm2.exe \
-$(T)\tqnrm2.exe \
-$(T)\ticmax2.exe \
-$(T)\tizmax2.exe \
-$(T)\tiymax2.exe
-
-F= \
-$(O)\slamch.obj \
-$(O)\dlamch.obj \
-$(O)\qlamch.obj \
-$(O)\sroundup_lwork.obj \
-$(O)\droundup_lwork.obj \
-$(O)\qroundup_lwork.obj \
-$(O)\second.obj \
-$(O)\dsecnd.obj \
-$(O)\qsecnd.obj
+L=..\epblas_$(INT)$(IEEE).lib ..\eplapack_$(INT)$(IEEE).lib ..\eptmglib_$(INT)$(IEEE).lib
 
 G= \
 $(O)\isamax.obj \
@@ -151,6 +126,36 @@ $(O)\csscal.obj \
 $(O)\zdscal.obj \
 $(O)\yqscal.obj
 
+F= \
+$(O)\slamch.obj \
+$(O)\dlamch.obj \
+$(O)\qlamch.obj \
+$(O)\sroundup_lwork.obj \
+$(O)\droundup_lwork.obj \
+$(O)\qroundup_lwork.obj \
+$(O)\second.obj \
+$(O)\dsecnd.obj \
+$(O)\qsecnd.obj
+
+M= \
+$(O)\slaran.obj \
+$(O)\dlaran.obj \
+$(O)\qlaran.obj
+
+E= \
+$(T)\tsecond.exe \
+$(T)\tdsecnd.exe \
+$(T)\tqsecnd.exe \
+$(T)\tslamch.exe \
+$(T)\tdlamch.exe \
+$(T)\tqlamch.exe \
+$(T)\tsnrm2.exe \
+$(T)\tdnrm2.exe \
+$(T)\tqnrm2.exe \
+$(T)\ticmax2.exe \
+$(T)\tizmax2.exe \
+$(T)\tiymax2.exe
+
 all: dirs $(L) $(E)
 
 help:
@@ -169,6 +174,9 @@ dirs:
 	$(AR) $(ARFLAGS) /OUT:$@ $**
 
 ..\eplapack_$(INT)$(IEEE).lib: $(F)
+	$(AR) $(ARFLAGS) /OUT:$@ $**
+
+..\eptmglib_$(INT)$(IEEE).lib: $(M)
 	$(AR) $(ARFLAGS) /OUT:$@ $**
 
 $(T)\tsecond.exe: tgsecnd.F90 $(L)
@@ -199,12 +207,12 @@ $(T)\tizmax2.exe: tihmax2.F90 $(L)
 $(T)\tiymax2.exe: tihmax2.F90 $(L)
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DIHAMAX=IYAMAX /DIHMAX2=IYMAX2 $? /Fe$@ $(LDFLAGS)
 
-$(O)\lsame.obj: lsame.F90
-	$(FC) $(FCFLAGS) /c $? /Fo$@
-$(O)\xerbla.obj: xerbla.F90
-	$(FC) $(FCFLAGS) /c $? /Fo$@
-$(O)\xerbla_array.obj: xerbla_array.F90
-	$(FC) $(FCFLAGS) /c $? /Fo$@
+$(O)\slaran.obj: glaran.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGLARAN=SLARAN /c $? /Fo$@
+$(O)\dlaran.obj: glaran.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DGLARAN=DLARAN /c $? /Fo$@
+$(O)\qlaran.obj: glaran.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGLARAN=QLARAN /c $? /Fo$@
 
 $(O)\slamch.obj: glamch.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGLAMCH=SLAMCH /c $? /Fo$@
@@ -226,6 +234,13 @@ $(O)\dsecnd.obj: gsecnd.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DGSECND=DSECND /c $? /Fo$@
 $(O)\qsecnd.obj: gsecnd.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGSECND=QSECND /c $? /Fo$@
+
+$(O)\lsame.obj: lsame.F90
+	$(FC) $(FCFLAGS) /c $? /Fo$@
+$(O)\xerbla.obj: xerbla.F90
+	$(FC) $(FCFLAGS) /c $? /Fo$@
+$(O)\xerbla_array.obj: xerbla_array.F90
+	$(FC) $(FCFLAGS) /c $? /Fo$@
 
 $(O)\isamax.obj: igamax.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DIGAMAX=ISAMAX /c $? /Fo$@
@@ -448,7 +463,6 @@ $(O)\yqscal.obj: hgscal.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DHGSCAL=YQSCAL /c $? /Fo$@
 
 clean:
-	@-DEL /F $(E)
 	@-DEL /F $(L)
 	@-RD /S /Q $(T)
 	@-RD /S /Q $(O)

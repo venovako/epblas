@@ -15,10 +15,11 @@ FCFLAGS=$(FCFLAGS) /4I8
 REAL_KINDS=4,8,16
 HAVE_FMA=3
 FCFLAGS=$(FCFLAGS) /DBLAS_INT_KIND=$(INT) /DHAVE_FMA=$(HAVE_FMA)
-!IFDEF IEEE
-FCFLAGS=$(FCFLAGS) /DUSE_IEEE_INTRINSIC=$(IEEE)
-!ELSE # !IEEE
+!IFNDEF IEEE
 IEEE=0
+!ENDIF # !IEEE
+!IF "$(IEEE)"!="0"
+FCFLAGS=$(FCFLAGS) /DUSE_IEEE_INTRINSIC=$(IEEE)
 !ENDIF # ?IEEE
 FCFLAGS=$(FCFLAGS) $(PVN_CPPFLAGS)
 LDFLAGS=$(PVN_LDFLAGS) /LIBPATH:.. epblas$(INT)$(IEEE).lib $(PVN_LIBS)
@@ -155,7 +156,7 @@ $(O)\yqscal.obj
 all: dirs $(L) $(E)
 
 help:
-	@ECHO "nmake.exe [LIBPVN=..\..\libpvn] [INT=4|8] [IEEE=0] [all|help|clean]"
+	@ECHO "nmake.exe [LIBPVN=..\..\libpvn] [INT=4|8] [IEEE=0|...] [all|help|clean]"
 
 dirs:
 	@ECHO LIBPVN=$(LIBPVN)

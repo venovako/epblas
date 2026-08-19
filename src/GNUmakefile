@@ -39,28 +39,37 @@ else # !nvfortran
 REAL_KINDS:=4,8,16
 endif # ?nvfortran
 endif # ?gfortran
+ifndef IEEE
+IEEE:=0
+endif # !IEEE
+ifneq ($(IEEE),0)
+ifneq ($(IEEE),-1)
+FCFLAGS += -DUSE_IEEE_INTRINSIC=$(IEEE)
+endif # !spec IEEE
+endif # ?IEEE
 ifeq ($(ARCH),x86_64)
 # HACK: HAVE_FMA set for KIND=10 does NOT indicate that FMA is available,
 # but instead that fmal(3) calls are too expensive and should be avoided,
 # effectively turning the FMAs off for extended precision!!!  HAVE_FMA:=3
 # re-enables the calls at a huge performance penalty compared to MUL&ADD.
+ifeq ($(IEEE),-1)
+HAVE_FMA:=3
+else # !spec IEEE
 HAVE_FMA:=7
+endif # ?IEEE
 else # !x86_64
 ifeq ($(findstring ppc64,$(ARCH)),ppc64)
-# If using the IBM XL Fortran, REAL128 is NOT the quadruple precision yet,
-# so set HAVE_FMA:=15 to indicate that, and do not set the IEEE variable.
+# HACK: if REAL128 is NOT the quadruple precision, set HAVE_FMA:=15 to indicate that.
+ifeq ($(IEEE),-1)
+HAVE_FMA:=15
+else # !spec IEEE
 HAVE_FMA:=11
+endif # ?IEEE
 else # !ppc64
 HAVE_FMA:=3
 endif # ?ppc64
 endif # ?x86_64
 FCFLAGS += -DBLAS_INT_KIND=$(INT) -DHAVE_FMA=$(HAVE_FMA)
-ifndef IEEE
-IEEE:=0
-endif # !IEEE
-ifneq ($(IEEE),0)
-FCFLAGS += -DUSE_IEEE_INTRINSIC=$(IEEE)
-endif # ?IEEE
 FCFLAGS += $(PVN_CPPFLAGS)
 LDFLAGS:=$(PVN_LDFLAGS) -L.. -lepblas$(INT)$(IEEE) $(PVN_LIBS)
 
@@ -265,7 +274,7 @@ endif # 16
 all: dirs $(L) $(E)
 
 help:
-	@echo "$(MAKE) [LIBPVN=../../libpvn] [INT=4|8] [IEEE=0] [all|help|clean]"
+	@echo "$(MAKE) [LIBPVN=../../libpvn] [INT=4|8] [IEEE=0|-1|...] [all|help|clean]"
 
 dirs:
 	@echo "ARCH=$(ARCH)"

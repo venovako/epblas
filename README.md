@@ -14,7 +14,7 @@ Sometimes a new algorithm has been implemented for an existing interface, e.g., 
 
 In several other cases, the basic algorithm has been heavily reworked, but remained in the same spirit, e.g., `AXPBY`, the complex `IAMAX`, and `XERBLA`.
 
-The aim is to have (most of) the routines in single, double, and extended precisions not dependent on the Fortran library when `IEEE=0` (see below), but many routines instead depend on `libpvn`.
+The aim is to have (most of) the routines in single, double, and extended precisions not dependent on the Fortran library when `IEEE<=0` (see below), but many routines instead depend on `libpvn`.
 
 In extended (80-bit Intel) precision, available only with `gfortran` on Intel-compatible platforms, the real and complex routines have the prefixes `x` and `w`, respectively.
 In quadruple (128-bit IEEE) precision, the prefixes are `q` and `y`.
@@ -32,9 +32,11 @@ Only `gfortran`, `ifx`, and `nvfortran` compilers will be supported.
 
 Then, from within the `src` subdirectory, call
 ```bash
-make [LIBPVN=../../libpvn] [INT=4|8] [IEEE=0] [all|help|clean]
+make [LIBPVN=../../libpvn] [INT=4|8] [IEEE=0|-1|...] [all|help|clean]
 ```
-where `LIBPVN` is the libpvn's directory, `INT` specifies the default integer width (4 or 8 bytes), and `IEEE` set to a non-zero value allows the intrinsic module `IEEE_ARITHMETIC` to be used.
+where `LIBPVN` is the libpvn's directory, `INT` specifies the default integer width (4 or 8 bytes), and `IEEE=1` allows the intrinsic module `IEEE_ARITHMETIC` to be used.
+If a non-default rounding mode is desired, please make sure that `libpvn` has been built with the `STRICT` option and set `IEEE=2`.
+For the meaning of `IEEE=-1` please consult the makefile.
 
 On Windows, please use `nmake.exe` instead of `make` (or `gmake`), which in turn processes `src\Makefile` and expects the Intel's oneAPI toolchain.
 

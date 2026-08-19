@@ -68,7 +68,8 @@ $(O)\qnrm2.obj \
 $(O)\sscal.obj \
 $(O)\dscal.obj \
 $(O)\qscal.obj \
-$(O)\dsdot.obj
+$(O)\dsdot.obj \
+$(O)\qddot.obj
 
 H= \
 $(O)\icamax.obj \
@@ -165,8 +166,6 @@ dirs:
 	@ECHO LIBPVN=$(LIBPVN)
 	@ECHO INT=$(INT)
 	@ECHO IEEE=$(IEEE)
-	@ECHO REAL_KINDS=$(REAL_KINDS)
-	@ECHO HAVE_FMA=$(HAVE_FMA)
 	@-MD $(O)
 	@-MD $(T)
 
@@ -335,6 +334,8 @@ $(O)\qscal.obj: gscal.F90
 
 $(O)\dsdot.obj: gfdot.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DBLAS_REAL_KIND2=8 /DGFDOT=DSDOT /c $? /Fo$@
+$(O)\qddot.obj: gfdot.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DBLAS_REAL_KIND2=16 /DGFDOT=QDDOT /c $? /Fo$@
 
 $(O)\icamax.obj: ihamax.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DIHAMAX=ICAMAX /c $? /Fo$@

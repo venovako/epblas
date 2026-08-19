@@ -139,7 +139,8 @@ $(O)/qgemmtr.o\
 $(O)/qgemv.o\
 $(O)/qger.o\
 $(O)/qnrm2.o\
-$(O)/qscal.o
+$(O)/qscal.o\
+$(O)/qddot.o
 endif # 16
 
 H=\
@@ -506,6 +507,8 @@ $(O)/xsdot.o: gfdot.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DBLAS_REAL_KIND2=10 -DGFDOT=XSDOT -c $< -o $@
 $(O)/xddot.o: gfdot.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DBLAS_REAL_KIND2=10 -DGFDOT=XDDOT -c $< -o $@
+$(O)/qddot.o: gfdot.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DBLAS_REAL_KIND2=16 -DGFDOT=QDDOT -c $< -o $@
 $(O)/qxdot.o: gfdot.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DBLAS_REAL_KIND2=16 -DGFDOT=QXDOT -c $< -o $@
 

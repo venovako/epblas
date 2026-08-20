@@ -6,7 +6,7 @@ This is an extension of [LAPACK](https://github.com/Reference-LAPACK/lapack) to 
 Currently, the following parts are in progress of being converted, alongside some additions:
 * INSTALL (partially),
 * BLAS (TBD, started),
-* MATGEN (TBD).
+* MATGEN (TBD, started).
 
 The original source code has been modified and adapted, but the existing interfaces will remain unchanged.
 

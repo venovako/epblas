@@ -245,14 +245,22 @@ endif # 16
 
 M=\
 $(O)/slaran.o\
-$(O)/dlaran.o
+$(O)/dlaran.o\
+$(O)/slarnd.o\
+$(O)/dlarnd.o\
+$(O)/clarnd.o\
+$(O)/zlarnd.o
 ifeq ($(findstring 10,$(REAL_KINDS)),10)
 M += \
-$(O)/xlaran.o
+$(O)/xlaran.o\
+$(O)/xlarnd.o\
+$(O)/wlarnd.o
 endif # 10
 ifeq ($(findstring 16,$(REAL_KINDS)),16)
 M += \
-$(O)/qlaran.o
+$(O)/qlaran.o\
+$(O)/qlarnd.o\
+$(O)/ylarnd.o
 endif # 16
 
 E=\
@@ -349,6 +357,24 @@ $(O)/xlaran.o: glaran.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGLARAN=XLARAN -c $< -o $@
 $(O)/qlaran.o: glaran.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGLARAN=QLARAN -c $< -o $@
+
+$(O)/slarnd.o: glarnd.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGLARND=SLARND -c $< -o $@
+$(O)/dlarnd.o: glarnd.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGLARND=DLARND -c $< -o $@
+$(O)/xlarnd.o: glarnd.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGLARND=XLARND -c $< -o $@
+$(O)/qlarnd.o: glarnd.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGLARND=QLARND -c $< -o $@
+
+$(O)/clarnd.o: hlarnd.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DHLARND=CLARND -c $< -o $@
+$(O)/zlarnd.o: hlarnd.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DHLARND=ZLARND -c $< -o $@
+$(O)/wlarnd.o: hlarnd.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DHLARND=WLARND -c $< -o $@
+$(O)/ylarnd.o: hlarnd.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DHLARND=YLARND -c $< -o $@
 
 $(O)/slamch.o: glamch.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGLAMCH=SLAMCH -c $< -o $@

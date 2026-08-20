@@ -98,32 +98,19 @@ T:=../exe_$(INT)$(IEEE)
 L:=../libepblas_$(INT)$(IEEE).a ../libeplapack_$(INT)$(IEEE).a ../libeptmglib_$(INT)$(IEEE).a
 
 G=\
-$(O)/isamax.o\
-$(O)/idamax.o\
-$(O)/sasum.o\
-$(O)/dasum.o\
-$(O)/saxpby.o\
-$(O)/daxpby.o\
-$(O)/saxpy.o\
-$(O)/daxpy.o\
-$(O)/scopy.o\
-$(O)/dcopy.o\
-$(O)/sdot.o\
-$(O)/ddot.o\
-$(O)/sgbmv.o\
-$(O)/dgbmv.o\
-$(O)/sgemm.o\
-$(O)/dgemm.o\
-$(O)/sgemmtr.o\
-$(O)/dgemmtr.o\
-$(O)/sgemv.o\
-$(O)/dgemv.o\
-$(O)/sger.o\
-$(O)/dger.o\
-$(O)/snrm2.o\
-$(O)/dnrm2.o\
-$(O)/sscal.o\
-$(O)/dscal.o\
+$(O)/isamax.o $(O)/idamax.o\
+$(O)/sasum.o $(O)/dasum.o\
+$(O)/saxpby.o $(O)/daxpby.o\
+$(O)/saxpy.o $(O)/daxpy.o\
+$(O)/scopy.o $(O)/dcopy.o\
+$(O)/sdot.o $(O)/ddot.o\
+$(O)/sgbmv.o $(O)/dgbmv.o\
+$(O)/sgemm.o $(O)/dgemm.o\
+$(O)/sgemmtr.o $(O)/dgemmtr.o\
+$(O)/sgemv.o $(O)/dgemv.o\
+$(O)/sger.o $(O)/dger.o\
+$(O)/snrm2.o $(O)/dnrm2.o\
+$(O)/sscal.o $(O)/dscal.o\
 $(O)/dsdot.o
 ifeq ($(findstring $(REAL80),$(REAL_KINDS)),$(REAL80))
 G += \
@@ -163,42 +150,24 @@ $(O)/qddot.o
 endif # REAL128
 
 H=\
-$(O)/icamax.o\
-$(O)/izamax.o\
-$(O)/icmax2.o\
-$(O)/izmax2.o\
-$(O)/caxpby.o\
-$(O)/zaxpby.o\
-$(O)/caxpy.o\
-$(O)/zaxpy.o\
-$(O)/scabs1.o\
-$(O)/dcabs1.o\
-$(O)/scasum.o\
-$(O)/dzasum.o\
-$(O)/ccopy.o\
-$(O)/zcopy.o\
-$(O)/cdotc.o\
-$(O)/zdotc.o\
-$(O)/cdotu.o\
-$(O)/zdotu.o\
-$(O)/cgbmv.o\
-$(O)/zgbmv.o\
-$(O)/cgemm.o\
-$(O)/zgemm.o\
-$(O)/cgemmtr.o\
-$(O)/zgemmtr.o\
-$(O)/cgemv.o\
-$(O)/zgemv.o\
-$(O)/cgerc.o\
-$(O)/zgerc.o\
-$(O)/cgeru.o\
-$(O)/zgeru.o\
-$(O)/scnrm2.o\
-$(O)/dznrm2.o\
-$(O)/cscal.o\
-$(O)/zscal.o\
-$(O)/csscal.o\
-$(O)/zdscal.o
+$(O)/icamax.o $(O)/izamax.o\
+$(O)/icmax2.o $(O)/izmax2.o\
+$(O)/caxpby.o $(O)/zaxpby.o\
+$(O)/caxpy.o $(O)/zaxpy.o\
+$(O)/scabs1.o $(O)/dcabs1.o\
+$(O)/scasum.o $(O)/dzasum.o\
+$(O)/ccopy.o $(O)/zcopy.o\
+$(O)/cdotc.o $(O)/zdotc.o\
+$(O)/cdotu.o $(O)/zdotu.o\
+$(O)/cgbmv.o $(O)/zgbmv.o\
+$(O)/cgemm.o $(O)/zgemm.o\
+$(O)/cgemmtr.o $(O)/zgemmtr.o\
+$(O)/cgemv.o $(O)/zgemv.o\
+$(O)/cgerc.o $(O)/zgerc.o\
+$(O)/cgeru.o $(O)/zgeru.o\
+$(O)/scnrm2.o $(O)/dznrm2.o\
+$(O)/cscal.o $(O)/zscal.o\
+$(O)/csscal.o $(O)/zdscal.o
 ifeq ($(findstring $(REAL80),$(REAL_KINDS)),$(REAL80))
 H += \
 $(O)/iwamax.o\
@@ -243,12 +212,9 @@ $(O)/yqscal.o
 endif # REAL128
 
 F=\
-$(O)/slamch.o\
-$(O)/dlamch.o\
-$(O)/sroundup_lwork.o\
-$(O)/droundup_lwork.o\
-$(O)/second.o\
-$(O)/dsecnd.o
+$(O)/slamch.o $(O)/dlamch.o\
+$(O)/sroundup_lwork.o $(O)/droundup_lwork.o\
+$(O)/second.o $(O)/dsecnd.o
 ifeq ($(findstring $(REAL80),$(REAL_KINDS)),$(REAL80))
 F += \
 $(O)/xlamch.o\
@@ -263,12 +229,9 @@ $(O)/qsecnd.o
 endif # REAL128
 
 M=\
-$(O)/slaran.o\
-$(O)/dlaran.o\
-$(O)/slarnd.o\
-$(O)/dlarnd.o\
-$(O)/clarnd.o\
-$(O)/zlarnd.o
+$(O)/slaran.o $(O)/dlaran.o\
+$(O)/slarnd.o $(O)/dlarnd.o\
+$(O)/clarnd.o $(O)/zlarnd.o
 ifeq ($(findstring $(REAL80),$(REAL_KINDS)),$(REAL80))
 M += \
 $(O)/xlaran.o\
@@ -283,14 +246,10 @@ $(O)/ylarnd.o
 endif # REAL128
 
 E=\
-$(T)/tsecond.exe\
-$(T)/tdsecnd.exe\
-$(T)/tslamch.exe\
-$(T)/tdlamch.exe\
-$(T)/tsnrm2.exe\
-$(T)/tdnrm2.exe\
-$(T)/ticmax2.exe\
-$(T)/tizmax2.exe
+$(T)/tsecond.exe $(T)/tdsecnd.exe\
+$(T)/tslamch.exe $(T)/tdlamch.exe\
+$(T)/tsnrm2.exe $(T)/tdnrm2.exe\
+$(T)/ticmax2.exe $(T)/tizmax2.exe
 ifeq ($(findstring $(REAL80),$(REAL_KINDS)),$(REAL80))
 E += \
 $(T)/txsecnd.exe\

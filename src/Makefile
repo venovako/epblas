@@ -29,139 +29,56 @@ T=..\exe_$(INT)$(IEEE)
 L=..\epblas_$(INT)$(IEEE).lib ..\eplapack_$(INT)$(IEEE).lib ..\eptmglib_$(INT)$(IEEE).lib
 
 G= \
-$(O)\isamax.obj \
-$(O)\idamax.obj \
-$(O)\iqamax.obj \
-$(O)\sasum.obj \
-$(O)\dasum.obj \
-$(O)\qasum.obj \
-$(O)\saxpby.obj \
-$(O)\daxpby.obj \
-$(O)\qaxpby.obj \
-$(O)\saxpy.obj \
-$(O)\daxpy.obj \
-$(O)\qaxpy.obj \
-$(O)\scopy.obj \
-$(O)\dcopy.obj \
-$(O)\qcopy.obj \
-$(O)\sdot.obj \
-$(O)\ddot.obj \
-$(O)\qdot.obj \
-$(O)\sgbmv.obj \
-$(O)\dgbmv.obj \
-$(O)\qgbmv.obj \
-$(O)\sgemm.obj \
-$(O)\dgemm.obj \
-$(O)\qgemm.obj \
-$(O)\sgemmtr.obj \
-$(O)\dgemmtr.obj \
-$(O)\qgemmtr.obj \
-$(O)\sgemv.obj \
-$(O)\dgemv.obj \
-$(O)\qgemv.obj \
-$(O)\sger.obj \
-$(O)\dger.obj \
-$(O)\qger.obj \
-$(O)\snrm2.obj \
-$(O)\dnrm2.obj \
-$(O)\qnrm2.obj \
-$(O)\sscal.obj \
-$(O)\dscal.obj \
-$(O)\qscal.obj \
-$(O)\dsdot.obj \
-$(O)\qddot.obj
+$(O)\isamax.obj $(O)\idamax.obj $(O)\iqamax.obj \
+$(O)\sasum.obj $(O)\dasum.obj $(O)\qasum.obj \
+$(O)\saxpby.obj $(O)\daxpby.obj $(O)\qaxpby.obj \
+$(O)\saxpy.obj $(O)\daxpy.obj $(O)\qaxpy.obj \
+$(O)\scopy.obj $(O)\dcopy.obj $(O)\qcopy.obj \
+$(O)\sdot.obj $(O)\ddot.obj $(O)\qdot.obj \
+$(O)\sgbmv.obj $(O)\dgbmv.obj $(O)\qgbmv.obj \
+$(O)\sgemm.obj $(O)\dgemm.obj $(O)\qgemm.obj \
+$(O)\sgemmtr.obj $(O)\dgemmtr.obj $(O)\qgemmtr.obj \
+$(O)\sgemv.obj $(O)\dgemv.obj $(O)\qgemv.obj \
+$(O)\sger.obj $(O)\dger.obj $(O)\qger.obj \
+$(O)\snrm2.obj $(O)\dnrm2.obj $(O)\qnrm2.obj \
+$(O)\sscal.obj $(O)\dscal.obj $(O)\qscal.obj \
+$(O)\dsdot.obj $(O)\qddot.obj
 
 H= \
-$(O)\icamax.obj \
-$(O)\izamax.obj \
-$(O)\iyamax.obj \
-$(O)\icmax2.obj \
-$(O)\izmax2.obj \
-$(O)\iymax2.obj \
-$(O)\caxpby.obj \
-$(O)\zaxpby.obj \
-$(O)\yaxpby.obj \
-$(O)\caxpy.obj \
-$(O)\zaxpy.obj \
-$(O)\yaxpy.obj \
-$(O)\scabs1.obj \
-$(O)\dcabs1.obj \
-$(O)\qcabs1.obj \
-$(O)\scasum.obj \
-$(O)\dzasum.obj \
-$(O)\qyasum.obj \
-$(O)\ccopy.obj \
-$(O)\zcopy.obj \
-$(O)\ycopy.obj \
-$(O)\cdotc.obj \
-$(O)\zdotc.obj \
-$(O)\ydotc.obj \
-$(O)\cdotu.obj \
-$(O)\zdotu.obj \
-$(O)\ydotu.obj \
-$(O)\cgbmv.obj \
-$(O)\zgbmv.obj \
-$(O)\ygbmv.obj \
-$(O)\cgemm.obj \
-$(O)\zgemm.obj \
-$(O)\ygemm.obj \
-$(O)\cgemmtr.obj \
-$(O)\zgemmtr.obj \
-$(O)\ygemmtr.obj \
-$(O)\cgemv.obj \
-$(O)\zgemv.obj \
-$(O)\ygemv.obj \
-$(O)\cgerc.obj \
-$(O)\zgerc.obj \
-$(O)\ygerc.obj \
-$(O)\cgeru.obj \
-$(O)\zgeru.obj \
-$(O)\ygeru.obj \
-$(O)\scnrm2.obj \
-$(O)\dznrm2.obj \
-$(O)\qynrm2.obj \
-$(O)\cscal.obj \
-$(O)\zscal.obj \
-$(O)\yscal.obj \
-$(O)\csscal.obj \
-$(O)\zdscal.obj \
-$(O)\yqscal.obj
+$(O)\icamax.obj $(O)\izamax.obj $(O)\iyamax.obj \
+$(O)\icmax2.obj $(O)\izmax2.obj $(O)\iymax2.obj \
+$(O)\caxpby.obj $(O)\zaxpby.obj $(O)\yaxpby.obj \
+$(O)\caxpy.obj $(O)\zaxpy.obj $(O)\yaxpy.obj \
+$(O)\scabs1.obj $(O)\dcabs1.obj $(O)\qcabs1.obj \
+$(O)\scasum.obj $(O)\dzasum.obj $(O)\qyasum.obj \
+$(O)\ccopy.obj $(O)\zcopy.obj $(O)\ycopy.obj \
+$(O)\cdotc.obj $(O)\zdotc.obj $(O)\ydotc.obj \
+$(O)\cdotu.obj $(O)\zdotu.obj $(O)\ydotu.obj \
+$(O)\cgbmv.obj $(O)\zgbmv.obj $(O)\ygbmv.obj \
+$(O)\cgemm.obj $(O)\zgemm.obj $(O)\ygemm.obj \
+$(O)\cgemmtr.obj $(O)\zgemmtr.obj $(O)\ygemmtr.obj \
+$(O)\cgemv.obj $(O)\zgemv.obj $(O)\ygemv.obj \
+$(O)\cgerc.obj $(O)\zgerc.obj $(O)\ygerc.obj \
+$(O)\cgeru.obj $(O)\zgeru.obj $(O)\ygeru.obj \
+$(O)\scnrm2.obj $(O)\dznrm2.obj $(O)\qynrm2.obj \
+$(O)\cscal.obj $(O)\zscal.obj $(O)\yscal.obj \
+$(O)\csscal.obj $(O)\zdscal.obj $(O)\yqscal.obj
 
 F= \
-$(O)\slamch.obj \
-$(O)\dlamch.obj \
-$(O)\qlamch.obj \
-$(O)\sroundup_lwork.obj \
-$(O)\droundup_lwork.obj \
-$(O)\qroundup_lwork.obj \
-$(O)\second.obj \
-$(O)\dsecnd.obj \
-$(O)\qsecnd.obj
+$(O)\slamch.obj $(O)\dlamch.obj $(O)\qlamch.obj \
+$(O)\sroundup_lwork.obj $(O)\droundup_lwork.obj $(O)\qroundup_lwork.obj \
+$(O)\second.obj $(O)\dsecnd.obj $(O)\qsecnd.obj
 
 M= \
-$(O)\slaran.obj \
-$(O)\dlaran.obj \
-$(O)\qlaran.obj \
-$(O)\slarnd.obj \
-$(O)\dlarnd.obj \
-$(O)\qlarnd.obj \
-$(O)\clarnd.obj \
-$(O)\zlarnd.obj \
-$(O)\ylarnd.obj
+$(O)\slaran.obj $(O)\dlaran.obj $(O)\qlaran.obj \
+$(O)\slarnd.obj $(O)\dlarnd.obj $(O)\qlarnd.obj \
+$(O)\clarnd.obj $(O)\zlarnd.obj $(O)\ylarnd.obj
 
 E= \
-$(T)\tsecond.exe \
-$(T)\tdsecnd.exe \
-$(T)\tqsecnd.exe \
-$(T)\tslamch.exe \
-$(T)\tdlamch.exe \
-$(T)\tqlamch.exe \
-$(T)\tsnrm2.exe \
-$(T)\tdnrm2.exe \
-$(T)\tqnrm2.exe \
-$(T)\ticmax2.exe \
-$(T)\tizmax2.exe \
-$(T)\tiymax2.exe
+$(T)\tsecond.exe $(T)\tdsecnd.exe $(T)\tqsecnd.exe \
+$(T)\tslamch.exe $(T)\tdlamch.exe $(T)\tqlamch.exe \
+$(T)\tsnrm2.exe $(T)\tdnrm2.exe $(T)\tqnrm2.exe \
+$(T)\ticmax2.exe $(T)\tizmax2.exe $(T)\tiymax2.exe
 
 all: dirs $(L) $(E)
 

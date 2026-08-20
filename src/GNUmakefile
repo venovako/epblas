@@ -17,26 +17,45 @@ MK=$(LIBPVN)/src/pvn.mk
 include $(MK)
 FC:=$(PVN_FC)
 FCFLAGS=$(PVN_FCFLAGS)
+# Fortran kinds
+ifndef REAL32
+REAL32:=4
+endif # !REAL32
+ifndef REAL64
+REAL64:=8
+endif # !REAL64
+ifndef REAL80
+REAL80:=10
+endif # !REAL80
+ifndef REAL128
+REAL128:=16
+endif # !REAL128
+ifndef INT32
+INT32:=4
+endif # !INT32
+ifndef INT64
+INT64:=8
+endif # !INT64
 ifndef INT
-INT:=4
+INT:=$(INT32)
 endif # !INT
 ifeq ($(findstring gfortran,$(FC)),gfortran)
-ifeq ($(INT),8)
+ifeq ($(INT),$(INT64))
 FCFLAGS += -fdefault-integer-8
 endif # ?INT
 ifeq ($(ARCH),x86_64)
-REAL_KINDS:=4,8,10,16
+REAL_KINDS:=$(REAL32),$(REAL64),$(REAL80),$(REAL128)
 else # !x86_64
-REAL_KINDS:=4,8,16
+REAL_KINDS:=$(REAL32),$(REAL64),$(REAL128)
 endif # ?x86_64
 else # !gfortran
-ifeq ($(INT),8)
+ifeq ($(INT),$(INT64))
 FCFLAGS += -i8
 endif # ?INT
 ifeq ($(findstring nvfortran,$(FC)),nvfortran)
-REAL_KINDS:=4,8
+REAL_KINDS:=$(REAL32),$(REAL64)
 else # !nvfortran
-REAL_KINDS:=4,8,16
+REAL_KINDS:=$(REAL32),$(REAL64),$(REAL128)
 endif # ?nvfortran
 endif # ?gfortran
 ifndef IEEE
@@ -106,7 +125,7 @@ $(O)/dnrm2.o\
 $(O)/sscal.o\
 $(O)/dscal.o\
 $(O)/dsdot.o
-ifeq ($(findstring 10,$(REAL_KINDS)),10)
+ifeq ($(findstring $(REAL80),$(REAL_KINDS)),$(REAL80))
 G += \
 $(O)/ixamax.o\
 $(O)/xasum.o\
@@ -124,8 +143,8 @@ $(O)/xscal.o\
 $(O)/xsdot.o\
 $(O)/xddot.o\
 $(O)/qxdot.o
-endif # 10
-ifeq ($(findstring 16,$(REAL_KINDS)),16)
+endif # REAL80
+ifeq ($(findstring $(REAL128),$(REAL_KINDS)),$(REAL128))
 G += \
 $(O)/iqamax.o\
 $(O)/qasum.o\
@@ -141,7 +160,7 @@ $(O)/qger.o\
 $(O)/qnrm2.o\
 $(O)/qscal.o\
 $(O)/qddot.o
-endif # 16
+endif # REAL128
 
 H=\
 $(O)/icamax.o\
@@ -180,7 +199,7 @@ $(O)/cscal.o\
 $(O)/zscal.o\
 $(O)/csscal.o\
 $(O)/zdscal.o
-ifeq ($(findstring 10,$(REAL_KINDS)),10)
+ifeq ($(findstring $(REAL80),$(REAL_KINDS)),$(REAL80))
 H += \
 $(O)/iwamax.o\
 $(O)/iwmax2.o\
@@ -200,8 +219,8 @@ $(O)/wgeru.o\
 $(O)/xwnrm2.o\
 $(O)/wscal.o\
 $(O)/wxscal.o
-endif # 10
-ifeq ($(findstring 16,$(REAL_KINDS)),16)
+endif # REAL80
+ifeq ($(findstring $(REAL128),$(REAL_KINDS)),$(REAL128))
 H += \
 $(O)/iyamax.o\
 $(O)/iymax2.o\
@@ -221,7 +240,7 @@ $(O)/ygeru.o\
 $(O)/qynrm2.o\
 $(O)/yscal.o\
 $(O)/yqscal.o
-endif # 16
+endif # REAL128
 
 F=\
 $(O)/slamch.o\
@@ -230,18 +249,18 @@ $(O)/sroundup_lwork.o\
 $(O)/droundup_lwork.o\
 $(O)/second.o\
 $(O)/dsecnd.o
-ifeq ($(findstring 10,$(REAL_KINDS)),10)
+ifeq ($(findstring $(REAL80),$(REAL_KINDS)),$(REAL80))
 F += \
 $(O)/xlamch.o\
 $(O)/xroundup_lwork.o\
 $(O)/xsecnd.o
-endif # 10
-ifeq ($(findstring 16,$(REAL_KINDS)),16)
+endif # REAL80
+ifeq ($(findstring $(REAL128),$(REAL_KINDS)),$(REAL128))
 F += \
 $(O)/qlamch.o\
 $(O)/qroundup_lwork.o\
 $(O)/qsecnd.o
-endif # 16
+endif # REAL128
 
 M=\
 $(O)/slaran.o\
@@ -250,18 +269,18 @@ $(O)/slarnd.o\
 $(O)/dlarnd.o\
 $(O)/clarnd.o\
 $(O)/zlarnd.o
-ifeq ($(findstring 10,$(REAL_KINDS)),10)
+ifeq ($(findstring $(REAL80),$(REAL_KINDS)),$(REAL80))
 M += \
 $(O)/xlaran.o\
 $(O)/xlarnd.o\
 $(O)/wlarnd.o
-endif # 10
-ifeq ($(findstring 16,$(REAL_KINDS)),16)
+endif # REAL80
+ifeq ($(findstring $(REAL128),$(REAL_KINDS)),$(REAL128))
 M += \
 $(O)/qlaran.o\
 $(O)/qlarnd.o\
 $(O)/ylarnd.o
-endif # 16
+endif # REAL128
 
 E=\
 $(T)/tsecond.exe\
@@ -272,27 +291,27 @@ $(T)/tsnrm2.exe\
 $(T)/tdnrm2.exe\
 $(T)/ticmax2.exe\
 $(T)/tizmax2.exe
-ifeq ($(findstring 10,$(REAL_KINDS)),10)
+ifeq ($(findstring $(REAL80),$(REAL_KINDS)),$(REAL80))
 E += \
 $(T)/txsecnd.exe\
 $(T)/txlamch.exe\
 $(T)/txnrm2.exe\
 $(T)/tiwmax2.exe
-endif # 10
-ifeq ($(findstring 16,$(REAL_KINDS)),16)
+endif # REAL80
+ifeq ($(findstring $(REAL128),$(REAL_KINDS)),$(REAL128))
 E += \
 $(T)/tqsecnd.exe\
 $(T)/tqlamch.exe\
 $(T)/tqnrm2.exe\
 $(T)/tiymax2.exe
-endif # 16
+endif # REAL128
 
 .PHONY: all help dirs clean
 
 all: dirs $(L) $(E)
 
 help:
-	@echo "$(MAKE) [LIBPVN=../../libpvn] [INT=4|8] [IEEE=0|-1|1|2] [all|help|clean]"
+	@echo "$(MAKE) [LIBPVN=../../libpvn] [INT=$(INT32)|$(INT64)] [IEEE=0|-1|1|2] [all|help|clean]"
 
 dirs:
 	@echo "ARCH=$(ARCH)"
@@ -314,94 +333,94 @@ dirs:
 	$(AR) $(ARFLAGS) $@ $^
 
 $(T)/tsecond.exe: tgsecnd.F90 $(L) $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGSECND=SECOND $< -o $@ $(LDFLAGS)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGSECND=SECOND $< -o $@ $(LDFLAGS)
 $(T)/tdsecnd.exe: tgsecnd.F90 $(L) $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGSECND=DSECND $< -o $@ $(LDFLAGS)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGSECND=DSECND $< -o $@ $(LDFLAGS)
 $(T)/txsecnd.exe: tgsecnd.F90 $(L) $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGSECND=XSECND $< -o $@ $(LDFLAGS)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGSECND=XSECND $< -o $@ $(LDFLAGS)
 $(T)/tqsecnd.exe: tgsecnd.F90 $(L) $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGSECND=QSECND $< -o $@ $(LDFLAGS)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGSECND=QSECND $< -o $@ $(LDFLAGS)
 
 $(T)/tslamch.exe: tglamch.F90 $(L) $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGLAMCH=SLAMCH $< -o $@ $(LDFLAGS)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGLAMCH=SLAMCH $< -o $@ $(LDFLAGS)
 $(T)/tdlamch.exe: tglamch.F90 $(L) $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGLAMCH=DLAMCH $< -o $@ $(LDFLAGS)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGLAMCH=DLAMCH $< -o $@ $(LDFLAGS)
 $(T)/txlamch.exe: tglamch.F90 $(L) $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGLAMCH=XLAMCH $< -o $@ $(LDFLAGS)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGLAMCH=XLAMCH $< -o $@ $(LDFLAGS)
 $(T)/tqlamch.exe: tglamch.F90 $(L) $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGLAMCH=QLAMCH $< -o $@ $(LDFLAGS)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGLAMCH=QLAMCH $< -o $@ $(LDFLAGS)
 
 $(T)/tsnrm2.exe: tgnrm2.F90 $(L) $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGNRM2=SNRM2 $< -o $@ $(LDFLAGS)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGNRM2=SNRM2 $< -o $@ $(LDFLAGS)
 $(T)/tdnrm2.exe: tgnrm2.F90 $(L) $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGNRM2=DNRM2 $< -o $@ $(LDFLAGS)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGNRM2=DNRM2 $< -o $@ $(LDFLAGS)
 $(T)/txnrm2.exe: tgnrm2.F90 $(L) $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGNRM2=XNRM2 $< -o $@ $(LDFLAGS)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGNRM2=XNRM2 $< -o $@ $(LDFLAGS)
 $(T)/tqnrm2.exe: tgnrm2.F90 $(L) $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGNRM2=QNRM2 $< -o $@ $(LDFLAGS)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGNRM2=QNRM2 $< -o $@ $(LDFLAGS)
 
 $(T)/ticmax2.exe: tihmax2.F90 $(L) $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DIHAMAX=ICAMAX -DIHMAX2=ICMAX2 $< -o $@ $(LDFLAGS)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DIHAMAX=ICAMAX -DIHMAX2=ICMAX2 $< -o $@ $(LDFLAGS)
 $(T)/tizmax2.exe: tihmax2.F90 $(L) $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DIHAMAX=IZAMAX -DIHMAX2=IZMAX2 $< -o $@ $(LDFLAGS)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DIHAMAX=IZAMAX -DIHMAX2=IZMAX2 $< -o $@ $(LDFLAGS)
 $(T)/tiwmax2.exe: tihmax2.F90 $(L) $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DIHAMAX=IWAMAX -DIHMAX2=IWMAX2 $< -o $@ $(LDFLAGS)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DIHAMAX=IWAMAX -DIHMAX2=IWMAX2 $< -o $@ $(LDFLAGS)
 $(T)/tiymax2.exe: tihmax2.F90 $(L) $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DIHAMAX=IYAMAX -DIHMAX2=IYMAX2 $< -o $@ $(LDFLAGS)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DIHAMAX=IYAMAX -DIHMAX2=IYMAX2 $< -o $@ $(LDFLAGS)
 
 $(O)/slaran.o: glaran.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGLARAN=SLARAN -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGLARAN=SLARAN -c $< -o $@
 $(O)/dlaran.o: glaran.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGLARAN=DLARAN -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGLARAN=DLARAN -c $< -o $@
 $(O)/xlaran.o: glaran.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGLARAN=XLARAN -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGLARAN=XLARAN -c $< -o $@
 $(O)/qlaran.o: glaran.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGLARAN=QLARAN -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGLARAN=QLARAN -c $< -o $@
 
 $(O)/slarnd.o: glarnd.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGLARND=SLARND -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGLARND=SLARND -DGLARAN=SLARAN -c $< -o $@
 $(O)/dlarnd.o: glarnd.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGLARND=DLARND -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGLARND=DLARND -DGLARAN=DLARAN -c $< -o $@
 $(O)/xlarnd.o: glarnd.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGLARND=XLARND -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGLARND=XLARND -DGLARAN=XLARAN -c $< -o $@
 $(O)/qlarnd.o: glarnd.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGLARND=QLARND -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGLARND=QLARND -DGLARAN=QLARAN -c $< -o $@
 
 $(O)/clarnd.o: hlarnd.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DHLARND=CLARND -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHLARND=CLARND -DGLARAN=SLARAN -c $< -o $@
 $(O)/zlarnd.o: hlarnd.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DHLARND=ZLARND -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHLARND=ZLARND -DGLARAN=DLARAN -c $< -o $@
 $(O)/wlarnd.o: hlarnd.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DHLARND=WLARND -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHLARND=WLARND -DGLARAN=XLARAN -c $< -o $@
 $(O)/ylarnd.o: hlarnd.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DHLARND=YLARND -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHLARND=YLARND -DGLARAN=QLARAN -c $< -o $@
 
 $(O)/slamch.o: glamch.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGLAMCH=SLAMCH -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGLAMCH=SLAMCH -c $< -o $@
 $(O)/dlamch.o: glamch.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGLAMCH=DLAMCH -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGLAMCH=DLAMCH -c $< -o $@
 $(O)/xlamch.o: glamch.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGLAMCH=XLAMCH -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGLAMCH=XLAMCH -c $< -o $@
 $(O)/qlamch.o: glamch.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGLAMCH=QLAMCH -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGLAMCH=QLAMCH -c $< -o $@
 
 $(O)/sroundup_lwork.o: groundup_lwork.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGROUNDUP_LWORK=SROUNDUP_LWORK -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGROUNDUP_LWORK=SROUNDUP_LWORK -c $< -o $@
 $(O)/droundup_lwork.o: groundup_lwork.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGROUNDUP_LWORK=DROUNDUP_LWORK -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGROUNDUP_LWORK=DROUNDUP_LWORK -c $< -o $@
 $(O)/xroundup_lwork.o: groundup_lwork.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGROUNDUP_LWORK=XROUNDUP_LWORK -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGROUNDUP_LWORK=XROUNDUP_LWORK -c $< -o $@
 $(O)/qroundup_lwork.o: groundup_lwork.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGROUNDUP_LWORK=QROUNDUP_LWORK -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGROUNDUP_LWORK=QROUNDUP_LWORK -c $< -o $@
 
 $(O)/second.o: gsecnd.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGSECND=SECOND -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGSECND=SECOND -c $< -o $@
 $(O)/dsecnd.o: gsecnd.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGSECND=DSECND -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGSECND=DSECND -c $< -o $@
 $(O)/xsecnd.o: gsecnd.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGSECND=XSECND -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGSECND=XSECND -c $< -o $@
 $(O)/qsecnd.o: gsecnd.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGSECND=QSECND -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGSECND=QSECND -c $< -o $@
 
 $(O)/lsame.o: lsame.F90 $(MK)
 	$(FC) $(FCFLAGS) -c $< -o $@
@@ -411,294 +430,294 @@ $(O)/xerbla_array.o: xerbla_array.F90 $(MK)
 	$(FC) $(FCFLAGS) -c $< -o $@
 
 $(O)/isamax.o: igamax.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DIGAMAX=ISAMAX -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DIGAMAX=ISAMAX -c $< -o $@
 $(O)/idamax.o: igamax.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DIGAMAX=IDAMAX -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DIGAMAX=IDAMAX -c $< -o $@
 $(O)/ixamax.o: igamax.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DIGAMAX=IXAMAX -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DIGAMAX=IXAMAX -c $< -o $@
 $(O)/iqamax.o: igamax.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DIGAMAX=IQAMAX -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DIGAMAX=IQAMAX -c $< -o $@
 
 $(O)/sasum.o: gasum.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGASUM=SASUM -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGASUM=SASUM -c $< -o $@
 $(O)/dasum.o: gasum.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGASUM=DASUM -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGASUM=DASUM -c $< -o $@
 $(O)/xasum.o: gasum.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGASUM=XASUM -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGASUM=XASUM -c $< -o $@
 $(O)/qasum.o: gasum.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGASUM=QASUM -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGASUM=QASUM -c $< -o $@
 
 $(O)/saxpby.o: gaxpby.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGAXPBY=SAXPBY -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGAXPBY=SAXPBY -c $< -o $@
 $(O)/daxpby.o: gaxpby.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGAXPBY=DAXPBY -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGAXPBY=DAXPBY -c $< -o $@
 $(O)/xaxpby.o: gaxpby.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGAXPBY=XAXPBY -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGAXPBY=XAXPBY -c $< -o $@
 $(O)/qaxpby.o: gaxpby.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGAXPBY=QAXPBY -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGAXPBY=QAXPBY -c $< -o $@
 
 $(O)/saxpy.o: gaxpy.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGAXPY=SAXPY -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGAXPY=SAXPY -c $< -o $@
 $(O)/daxpy.o: gaxpy.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGAXPY=DAXPY -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGAXPY=DAXPY -c $< -o $@
 $(O)/xaxpy.o: gaxpy.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGAXPY=XAXPY -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGAXPY=XAXPY -c $< -o $@
 $(O)/qaxpy.o: gaxpy.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGAXPY=QAXPY -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGAXPY=QAXPY -c $< -o $@
 
 $(O)/scopy.o: gcopy.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGCOPY=SCOPY -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGCOPY=SCOPY -c $< -o $@
 $(O)/dcopy.o: gcopy.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGCOPY=DCOPY -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGCOPY=DCOPY -c $< -o $@
 $(O)/xcopy.o: gcopy.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGCOPY=XCOPY -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGCOPY=XCOPY -c $< -o $@
 $(O)/qcopy.o: gcopy.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGCOPY=QCOPY -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGCOPY=QCOPY -c $< -o $@
 
 $(O)/sdot.o: gdot.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGDOT=SDOT -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGDOT=SDOT -c $< -o $@
 $(O)/ddot.o: gdot.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGDOT=DDOT -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGDOT=DDOT -c $< -o $@
 $(O)/xdot.o: gdot.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGDOT=XDOT -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGDOT=XDOT -c $< -o $@
 $(O)/qdot.o: gdot.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGDOT=QDOT -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGDOT=QDOT -c $< -o $@
 
 $(O)/sgbmv.o: ggbmv.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGGBMV=SGBMV -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGGBMV=SGBMV -c $< -o $@
 $(O)/dgbmv.o: ggbmv.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGGBMV=DGBMV -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGGBMV=DGBMV -c $< -o $@
 $(O)/xgbmv.o: ggbmv.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGGBMV=XGBMV -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGGBMV=XGBMV -c $< -o $@
 $(O)/qgbmv.o: ggbmv.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGGBMV=QGBMV -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGGBMV=QGBMV -c $< -o $@
 
 $(O)/sgemm.o: ggemm.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGGEMM=SGEMM -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGGEMM=SGEMM -c $< -o $@
 $(O)/dgemm.o: ggemm.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGGEMM=DGEMM -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGGEMM=DGEMM -c $< -o $@
 $(O)/xgemm.o: ggemm.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGGEMM=XGEMM -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGGEMM=XGEMM -c $< -o $@
 $(O)/qgemm.o: ggemm.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGGEMM=QGEMM -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGGEMM=QGEMM -c $< -o $@
 
 $(O)/sgemmtr.o: ggemmtr.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGGEMMTR=SGEMMTR -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGGEMMTR=SGEMMTR -c $< -o $@
 $(O)/dgemmtr.o: ggemmtr.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGGEMMTR=DGEMMTR -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGGEMMTR=DGEMMTR -c $< -o $@
 $(O)/xgemmtr.o: ggemmtr.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGGEMMTR=XGEMMTR -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGGEMMTR=XGEMMTR -c $< -o $@
 $(O)/qgemmtr.o: ggemmtr.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGGEMMTR=QGEMMTR -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGGEMMTR=QGEMMTR -c $< -o $@
 
 $(O)/sgemv.o: ggemv.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGGEMV=SGEMV -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGGEMV=SGEMV -c $< -o $@
 $(O)/dgemv.o: ggemv.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGGEMV=DGEMV -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGGEMV=DGEMV -c $< -o $@
 $(O)/xgemv.o: ggemv.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGGEMV=XGEMV -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGGEMV=XGEMV -c $< -o $@
 $(O)/qgemv.o: ggemv.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGGEMV=QGEMV -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGGEMV=QGEMV -c $< -o $@
 
 $(O)/sger.o: gger.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGGER=SGER -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGGER=SGER -c $< -o $@
 $(O)/dger.o: gger.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGGER=DGER -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGGER=DGER -c $< -o $@
 $(O)/xger.o: gger.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGGER=XGER -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGGER=XGER -c $< -o $@
 $(O)/qger.o: gger.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGGER=QGER -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGGER=QGER -c $< -o $@
 
 $(O)/snrm2.o: gnrm2.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGNRM2=SNRM2 -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGNRM2=SNRM2 -c $< -o $@
 $(O)/dnrm2.o: gnrm2.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGNRM2=DNRM2 -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGNRM2=DNRM2 -c $< -o $@
 $(O)/xnrm2.o: gnrm2.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGNRM2=XNRM2 -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGNRM2=XNRM2 -c $< -o $@
 $(O)/qnrm2.o: gnrm2.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGNRM2=QNRM2 -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGNRM2=QNRM2 -c $< -o $@
 
 $(O)/sscal.o: gscal.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGSCAL=SSCAL -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGSCAL=SSCAL -c $< -o $@
 $(O)/dscal.o: gscal.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGSCAL=DSCAL -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGSCAL=DSCAL -c $< -o $@
 $(O)/xscal.o: gscal.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGSCAL=XSCAL -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGSCAL=XSCAL -c $< -o $@
 $(O)/qscal.o: gscal.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGSCAL=QSCAL -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGSCAL=QSCAL -c $< -o $@
 
 $(O)/dsdot.o: gfdot.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DBLAS_REAL_KIND2=8 -DGFDOT=DSDOT -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DBLAS_REAL_KIND2=$(REAL64) -DGFDOT=DSDOT -c $< -o $@
 $(O)/xsdot.o: gfdot.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DBLAS_REAL_KIND2=10 -DGFDOT=XSDOT -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DBLAS_REAL_KIND2=$(REAL80) -DGFDOT=XSDOT -c $< -o $@
 $(O)/xddot.o: gfdot.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DBLAS_REAL_KIND2=10 -DGFDOT=XDDOT -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DBLAS_REAL_KIND2=$(REAL80) -DGFDOT=XDDOT -c $< -o $@
 $(O)/qddot.o: gfdot.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DBLAS_REAL_KIND2=16 -DGFDOT=QDDOT -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DBLAS_REAL_KIND2=$(REAL128) -DGFDOT=QDDOT -c $< -o $@
 $(O)/qxdot.o: gfdot.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DBLAS_REAL_KIND2=16 -DGFDOT=QXDOT -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DBLAS_REAL_KIND2=$(REAL128) -DGFDOT=QXDOT -c $< -o $@
 
 $(O)/icamax.o: ihamax.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DIHAMAX=ICAMAX -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DIHAMAX=ICAMAX -c $< -o $@
 $(O)/izamax.o: ihamax.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DIHAMAX=IZAMAX -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DIHAMAX=IZAMAX -c $< -o $@
 $(O)/iwamax.o: ihamax.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DIHAMAX=IWAMAX -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DIHAMAX=IWAMAX -c $< -o $@
 $(O)/iyamax.o: ihamax.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DIHAMAX=IYAMAX -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DIHAMAX=IYAMAX -c $< -o $@
 
 $(O)/icmax2.o: ihmax2.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DIHMAX2=ICMAX2 -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DIHMAX2=ICMAX2 -c $< -o $@
 $(O)/izmax2.o: ihmax2.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DIHMAX2=IZMAX2 -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DIHMAX2=IZMAX2 -c $< -o $@
 $(O)/iwmax2.o: ihmax2.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DIHMAX2=IWMAX2 -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DIHMAX2=IWMAX2 -c $< -o $@
 $(O)/iymax2.o: ihmax2.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DIHMAX2=IYMAX2 -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DIHMAX2=IYMAX2 -c $< -o $@
 
 $(O)/caxpby.o: haxpby.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DHAXPBY=CAXPBY -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHAXPBY=CAXPBY -c $< -o $@
 $(O)/zaxpby.o: haxpby.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DHAXPBY=ZAXPBY -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHAXPBY=ZAXPBY -c $< -o $@
 $(O)/waxpby.o: haxpby.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DHAXPBY=WAXPBY -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHAXPBY=WAXPBY -c $< -o $@
 $(O)/yaxpby.o: haxpby.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DHAXPBY=YAXPBY -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHAXPBY=YAXPBY -c $< -o $@
 
 $(O)/caxpy.o: haxpy.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DHAXPY=CAXPY -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHAXPY=CAXPY -c $< -o $@
 $(O)/zaxpy.o: haxpy.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DHAXPY=ZAXPY -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHAXPY=ZAXPY -c $< -o $@
 $(O)/waxpy.o: haxpy.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DHAXPY=WAXPY -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHAXPY=WAXPY -c $< -o $@
 $(O)/yaxpy.o: haxpy.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DHAXPY=YAXPY -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHAXPY=YAXPY -c $< -o $@
 
 $(O)/scabs1.o: gcabs1.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGCABS1=SCABS1 -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGCABS1=SCABS1 -c $< -o $@
 $(O)/dcabs1.o: gcabs1.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGCABS1=DCABS1 -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGCABS1=DCABS1 -c $< -o $@
 $(O)/xcabs1.o: gcabs1.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGCABS1=XCABS1 -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGCABS1=XCABS1 -c $< -o $@
 $(O)/qcabs1.o: gcabs1.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGCABS1=QCABS1 -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGCABS1=QCABS1 -c $< -o $@
 
 $(O)/scasum.o: ghasum.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGHASUM=SCASUM -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGHASUM=SCASUM -c $< -o $@
 $(O)/dzasum.o: ghasum.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGHASUM=DZASUM -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGHASUM=DZASUM -c $< -o $@
 $(O)/xwasum.o: ghasum.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGHASUM=XWASUM -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGHASUM=XWASUM -c $< -o $@
 $(O)/qyasum.o: ghasum.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGHASUM=QYASUM -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGHASUM=QYASUM -c $< -o $@
 
 $(O)/ccopy.o: hcopy.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DHCOPY=CCOPY -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHCOPY=CCOPY -c $< -o $@
 $(O)/zcopy.o: hcopy.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DHCOPY=ZCOPY -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHCOPY=ZCOPY -c $< -o $@
 $(O)/wcopy.o: hcopy.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DHCOPY=WCOPY -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHCOPY=WCOPY -c $< -o $@
 $(O)/ycopy.o: hcopy.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DHCOPY=YCOPY -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHCOPY=YCOPY -c $< -o $@
 
 $(O)/cdotc.o: hdotc.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DHDOTC=CDOTC -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHDOTC=CDOTC -c $< -o $@
 $(O)/zdotc.o: hdotc.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DHDOTC=ZDOTC -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHDOTC=ZDOTC -c $< -o $@
 $(O)/wdotc.o: hdotc.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DHDOTC=WDOTC -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHDOTC=WDOTC -c $< -o $@
 $(O)/ydotc.o: hdotc.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DHDOTC=YDOTC -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHDOTC=YDOTC -c $< -o $@
 
 $(O)/cdotu.o: hdotu.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DHDOTU=CDOTU -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHDOTU=CDOTU -c $< -o $@
 $(O)/zdotu.o: hdotu.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DHDOTU=ZDOTU -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHDOTU=ZDOTU -c $< -o $@
 $(O)/wdotu.o: hdotu.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DHDOTU=WDOTU -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHDOTU=WDOTU -c $< -o $@
 $(O)/ydotu.o: hdotu.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DHDOTU=YDOTU -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHDOTU=YDOTU -c $< -o $@
 
 $(O)/cgbmv.o: hgbmv.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DHGBMV=CGBMV -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHGBMV=CGBMV -c $< -o $@
 $(O)/zgbmv.o: hgbmv.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DHGBMV=ZGBMV -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHGBMV=ZGBMV -c $< -o $@
 $(O)/wgbmv.o: hgbmv.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DHGBMV=WGBMV -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHGBMV=WGBMV -c $< -o $@
 $(O)/ygbmv.o: hgbmv.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DHGBMV=YGBMV -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHGBMV=YGBMV -c $< -o $@
 
 $(O)/cgemm.o: hgemm.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DHGEMM=CGEMM -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHGEMM=CGEMM -c $< -o $@
 $(O)/zgemm.o: hgemm.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DHGEMM=ZGEMM -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHGEMM=ZGEMM -c $< -o $@
 $(O)/wgemm.o: hgemm.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DHGEMM=WGEMM -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHGEMM=WGEMM -c $< -o $@
 $(O)/ygemm.o: hgemm.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DHGEMM=YGEMM -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHGEMM=YGEMM -c $< -o $@
 
 $(O)/cgemmtr.o: hgemmtr.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DHGEMMTR=CGEMMTR -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHGEMMTR=CGEMMTR -c $< -o $@
 $(O)/zgemmtr.o: hgemmtr.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DHGEMMTR=ZGEMMTR -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHGEMMTR=ZGEMMTR -c $< -o $@
 $(O)/wgemmtr.o: hgemmtr.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DHGEMMTR=WGEMMTR -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHGEMMTR=WGEMMTR -c $< -o $@
 $(O)/ygemmtr.o: hgemmtr.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DHGEMMTR=YGEMMTR -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHGEMMTR=YGEMMTR -c $< -o $@
 
 $(O)/cgemv.o: hgemv.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DHGEMV=CGEMV -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHGEMV=CGEMV -c $< -o $@
 $(O)/zgemv.o: hgemv.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DHGEMV=ZGEMV -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHGEMV=ZGEMV -c $< -o $@
 $(O)/wgemv.o: hgemv.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DHGEMV=WGEMV -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHGEMV=WGEMV -c $< -o $@
 $(O)/ygemv.o: hgemv.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DHGEMV=YGEMV -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHGEMV=YGEMV -c $< -o $@
 
 $(O)/cgerc.o: hgerc.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DHGERC=CGERC -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHGERC=CGERC -c $< -o $@
 $(O)/zgerc.o: hgerc.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DHGERC=ZGERC -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHGERC=ZGERC -c $< -o $@
 $(O)/wgerc.o: hgerc.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DHGERC=WGERC -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHGERC=WGERC -c $< -o $@
 $(O)/ygerc.o: hgerc.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DHGERC=YGERC -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHGERC=YGERC -c $< -o $@
 
 $(O)/cgeru.o: hgeru.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DHGERU=CGERU -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHGERU=CGERU -c $< -o $@
 $(O)/zgeru.o: hgeru.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DHGERU=ZGERU -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHGERU=ZGERU -c $< -o $@
 $(O)/wgeru.o: hgeru.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DHGERU=WGERU -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHGERU=WGERU -c $< -o $@
 $(O)/ygeru.o: hgeru.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DHGERU=YGERU -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHGERU=YGERU -c $< -o $@
 
 $(O)/scnrm2.o: ghnrm2.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DGHNRM2=SCNRM2 -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGHNRM2=SCNRM2 -c $< -o $@
 $(O)/dznrm2.o: ghnrm2.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DGHNRM2=DZNRM2 -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGHNRM2=DZNRM2 -c $< -o $@
 $(O)/xwnrm2.o: ghnrm2.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DGHNRM2=XWNRM2 -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGHNRM2=XWNRM2 -c $< -o $@
 $(O)/qynrm2.o: ghnrm2.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DGHNRM2=QYNRM2 -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGHNRM2=QYNRM2 -c $< -o $@
 
 $(O)/cscal.o: hscal.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DHSCAL=CSCAL -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHSCAL=CSCAL -c $< -o $@
 $(O)/zscal.o: hscal.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DHSCAL=ZSCAL -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHSCAL=ZSCAL -c $< -o $@
 $(O)/wscal.o: hscal.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DHSCAL=WSCAL -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHSCAL=WSCAL -c $< -o $@
 $(O)/yscal.o: hscal.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DHSCAL=YSCAL -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHSCAL=YSCAL -c $< -o $@
 
 $(O)/csscal.o: hgscal.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=4 -DHGSCAL=CSSCAL -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHGSCAL=CSSCAL -c $< -o $@
 $(O)/zdscal.o: hgscal.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=8 -DHGSCAL=ZDSCAL -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHGSCAL=ZDSCAL -c $< -o $@
 $(O)/wxscal.o: hgscal.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=10 -DHGSCAL=WXSCAL -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHGSCAL=WXSCAL -c $< -o $@
 $(O)/yqscal.o: hgscal.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=16 -DHGSCAL=YQSCAL -c $< -o $@
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHGSCAL=YQSCAL -c $< -o $@
 
 clean:
 	@-rm -fv $(L)

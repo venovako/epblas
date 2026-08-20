@@ -219,18 +219,18 @@ $(O)\dlaran.obj: glaran.F90
 $(O)\qlaran.obj: glaran.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGLARAN=QLARAN /c $? /Fo$@
 
-$(O)\slarnd.o: glarnd.F90
+$(O)\slarnd.obj: glarnd.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGLARND=SLARND /c $? /Fo$@
-$(O)\dlarnd.o: glarnd.F90
+$(O)\dlarnd.obj: glarnd.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DGLARND=DLARND /c $? /Fo$@
-$(O)\qlarnd.o: glarnd.F90
+$(O)\qlarnd.obj: glarnd.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGLARND=QLARND /c $? /Fo$@
 
-$(O)\clarnd.o: hlarnd.F90
+$(O)\clarnd.obj: hlarnd.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DHLARND=CLARND /c $? /Fo$@
-$(O)\zlarnd.o: hlarnd.F90
+$(O)\zlarnd.obj: hlarnd.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DHLARND=ZLARND /c $? /Fo$@
-$(O)\ylarnd.o: hlarnd.F90
+$(O)\ylarnd.obj: hlarnd.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DHLARND=YLARND /c $? /Fo$@
 
 $(O)\slamch.obj: glamch.F90

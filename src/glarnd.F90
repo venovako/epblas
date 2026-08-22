@@ -72,6 +72,18 @@
 !  =====================================================================
 FUNCTION GLARND(IDIST, ISEED)
   IMPLICIT NONE
+#ifdef PVN_CR_MATH
+#if ((BLAS_REAL_KIND == 16) && (HAVE_FMA < 11))
+  INTERFACE
+     PURE FUNCTION CR_SQRTQ(X) BIND(C,NAME='cr_sqrtq')
+       IMPLICIT NONE
+       REAL(KIND=BLAS_REAL_KIND), INTENT(IN), VALUE :: X
+       REAL(KIND=BLAS_REAL_KIND) :: CR_SQRTQ
+     END FUNCTION CR_SQRTQ
+  END INTERFACE
+#define SQRT CR_SQRTQ
+#endif
+#endif
 !
 !  -- LAPACK auxiliary routine --
 !  -- LAPACK is a software package provided by Univ. of Tennessee,    --
@@ -88,7 +100,7 @@ FUNCTION GLARND(IDIST, ISEED)
   REAL(KIND=BLAS_REAL_KIND) :: GLARND
 !
 !     .. Parameters ..
-  REAL(KIND=BLAS_REAL_KIND), PARAMETER :: ONE = 1.0, TWO = 2.0
+  REAL(KIND=BLAS_REAL_KIND), PARAMETER :: ZERO = 0.0, ONE = 1.0, TWO = 2.0, MTWO = -2.0
 #ifdef __NVCOMPILER
   REAL(KIND=BLAS_REAL_KIND), PARAMETER :: TWOPI = 6.28318530717958647692528676655900576839
 #endif
@@ -125,7 +137,9 @@ FUNCTION GLARND(IDIST, ISEED)
 #else
      T2 = COSPI(TWO * T2)
 #endif
-     GLARND = SQRT(-TWO * LOG(T1)) * T2
+     GLARND = SQRT(MTWO * LOG(T1)) * T2
+  ELSE ! ERROR
+     GLARND = ZERO
   END IF
 !
 !     End of GLARND

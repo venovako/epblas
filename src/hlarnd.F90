@@ -86,6 +86,13 @@ FUNCTION HLARND(IDIST, ISEED)
 #define SQRT CR_SQRTQ
 #endif
 #endif
+  INTERFACE
+     FUNCTION GLARAN(ISEED)
+       IMPLICIT NONE
+       INTEGER, INTENT(INOUT) :: ISEED(4)
+       REAL(KIND=BLAS_REAL_KIND) :: GLARAN
+     END FUNCTION GLARAN
+  END INTERFACE
 !
 !  -- LAPACK auxiliary routine --
 !  -- LAPACK is a software package provided by Univ. of Tennessee,    --
@@ -109,9 +116,6 @@ FUNCTION HLARND(IDIST, ISEED)
 !     ..
 !     .. Local Scalars ..
   REAL(KIND=BLAS_REAL_KIND) :: T1, T2
-!     ..
-!     .. External Functions ..
-  REAL(KIND=BLAS_REAL_KIND), EXTERNAL :: GLARAN
 !     ..
 !     .. Executable Statements ..
 !

@@ -67,7 +67,9 @@ $(O)\csscal.obj $(O)\zdscal.obj $(O)\yqscal.obj
 F= \
 $(O)\slamch.obj $(O)\dlamch.obj $(O)\qlamch.obj \
 $(O)\sroundup_lwork.obj $(O)\droundup_lwork.obj $(O)\qroundup_lwork.obj \
-$(O)\second.obj $(O)\dsecnd.obj $(O)\qsecnd.obj
+$(O)\second.obj $(O)\dsecnd.obj $(O)\qsecnd.obj \
+$(O)\slaset.obj $(O)\dlaset.obj $(O)\qlaset.obj \
+$(O)\claset.obj $(O)\zlaset.obj $(O)\ylaset.obj
 
 M= \
 $(O)\slaran.obj $(O)\dlaran.obj $(O)\qlaran.obj \
@@ -163,6 +165,24 @@ $(O)\droundup_lwork.obj: groundup_lwork.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DGROUNDUP_LWORK=DROUNDUP_LWORK /c $? /Fo$@
 $(O)\qroundup_lwork.obj: groundup_lwork.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGROUNDUP_LWORK=QROUNDUP_LWORK /c $? /Fo$@
+
+$(O)\slaset.obj: glaset.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL32) /DGLASET=SLASET /c $? /Fo$@
+$(O)\dlaset.obj: glaset.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL64) /DGLASET=DLASET /c $? /Fo$@
+$(O)\xlaset.obj: glaset.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL80) /DGLASET=XLASET /c $? /Fo$@
+$(O)\qlaset.obj: glaset.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL128) /DGLASET=QLASET /c $? /Fo$@
+
+$(O)\claset.obj: hlaset.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL32) /DHLASET=CLASET /c $? /Fo$@
+$(O)\zlaset.obj: hlaset.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL64) /DHLASET=ZLASET /c $? /Fo$@
+$(O)\wlaset.obj: hlaset.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL80) /DHLASET=WLASET /c $? /Fo$@
+$(O)\ylaset.obj: hlaset.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL128) /DHLASET=YLASET /c $? /Fo$@
 
 $(O)\second.obj: gsecnd.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGSECND=SECOND /c $? /Fo$@

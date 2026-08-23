@@ -214,18 +214,22 @@ endif # REAL128
 F=\
 $(O)/slamch.o $(O)/dlamch.o\
 $(O)/sroundup_lwork.o $(O)/droundup_lwork.o\
-$(O)/second.o $(O)/dsecnd.o
+$(O)/second.o $(O)/dsecnd.o\
+$(O)/slaset.o $(O)/dlaset.o\
+$(O)/claset.o $(O)/zlaset.o
 ifeq ($(findstring $(REAL80),$(REAL_KINDS)),$(REAL80))
 F += \
 $(O)/xlamch.o\
 $(O)/xroundup_lwork.o\
-$(O)/xsecnd.o
+$(O)/xsecnd.o\
+$(O)/xlaset.o $(O)/wlaset.o
 endif # REAL80
 ifeq ($(findstring $(REAL128),$(REAL_KINDS)),$(REAL128))
 F += \
 $(O)/qlamch.o\
 $(O)/qroundup_lwork.o\
-$(O)/qsecnd.o
+$(O)/qsecnd.o\
+$(O)/qlaset.o $(O)/ylaset.o
 endif # REAL128
 
 M=\
@@ -380,6 +384,24 @@ $(O)/xsecnd.o: gsecnd.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGSECND=XSECND -c $< -o $@
 $(O)/qsecnd.o: gsecnd.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGSECND=QSECND -c $< -o $@
+
+$(O)/slaset.o: glaset.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGLASET=SLASET -c $< -o $@
+$(O)/dlaset.o: glaset.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGLASET=DLASET -c $< -o $@
+$(O)/xlaset.o: glaset.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGLASET=XLASET -c $< -o $@
+$(O)/qlaset.o: glaset.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGLASET=QLASET -c $< -o $@
+
+$(O)/claset.o: hlaset.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHLASET=CLASET -c $< -o $@
+$(O)/zlaset.o: hlaset.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHLASET=ZLASET -c $< -o $@
+$(O)/wlaset.o: hlaset.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHLASET=WLASET -c $< -o $@
+$(O)/ylaset.o: hlaset.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHLASET=YLASET -c $< -o $@
 
 $(O)/lsame.o: lsame.F90 $(MK)
 	$(FC) $(FCFLAGS) -c $< -o $@

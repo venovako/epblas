@@ -68,6 +68,8 @@ F= \
 $(O)\slamch.obj $(O)\dlamch.obj $(O)\qlamch.obj \
 $(O)\sroundup_lwork.obj $(O)\droundup_lwork.obj $(O)\qroundup_lwork.obj \
 $(O)\second.obj $(O)\dsecnd.obj $(O)\qsecnd.obj \
+$(O)\slacpy.obj $(O)\dlacpy.obj $(O)\qlacpy.obj \
+$(O)\clacpy.obj $(O)\zlacpy.obj $(O)\ylacpy.obj \
 $(O)\slaset.obj $(O)\dlaset.obj $(O)\qlaset.obj \
 $(O)\claset.obj $(O)\zlaset.obj $(O)\ylaset.obj
 
@@ -97,7 +99,7 @@ dirs:
 ..\epblas_$(INT)$(IEEE).lib: $(G) $(H) $(O)\lsame.obj $(O)\xerbla.obj $(O)\xerbla_array.obj
 	$(AR) $(ARFLAGS) /OUT:$@ $**
 
-..\eplapack_$(INT)$(IEEE).lib: $(F)
+..\eplapack_$(INT)$(IEEE).lib: $(F) $(O)\lsamen.obj
 	$(AR) $(ARFLAGS) /OUT:$@ $**
 
 ..\eptmglib_$(INT)$(IEEE).lib: $(M)
@@ -152,6 +154,9 @@ $(O)\zlarnd.obj: hlarnd.F90
 $(O)\ylarnd.obj: hlarnd.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DHLARND=YLARND /DGLARAN=QLARAN /c $? /Fo$@
 
+$(O)\lsamen.obj: lsamen.F90
+	$(FC) $(FCFLAGS) /c $? /Fo$@
+
 $(O)\slamch.obj: glamch.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGLAMCH=SLAMCH /c $? /Fo$@
 $(O)\dlamch.obj: glamch.F90
@@ -165,6 +170,24 @@ $(O)\droundup_lwork.obj: groundup_lwork.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DGROUNDUP_LWORK=DROUNDUP_LWORK /c $? /Fo$@
 $(O)\qroundup_lwork.obj: groundup_lwork.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGROUNDUP_LWORK=QROUNDUP_LWORK /c $? /Fo$@
+
+$(O)\slacpy.obj: glacpy.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL32) /DGLACPY=SLACPY /c $? /Fo$@
+$(O)\dlacpy.obj: glacpy.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL64) /DGLACPY=DLACPY /c $? /Fo$@
+$(O)\xlacpy.obj: glacpy.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL80) /DGLACPY=XLACPY /c $? /Fo$@
+$(O)\qlacpy.obj: glacpy.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL128) /DGLACPY=QLACPY /c $? /Fo$@
+
+$(O)\clacpy.obj: hlacpy.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL32) /DHLACPY=CLACPY /c $? /Fo$@
+$(O)\zlacpy.obj: hlacpy.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL64) /DHLACPY=ZLACPY /c $? /Fo$@
+$(O)\wlacpy.obj: hlacpy.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL80) /DHLACPY=WLACPY /c $? /Fo$@
+$(O)\ylacpy.obj: hlacpy.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL128) /DHLACPY=YLACPY /c $? /Fo$@
 
 $(O)\slaset.obj: glaset.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL32) /DGLASET=SLASET /c $? /Fo$@

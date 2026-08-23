@@ -215,6 +215,8 @@ F=\
 $(O)/slamch.o $(O)/dlamch.o\
 $(O)/sroundup_lwork.o $(O)/droundup_lwork.o\
 $(O)/second.o $(O)/dsecnd.o\
+$(O)/slacpy.o $(O)/dlacpy.o\
+$(O)/clacpy.o $(O)/zlacpy.o\
 $(O)/slaset.o $(O)/dlaset.o\
 $(O)/claset.o $(O)/zlaset.o
 ifeq ($(findstring $(REAL80),$(REAL_KINDS)),$(REAL80))
@@ -222,6 +224,7 @@ F += \
 $(O)/xlamch.o\
 $(O)/xroundup_lwork.o\
 $(O)/xsecnd.o\
+$(O)/xlacpy.o $(O)/wlacpy.o\
 $(O)/xlaset.o $(O)/wlaset.o
 endif # REAL80
 ifeq ($(findstring $(REAL128),$(REAL_KINDS)),$(REAL128))
@@ -229,6 +232,7 @@ F += \
 $(O)/qlamch.o\
 $(O)/qroundup_lwork.o\
 $(O)/qsecnd.o\
+$(O)/qlacpy.o $(O)/ylacpy.o\
 $(O)/qlaset.o $(O)/ylaset.o
 endif # REAL128
 
@@ -289,7 +293,7 @@ dirs:
 ../libepblas_$(INT)$(IEEE).a: $(G) $(H) $(O)/lsame.o $(O)/xerbla.o $(O)/xerbla_array.o
 	$(AR) $(ARFLAGS) $@ $^
 
-../libeplapack_$(INT)$(IEEE).a: $(F)
+../libeplapack_$(INT)$(IEEE).a: $(F) $(O)/lsamen.o
 	$(AR) $(ARFLAGS) $@ $^
 
 ../libeptmglib_$(INT)$(IEEE).a: $(M)
@@ -358,6 +362,9 @@ $(O)/wlarnd.o: hlarnd.F90 $(MK)
 $(O)/ylarnd.o: hlarnd.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHLARND=YLARND -DGLARAN=QLARAN -c $< -o $@
 
+$(O)/lsamen.o: lsamen.F90 $(MK)
+	$(FC) $(FCFLAGS) -c $< -o $@
+
 $(O)/slamch.o: glamch.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGLAMCH=SLAMCH -c $< -o $@
 $(O)/dlamch.o: glamch.F90 $(MK)
@@ -384,6 +391,24 @@ $(O)/xsecnd.o: gsecnd.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGSECND=XSECND -c $< -o $@
 $(O)/qsecnd.o: gsecnd.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGSECND=QSECND -c $< -o $@
+
+$(O)/slacpy.o: glacpy.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGLACPY=SLACPY -c $< -o $@
+$(O)/dlacpy.o: glacpy.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGLACPY=DLACPY -c $< -o $@
+$(O)/xlacpy.o: glacpy.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGLACPY=XLACPY -c $< -o $@
+$(O)/qlacpy.o: glacpy.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGLACPY=QLACPY -c $< -o $@
+
+$(O)/clacpy.o: hlacpy.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHLACPY=CLACPY -c $< -o $@
+$(O)/zlacpy.o: hlacpy.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHLACPY=ZLACPY -c $< -o $@
+$(O)/wlacpy.o: hlacpy.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHLACPY=WLACPY -c $< -o $@
+$(O)/ylacpy.o: hlacpy.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHLACPY=YLACPY -c $< -o $@
 
 $(O)/slaset.o: glaset.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGLASET=SLASET -c $< -o $@

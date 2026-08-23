@@ -172,40 +172,32 @@ $(O)\qroundup_lwork.obj: groundup_lwork.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGROUNDUP_LWORK=QROUNDUP_LWORK /c $? /Fo$@
 
 $(O)\slacpy.obj: glacpy.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL32) /DGLACPY=SLACPY /c $? /Fo$@
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGLACPY=SLACPY /c $? /Fo$@
 $(O)\dlacpy.obj: glacpy.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL64) /DGLACPY=DLACPY /c $? /Fo$@
-$(O)\xlacpy.obj: glacpy.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL80) /DGLACPY=XLACPY /c $? /Fo$@
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DGLACPY=DLACPY /c $? /Fo$@
 $(O)\qlacpy.obj: glacpy.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL128) /DGLACPY=QLACPY /c $? /Fo$@
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGLACPY=QLACPY /c $? /Fo$@
 
 $(O)\clacpy.obj: hlacpy.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL32) /DHLACPY=CLACPY /c $? /Fo$@
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DHLACPY=CLACPY /c $? /Fo$@
 $(O)\zlacpy.obj: hlacpy.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL64) /DHLACPY=ZLACPY /c $? /Fo$@
-$(O)\wlacpy.obj: hlacpy.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL80) /DHLACPY=WLACPY /c $? /Fo$@
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DHLACPY=ZLACPY /c $? /Fo$@
 $(O)\ylacpy.obj: hlacpy.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL128) /DHLACPY=YLACPY /c $? /Fo$@
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DHLACPY=YLACPY /c $? /Fo$@
 
 $(O)\slaset.obj: glaset.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL32) /DGLASET=SLASET /c $? /Fo$@
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGLASET=SLASET /c $? /Fo$@
 $(O)\dlaset.obj: glaset.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL64) /DGLASET=DLASET /c $? /Fo$@
-$(O)\xlaset.obj: glaset.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL80) /DGLASET=XLASET /c $? /Fo$@
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DGLASET=DLASET /c $? /Fo$@
 $(O)\qlaset.obj: glaset.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL128) /DGLASET=QLASET /c $? /Fo$@
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGLASET=QLASET /c $? /Fo$@
 
 $(O)\claset.obj: hlaset.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL32) /DHLASET=CLASET /c $? /Fo$@
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DHLASET=CLASET /c $? /Fo$@
 $(O)\zlaset.obj: hlaset.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL64) /DHLASET=ZLASET /c $? /Fo$@
-$(O)\wlaset.obj: hlaset.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL80) /DHLASET=WLASET /c $? /Fo$@
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DHLASET=ZLASET /c $? /Fo$@
 $(O)\ylaset.obj: hlaset.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=$(REAL128) /DHLASET=YLASET /c $? /Fo$@
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DHLASET=YLASET /c $? /Fo$@
 
 $(O)\second.obj: gsecnd.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGSECND=SECOND /c $? /Fo$@

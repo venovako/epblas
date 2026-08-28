@@ -71,7 +71,10 @@ $(O)\second.obj $(O)\dsecnd.obj $(O)\qsecnd.obj \
 $(O)\slacpy.obj $(O)\dlacpy.obj $(O)\qlacpy.obj \
 $(O)\clacpy.obj $(O)\zlacpy.obj $(O)\ylacpy.obj \
 $(O)\slaset.obj $(O)\dlaset.obj $(O)\qlaset.obj \
-$(O)\claset.obj $(O)\zlaset.obj $(O)\ylaset.obj
+$(O)\claset.obj $(O)\zlaset.obj $(O)\ylaset.obj \
+$(O)\slaruv.obj $(O)\dlaruv.obj $(O)\qlaruv.obj \
+$(O)\slarnv.obj $(O)\dlarnv.obj $(O)\qlarnv.obj \
+$(O)\clarnv.obj $(O)\zlarnv.obj $(O)\ylarnv.obj
 
 M= \
 $(O)\slaran.obj $(O)\dlaran.obj $(O)\qlaran.obj \
@@ -79,8 +82,8 @@ $(O)\slarnd.obj $(O)\dlarnd.obj $(O)\qlarnd.obj \
 $(O)\clarnd.obj $(O)\zlarnd.obj $(O)\ylarnd.obj
 
 E= \
-$(T)\tsecond.exe $(T)\tdsecnd.exe $(T)\tqsecnd.exe \
 $(T)\tslamch.exe $(T)\tdlamch.exe $(T)\tqlamch.exe \
+$(T)\tsecond.exe $(T)\tdsecnd.exe $(T)\tqsecnd.exe \
 $(T)\tsnrm2.exe $(T)\tdnrm2.exe $(T)\tqnrm2.exe \
 $(T)\ticmax2.exe $(T)\tizmax2.exe $(T)\tiymax2.exe
 
@@ -105,19 +108,19 @@ dirs:
 ..\eptmglib_$(INT)$(IEEE).lib: $(M)
 	$(AR) $(ARFLAGS) /OUT:$@ $**
 
-$(T)\tsecond.exe: tgsecnd.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGSECND=SECOND $? /Fe$@ $(LDFLAGS)
-$(T)\tdsecnd.exe: tgsecnd.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DGSECND=DSECND $? /Fe$@ $(LDFLAGS)
-$(T)\tqsecnd.exe: tgsecnd.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGSECND=QSECND $? /Fe$@ $(LDFLAGS)
-
 $(T)\tslamch.exe: tglamch.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGLAMCH=SLAMCH $? /Fe$@ $(LDFLAGS)
 $(T)\tdlamch.exe: tglamch.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DGLAMCH=DLAMCH $? /Fe$@ $(LDFLAGS)
 $(T)\tqlamch.exe: tglamch.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGLAMCH=QLAMCH $? /Fe$@ $(LDFLAGS)
+
+$(T)\tsecond.exe: tgsecnd.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGSECND=SECOND $? /Fe$@ $(LDFLAGS)
+$(T)\tdsecnd.exe: tgsecnd.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DGSECND=DSECND $? /Fe$@ $(LDFLAGS)
+$(T)\tqsecnd.exe: tgsecnd.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGSECND=QSECND $? /Fe$@ $(LDFLAGS)
 
 $(T)\tsnrm2.exe: tgnrm2.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGNRM2=SNRM2 $? /Fe$@ $(LDFLAGS)
@@ -164,6 +167,13 @@ $(O)\dlamch.obj: glamch.F90
 $(O)\qlamch.obj: glamch.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGLAMCH=QLAMCH /c $? /Fo$@
 
+$(O)\second.obj: gsecnd.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGSECND=SECOND /c $? /Fo$@
+$(O)\dsecnd.obj: gsecnd.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DGSECND=DSECND /c $? /Fo$@
+$(O)\qsecnd.obj: gsecnd.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGSECND=QSECND /c $? /Fo$@
+
 $(O)\sroundup_lwork.obj: groundup_lwork.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGROUNDUP_LWORK=SROUNDUP_LWORK /c $? /Fo$@
 $(O)\droundup_lwork.obj: groundup_lwork.F90
@@ -199,12 +209,26 @@ $(O)\zlaset.obj: hlaset.F90
 $(O)\ylaset.obj: hlaset.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DHLASET=YLASET /c $? /Fo$@
 
-$(O)\second.obj: gsecnd.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGSECND=SECOND /c $? /Fo$@
-$(O)\dsecnd.obj: gsecnd.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DGSECND=DSECND /c $? /Fo$@
-$(O)\qsecnd.obj: gsecnd.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGSECND=QSECND /c $? /Fo$@
+$(O)\slaruv.obj: glaruv.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGLARUV=SLARUV /c $? /Fo$@
+$(O)\dlaruv.obj: glaruv.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DGLARUV=DLARUV /c $? /Fo$@
+$(O)\qlaruv.obj: glaruv.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGLARUV=QLARUV /c $? /Fo$@
+
+$(O)\slarnv.obj: glarnv.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGLARNV=SLARNV /DGLARUV=SLARUV /c $? /Fo$@
+$(O)\dlarnv.obj: glarnv.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DGLARNV=DLARNV /DGLARUV=DLARUV /c $? /Fo$@
+$(O)\qlarnv.obj: glarnv.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGLARNV=QLARNV /DGLARUV=QLARUV /c $? /Fo$@
+
+$(O)\clarnv.obj: hlarnv.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DHLARNV=CLARNV /DGLARUV=SLARUV /c $? /Fo$@
+$(O)\zlarnv.obj: hlarnv.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DHLARNV=ZLARNV /DGLARUV=DLARUV /c $? /Fo$@
+$(O)\ylarnv.obj: hlarnv.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DHLARNV=YLARNV /DGLARUV=QLARUV /c $? /Fo$@
 
 $(O)\lsame.obj: lsame.F90
 	$(FC) $(FCFLAGS) /c $? /Fo$@

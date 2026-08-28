@@ -218,14 +218,19 @@ $(O)/second.o $(O)/dsecnd.o\
 $(O)/slacpy.o $(O)/dlacpy.o\
 $(O)/clacpy.o $(O)/zlacpy.o\
 $(O)/slaset.o $(O)/dlaset.o\
-$(O)/claset.o $(O)/zlaset.o
+$(O)/claset.o $(O)/zlaset.o\
+$(O)/slaruv.o $(O)/dlaruv.o\
+$(O)/slarnv.o $(O)/dlarnv.o\
+$(O)/clarnv.o $(O)/zlarnv.o
 ifeq ($(findstring $(REAL80),$(REAL_KINDS)),$(REAL80))
 F += \
 $(O)/xlamch.o\
 $(O)/xroundup_lwork.o\
 $(O)/xsecnd.o\
 $(O)/xlacpy.o $(O)/wlacpy.o\
-$(O)/xlaset.o $(O)/wlaset.o
+$(O)/xlaset.o $(O)/wlaset.o\
+$(O)/xlaruv.o\
+$(O)/xlarnv.o $(O)/wlarnv.o
 endif # REAL80
 ifeq ($(findstring $(REAL128),$(REAL_KINDS)),$(REAL128))
 F += \
@@ -233,7 +238,9 @@ $(O)/qlamch.o\
 $(O)/qroundup_lwork.o\
 $(O)/qsecnd.o\
 $(O)/qlacpy.o $(O)/ylacpy.o\
-$(O)/qlaset.o $(O)/ylaset.o
+$(O)/qlaset.o $(O)/ylaset.o\
+$(O)/qlaruv.o\
+$(O)/qlarnv.o $(O)/ylarnv.o
 endif # REAL128
 
 M=\
@@ -254,8 +261,8 @@ $(O)/ylarnd.o
 endif # REAL128
 
 E=\
-$(T)/tsecond.exe $(T)/tdsecnd.exe\
 $(T)/tslamch.exe $(T)/tdlamch.exe\
+$(T)/tsecond.exe $(T)/tdsecnd.exe\
 $(T)/tsnrm2.exe $(T)/tdnrm2.exe\
 $(T)/ticmax2.exe $(T)/tizmax2.exe
 ifeq ($(findstring $(REAL80),$(REAL_KINDS)),$(REAL80))
@@ -299,15 +306,6 @@ dirs:
 ../libeptmglib_$(INT)$(IEEE).a: $(M)
 	$(AR) $(ARFLAGS) $@ $^
 
-$(T)/tsecond.exe: tgsecnd.F90 $(L) $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGSECND=SECOND $< -o $@ $(LDFLAGS)
-$(T)/tdsecnd.exe: tgsecnd.F90 $(L) $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGSECND=DSECND $< -o $@ $(LDFLAGS)
-$(T)/txsecnd.exe: tgsecnd.F90 $(L) $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGSECND=XSECND $< -o $@ $(LDFLAGS)
-$(T)/tqsecnd.exe: tgsecnd.F90 $(L) $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGSECND=QSECND $< -o $@ $(LDFLAGS)
-
 $(T)/tslamch.exe: tglamch.F90 $(L) $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGLAMCH=SLAMCH $< -o $@ $(LDFLAGS)
 $(T)/tdlamch.exe: tglamch.F90 $(L) $(MK)
@@ -316,6 +314,15 @@ $(T)/txlamch.exe: tglamch.F90 $(L) $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGLAMCH=XLAMCH $< -o $@ $(LDFLAGS)
 $(T)/tqlamch.exe: tglamch.F90 $(L) $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGLAMCH=QLAMCH $< -o $@ $(LDFLAGS)
+
+$(T)/tsecond.exe: tgsecnd.F90 $(L) $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGSECND=SECOND $< -o $@ $(LDFLAGS)
+$(T)/tdsecnd.exe: tgsecnd.F90 $(L) $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGSECND=DSECND $< -o $@ $(LDFLAGS)
+$(T)/txsecnd.exe: tgsecnd.F90 $(L) $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGSECND=XSECND $< -o $@ $(LDFLAGS)
+$(T)/tqsecnd.exe: tgsecnd.F90 $(L) $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGSECND=QSECND $< -o $@ $(LDFLAGS)
 
 $(T)/tsnrm2.exe: tgnrm2.F90 $(L) $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGNRM2=SNRM2 $< -o $@ $(LDFLAGS)
@@ -374,15 +381,6 @@ $(O)/xlamch.o: glamch.F90 $(MK)
 $(O)/qlamch.o: glamch.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGLAMCH=QLAMCH -c $< -o $@
 
-$(O)/sroundup_lwork.o: groundup_lwork.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGROUNDUP_LWORK=SROUNDUP_LWORK -c $< -o $@
-$(O)/droundup_lwork.o: groundup_lwork.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGROUNDUP_LWORK=DROUNDUP_LWORK -c $< -o $@
-$(O)/xroundup_lwork.o: groundup_lwork.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGROUNDUP_LWORK=XROUNDUP_LWORK -c $< -o $@
-$(O)/qroundup_lwork.o: groundup_lwork.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGROUNDUP_LWORK=QROUNDUP_LWORK -c $< -o $@
-
 $(O)/second.o: gsecnd.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGSECND=SECOND -c $< -o $@
 $(O)/dsecnd.o: gsecnd.F90 $(MK)
@@ -391,6 +389,15 @@ $(O)/xsecnd.o: gsecnd.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGSECND=XSECND -c $< -o $@
 $(O)/qsecnd.o: gsecnd.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGSECND=QSECND -c $< -o $@
+
+$(O)/sroundup_lwork.o: groundup_lwork.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGROUNDUP_LWORK=SROUNDUP_LWORK -c $< -o $@
+$(O)/droundup_lwork.o: groundup_lwork.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGROUNDUP_LWORK=DROUNDUP_LWORK -c $< -o $@
+$(O)/xroundup_lwork.o: groundup_lwork.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGROUNDUP_LWORK=XROUNDUP_LWORK -c $< -o $@
+$(O)/qroundup_lwork.o: groundup_lwork.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGROUNDUP_LWORK=QROUNDUP_LWORK -c $< -o $@
 
 $(O)/slacpy.o: glacpy.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGLACPY=SLACPY -c $< -o $@
@@ -427,6 +434,33 @@ $(O)/wlaset.o: hlaset.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHLASET=WLASET -c $< -o $@
 $(O)/ylaset.o: hlaset.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHLASET=YLASET -c $< -o $@
+
+$(O)/slaruv.o: glaruv.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGLARUV=SLARUV -c $< -o $@
+$(O)/dlaruv.o: glaruv.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGLARUV=DLARUV -c $< -o $@
+$(O)/xlaruv.o: glaruv.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGLARUV=XLARUV -c $< -o $@
+$(O)/qlaruv.o: glaruv.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGLARUV=QLARUV -c $< -o $@
+
+$(O)/slarnv.o: glarnv.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGLARNV=SLARNV -DGLARUV=SLARUV -c $< -o $@
+$(O)/dlarnv.o: glarnv.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGLARNV=DLARNV -DGLARUV=DLARUV -c $< -o $@
+$(O)/xlarnv.o: glarnv.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGLARNV=XLARNV -DGLARUV=XLARUV -c $< -o $@
+$(O)/qlarnv.o: glarnv.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGLARNV=QLARNV -DGLARUV=QLARUV -c $< -o $@
+
+$(O)/clarnv.o: hlarnv.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHLARNV=CLARNV -DGLARUV=SLARUV -c $< -o $@
+$(O)/zlarnv.o: hlarnv.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHLARNV=ZLARNV -DGLARUV=DLARUV -c $< -o $@
+$(O)/wlarnv.o: hlarnv.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHLARNV=WLARNV -DGLARUV=XLARUV -c $< -o $@
+$(O)/ylarnv.o: hlarnv.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHLARNV=YLARNV -DGLARUV=QLARUV -c $< -o $@
 
 $(O)/lsame.o: lsame.F90 $(MK)
 	$(FC) $(FCFLAGS) -c $< -o $@

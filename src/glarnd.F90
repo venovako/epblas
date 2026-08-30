@@ -108,7 +108,7 @@ FUNCTION GLARND(IDIST, ISEED)
 !
 !     .. Parameters ..
   REAL(KIND=BLAS_REAL_KIND), PARAMETER :: ZERO = 0.0, ONE = 1.0, TWO = 2.0, MTWO = -2.0
-#ifdef __NVCOMPILER
+#if (defined(__NVCOMPILER) || (defined(__GNUC__) && (__GNUC__ < 16)))
   REAL(KIND=BLAS_REAL_KIND), PARAMETER :: TWOPI = 6.28318530717958647692528676655900576839
 #endif
 !     ..
@@ -136,7 +136,7 @@ FUNCTION GLARND(IDIST, ISEED)
 !        normal (0,1)
 !
      T2 = GLARAN(ISEED)
-#ifdef __NVCOMPILER
+#if (defined(__NVCOMPILER) || (defined(__GNUC__) && (__GNUC__ < 16)))
      T2 = COS(TWOPI * T2)
 #else
      T2 = COSPI(TWO * T2)

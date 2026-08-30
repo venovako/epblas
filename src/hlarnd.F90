@@ -110,7 +110,7 @@ FUNCTION HLARND(IDIST, ISEED)
 !
 !     .. Parameters ..
   REAL(KIND=BLAS_REAL_KIND), PARAMETER :: ZERO = 0.0, ONE = 1.0, TWO = 2.0, MTWO = -2.0
-#ifdef __NVCOMPILER
+#if (defined(__NVCOMPILER) || (defined(__GNUC__) && (__GNUC__ < 16)))
   REAL(KIND=BLAS_REAL_KIND), PARAMETER :: TWOPI = 6.28318530717958647692528676655900576839
 #endif
 !     ..
@@ -140,7 +140,7 @@ FUNCTION HLARND(IDIST, ISEED)
 !        real and imaginary parts each normal (0,1)
 !
      T1 = SQRT(MTWO * LOG(T1))
-#ifdef __NVCOMPILER
+#if (defined(__NVCOMPILER) || (defined(__GNUC__) && (__GNUC__ < 16)))
      T2 = TWOPI * T2
      HLARND = CMPLX(T1 * COS(T2), T1 * SIN(T2), BLAS_REAL_KIND)
 #else
@@ -152,7 +152,7 @@ FUNCTION HLARND(IDIST, ISEED)
 !        uniform distribution on the unit disc abs(z) <= 1
 !
      T1 = SQRT(T1)
-#ifdef __NVCOMPILER
+#if (defined(__NVCOMPILER) || (defined(__GNUC__) && (__GNUC__ < 16)))
      T2 = TWOPI * T2
      HLARND = CMPLX(T1 * COS(T2), T1 * SIN(T2), BLAS_REAL_KIND)
 #else
@@ -163,7 +163,7 @@ FUNCTION HLARND(IDIST, ISEED)
 !
 !        uniform distribution on the unit circle abs(z) = 1
 !
-#ifdef __NVCOMPILER
+#if (defined(__NVCOMPILER) || (defined(__GNUC__) && (__GNUC__ < 16)))
      T2 = TWOPI * T2
      HLARND = CMPLX(COS(T2), SIN(T2), BLAS_REAL_KIND)
 #else

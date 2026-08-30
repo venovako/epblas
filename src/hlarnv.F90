@@ -134,7 +134,7 @@ PURE SUBROUTINE HLARNV(IDIST, ISEED, N, X)
 !     .. Parameters ..
   REAL(KIND=BLAS_REAL_KIND), PARAMETER :: ZERO = 0.0, ONE = 1.0, TWO = 2.0, MTWO = -2.0
   INTEGER, PARAMETER :: LV = 128
-#ifdef __NVCOMPILER
+#if (defined(__NVCOMPILER) || (defined(__GNUC__) && (__GNUC__ < 16)))
   REAL(KIND=BLAS_REAL_KIND), PARAMETER :: TWOPI = 6.28318530717958647692528676655900576839
 #endif
 !     ..
@@ -142,7 +142,7 @@ PURE SUBROUTINE HLARNV(IDIST, ISEED, N, X)
   INTEGER :: I, IL, IV
 !     ..
 !     .. Local Arrays ..
-  REAL(KIND=BLAS_REAL_KIND) :: U(LV)
+  REAL(KIND=BLAS_REAL_KIND) :: U(LV), T
 !     ..
 !     .. Executable Statements ..
 !
@@ -173,12 +173,15 @@ PURE SUBROUTINE HLARNV(IDIST, ISEED, N, X)
 !           Convert generated numbers to normal (0,1) distribution
 !
         DO I = 1, IL
-#ifdef __NVCOMPILER
-           X(IV+I-1) = CMPLX(COS(TWOPI * U(2*I)), SIN(TWOPI * U(2*I)), BLAS_REAL_KIND)
+#if (defined(__NVCOMPILER) || (defined(__GNUC__) && (__GNUC__ < 16)))
+           T = TWOPI * U(2*I)
+           X(IV+I-1) = CMPLX(COS(T), SIN(T), BLAS_REAL_KIND)
 #else
-           X(IV+I-1) = CMPLX(COSPI(TWO * U(2*I)), SINPI(TWO * U(2*I)), BLAS_REAL_KIND)
+           T = TWO * U(2*I)
+           X(IV+I-1) = CMPLX(COSPI(T), SINPI(T), BLAS_REAL_KIND)
 #endif
-           X(IV+I-1) = SQRT(MTWO * LOG(U(2*I-1))) * X(IV+I-1)
+           T = SQRT(MTWO * LOG(U(2*I-1)))
+           X(IV+I-1) = T * X(IV+I-1)
         END DO
      ELSE IF (IDIST .EQ. 4) THEN
 !
@@ -186,12 +189,15 @@ PURE SUBROUTINE HLARNV(IDIST, ISEED, N, X)
 !           distributed on the unit disk
 !
         DO I = 1, IL
-#ifdef __NVCOMPILER
-           X(IV+I-1) = CMPLX(COS(TWOPI * U(2*I)), SIN(TWOPI * U(2*I)), BLAS_REAL_KIND)
+#if (defined(__NVCOMPILER) || (defined(__GNUC__) && (__GNUC__ < 16)))
+           T = TWOPI * U(2*I)
+           X(IV+I-1) = CMPLX(COS(T), SIN(T), BLAS_REAL_KIND)
 #else
-           X(IV+I-1) = CMPLX(COSPI(TWO * U(2*I)), SINPI(TWO * U(2*I)), BLAS_REAL_KIND)
+           T = TWO * U(2*I)
+           X(IV+I-1) = CMPLX(COSPI(T), SINPI(T), BLAS_REAL_KIND)
 #endif
-           X(IV+I-1) = SQRT(U(2*I-1)) * X(IV+I-1)
+           T = SQRT(U(2*I-1))
+           X(IV+I-1) = T * X(IV+I-1)
         END DO
      ELSE IF (IDIST .EQ. 5) THEN
 !
@@ -199,10 +205,12 @@ PURE SUBROUTINE HLARNV(IDIST, ISEED, N, X)
 !           distributed on the unit circle
 !
         DO I = 1, IL
-#ifdef __NVCOMPILER
-           X(IV+I-1) = CMPLX(COS(TWOPI * U(2*I)), SIN(TWOPI * U(2*I)), BLAS_REAL_KIND)
+#if (defined(__NVCOMPILER) || (defined(__GNUC__) && (__GNUC__ < 16)))
+           T = TWOPI * U(2*I)
+           X(IV+I-1) = CMPLX(COS(T), SIN(T), BLAS_REAL_KIND)
 #else
-           X(IV+I-1) = CMPLX(COSPI(TWO * U(2*I)), SINPI(TWO * U(2*I)), BLAS_REAL_KIND)
+           T = TWO * U(2*I)
+           X(IV+I-1) = CMPLX(COSPI(T), SINPI(T), BLAS_REAL_KIND)
 #endif
         END DO
      ELSE ! ERROR

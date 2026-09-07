@@ -1,7 +1,9 @@
 # epblas
 Extra Precisions BLAS etc.
 
-This is an extension of [LAPACK](https://github.com/Reference-LAPACK/lapack) to extra precisions, i.e., beyond the single and double ones.
+(... work in progress ...)
+
+This is an extension of parts of [LAPACK](https://github.com/Reference-LAPACK/lapack) to extra precisions, i.e., beyond the single and double ones.
 
 Currently, the following parts are in progress of being converted, alongside some additions:
 * INSTALL (partially),
@@ -51,5 +53,3 @@ Otherwise, the outputs are:
 * `libeptmglib_$(INT)$(IEEE).a`.
 
 Several testing executables are also generated in the `exe_$(INT)$(IEEE)` subdirectory.
-
-(... work in progress ...)

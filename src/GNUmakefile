@@ -111,6 +111,7 @@ $(O)/sgemv.o $(O)/dgemv.o\
 $(O)/sger.o $(O)/dger.o\
 $(O)/snrm2.o $(O)/dnrm2.o\
 $(O)/sscal.o $(O)/dscal.o\
+$(O)/stbmv.o $(O)/dtbmv.o\
 $(O)/dsdot.o
 ifeq ($(findstring $(REAL80),$(REAL_KINDS)),$(REAL80))
 G += \
@@ -127,6 +128,7 @@ $(O)/xgemv.o\
 $(O)/xger.o\
 $(O)/xnrm2.o\
 $(O)/xscal.o\
+$(O)/xtbmv.o\
 $(O)/xsdot.o\
 $(O)/xddot.o\
 $(O)/qxdot.o
@@ -146,6 +148,7 @@ $(O)/qgemv.o\
 $(O)/qger.o\
 $(O)/qnrm2.o\
 $(O)/qscal.o\
+$(O)/qtbmv.o\
 $(O)/qddot.o
 endif # REAL128
 
@@ -165,6 +168,7 @@ $(O)/cgemmtr.o $(O)/zgemmtr.o\
 $(O)/cgemv.o $(O)/zgemv.o\
 $(O)/cgerc.o $(O)/zgerc.o\
 $(O)/cgeru.o $(O)/zgeru.o\
+$(O)/chbmv.o $(O)/zhbmv.o\
 $(O)/scnrm2.o $(O)/dznrm2.o\
 $(O)/cscal.o $(O)/zscal.o\
 $(O)/csscal.o $(O)/zdscal.o
@@ -185,6 +189,7 @@ $(O)/wgemmtr.o\
 $(O)/wgemv.o\
 $(O)/wgerc.o\
 $(O)/wgeru.o\
+$(O)/whbmv.o\
 $(O)/xwnrm2.o\
 $(O)/wscal.o\
 $(O)/wxscal.o
@@ -206,6 +211,7 @@ $(O)/ygemmtr.o\
 $(O)/ygemv.o\
 $(O)/ygerc.o\
 $(O)/ygeru.o\
+$(O)/yhbmv.o\
 $(O)/qynrm2.o\
 $(O)/yscal.o\
 $(O)/yqscal.o
@@ -586,6 +592,15 @@ $(O)/xscal.o: gscal.F90 $(MK)
 $(O)/qscal.o: gscal.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGSCAL=QSCAL -c $< -o $@
 
+$(O)/stbmv.o: gtbmv.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGTBMV=STBMV -c $< -o $@
+$(O)/dtbmv.o: gtbmv.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGTBMV=DTBMV -c $< -o $@
+$(O)/xtbmv.o: gtbmv.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGTBMV=XTBMV -c $< -o $@
+$(O)/qtbmv.o: gtbmv.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGTBMV=QTBMV -c $< -o $@
+
 $(O)/dsdot.o: gfdot.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DBLAS_REAL_KIND2=$(REAL64) -DGFDOT=DSDOT -c $< -o $@
 $(O)/xsdot.o: gfdot.F90 $(MK)
@@ -731,6 +746,15 @@ $(O)/wgeru.o: hgeru.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHGERU=WGERU -c $< -o $@
 $(O)/ygeru.o: hgeru.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHGERU=YGERU -c $< -o $@
+
+$(O)/chbmv.o: hhbmv.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHHBMV=CHBMV -c $< -o $@
+$(O)/zhbmv.o: hhbmv.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHHBMV=ZHBMV -c $< -o $@
+$(O)/whbmv.o: hhbmv.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHHBMV=WHBMV -c $< -o $@
+$(O)/yhbmv.o: hhbmv.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHHBMV=YHBMV -c $< -o $@
 
 $(O)/scnrm2.o: ghnrm2.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGHNRM2=SCNRM2 -c $< -o $@

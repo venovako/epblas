@@ -42,6 +42,7 @@ $(O)\sgemv.obj $(O)\dgemv.obj $(O)\qgemv.obj \
 $(O)\sger.obj $(O)\dger.obj $(O)\qger.obj \
 $(O)\snrm2.obj $(O)\dnrm2.obj $(O)\qnrm2.obj \
 $(O)\sscal.obj $(O)\dscal.obj $(O)\qscal.obj \
+$(O)\stbmv.obj $(O)\dtbmv.obj $(O)\qtbmv.obj \
 $(O)\dsdot.obj $(O)\qddot.obj
 
 H= \
@@ -60,6 +61,7 @@ $(O)\cgemmtr.obj $(O)\zgemmtr.obj $(O)\ygemmtr.obj \
 $(O)\cgemv.obj $(O)\zgemv.obj $(O)\ygemv.obj \
 $(O)\cgerc.obj $(O)\zgerc.obj $(O)\ygerc.obj \
 $(O)\cgeru.obj $(O)\zgeru.obj $(O)\ygeru.obj \
+$(O)\chbmv.obj $(O)\zhbmv.obj $(O)\yhbmv.obj \
 $(O)\scnrm2.obj $(O)\dznrm2.obj $(O)\qynrm2.obj \
 $(O)\cscal.obj $(O)\zscal.obj $(O)\yscal.obj \
 $(O)\csscal.obj $(O)\zdscal.obj $(O)\yqscal.obj
@@ -328,6 +330,13 @@ $(O)\dscal.obj: gscal.F90
 $(O)\qscal.obj: gscal.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGSCAL=QSCAL /c $? /Fo$@
 
+$(O)\stbmv.obj: gtbmv.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGTBMV=STBMV /c $? /Fo$@
+$(O)\dtbmv.obj: gtbmv.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DGTBMV=DTBMV /c $? /Fo$@
+$(O)\qtbmv.obj: gtbmv.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGTBMV=QTBMV /c $? /Fo$@
+
 $(O)\dsdot.obj: gfdot.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DBLAS_REAL_KIND2=8 /DGFDOT=DSDOT /c $? /Fo$@
 $(O)\qddot.obj: gfdot.F90
@@ -437,6 +446,13 @@ $(O)\zgeru.obj: hgeru.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DHGERU=ZGERU /c $? /Fo$@
 $(O)\ygeru.obj: hgeru.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DHGERU=YGERU /c $? /Fo$@
+
+$(O)\chbmv.obj: hhbmv.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DHHBMV=CHBMV /c $? /Fo$@
+$(O)\zhbmv.obj: hhbmv.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DHHBMV=ZHBMV /c $? /Fo$@
+$(O)\yhbmv.obj: hhbmv.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DHHBMV=YHBMV /c $? /Fo$@
 
 $(O)\scnrm2.obj: ghnrm2.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGHNRM2=SCNRM2 /c $? /Fo$@

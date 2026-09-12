@@ -169,6 +169,7 @@ $(O)/cgemv.o $(O)/zgemv.o\
 $(O)/cgerc.o $(O)/zgerc.o\
 $(O)/cgeru.o $(O)/zgeru.o\
 $(O)/chbmv.o $(O)/zhbmv.o\
+$(O)/chemm.o $(O)/zhemm.o\
 $(O)/scnrm2.o $(O)/dznrm2.o\
 $(O)/cscal.o $(O)/zscal.o\
 $(O)/csscal.o $(O)/zdscal.o
@@ -190,6 +191,7 @@ $(O)/wgemv.o\
 $(O)/wgerc.o\
 $(O)/wgeru.o\
 $(O)/whbmv.o\
+$(O)/whemm.o\
 $(O)/xwnrm2.o\
 $(O)/wscal.o\
 $(O)/wxscal.o
@@ -212,6 +214,7 @@ $(O)/ygemv.o\
 $(O)/ygerc.o\
 $(O)/ygeru.o\
 $(O)/yhbmv.o\
+$(O)/yhemm.o\
 $(O)/qynrm2.o\
 $(O)/yscal.o\
 $(O)/yqscal.o
@@ -755,6 +758,15 @@ $(O)/whbmv.o: hhbmv.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHHBMV=WHBMV -c $< -o $@
 $(O)/yhbmv.o: hhbmv.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHHBMV=YHBMV -c $< -o $@
+
+$(O)/chemm.o: hhemm.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHHEMM=CHEMM -c $< -o $@
+$(O)/zhemm.o: hhemm.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHHEMM=ZHEMM -c $< -o $@
+$(O)/whemm.o: hhemm.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHHEMM=WHEMM -c $< -o $@
+$(O)/yhemm.o: hhemm.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHHEMM=YHEMM -c $< -o $@
 
 $(O)/scnrm2.o: ghnrm2.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGHNRM2=SCNRM2 -c $< -o $@

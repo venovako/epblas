@@ -192,7 +192,6 @@ SUBROUTINE HHEMM(SIDE, UPLO, M, N, ALPHA, A, LDA, B, LDB, BETA, C, LDC)
 #define HMUL(A,B) ((A)*(B))
 #define HFMA(A,B,C) ((A)*(B)+(C))
 #define HFMMA(A,B,C,D) ((A)*(B)+(C)*(D))
-#define HFMMAA(A,B,C,D,E) ((A)*(B)+(C)*(D)+(E))
   IMPLICIT NONE
   INTERFACE
      PURE FUNCTION LSAME(CA, CB)
@@ -308,7 +307,7 @@ SUBROUTINE HHEMM(SIDE, UPLO, M, N, ALPHA, A, LDA, B, LDB, BETA, C, LDC)
               IF (BETA .EQ. ZERO) THEN
                  C(I,J) = HFMA(ALPHA, TEMP2, TEMP1*REAL(A(I,I)))
               ELSE
-                 C(I,J) = HFMMAA(BETA, C(I,J), ALPHA, TEMP2, TEMP1*REAL(A(I,I)))
+                 C(I,J) = HFMA(ALPHA, TEMP2, HFMA(BETA, C(I,J), TEMP1*REAL(A(I,I))))
               END IF
            END DO
         END DO
@@ -324,7 +323,7 @@ SUBROUTINE HHEMM(SIDE, UPLO, M, N, ALPHA, A, LDA, B, LDB, BETA, C, LDC)
               IF (BETA .EQ. ZERO) THEN
                  C(I,J) = HFMA(ALPHA, TEMP2, TEMP1*REAL(A(I,I)))
               ELSE
-                 C(I,J) = HFMMAA(BETA, C(I,J), ALPHA, TEMP2, TEMP1*REAL(A(I,I)))
+                 C(I,J) = HFMA(ALPHA, TEMP2, HFMA(BETA, C(I,J), TEMP1*REAL(A(I,I))))
               END IF
            END DO
         END DO

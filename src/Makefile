@@ -63,6 +63,7 @@ $(O)\cgerc.obj $(O)\zgerc.obj $(O)\ygerc.obj \
 $(O)\cgeru.obj $(O)\zgeru.obj $(O)\ygeru.obj \
 $(O)\chbmv.obj $(O)\zhbmv.obj $(O)\yhbmv.obj \
 $(O)\chemm.obj $(O)\zhemm.obj $(O)\yhemm.obj \
+$(O)\chemv.obj $(O)\zhemv.obj $(O)\yhemv.obj \
 $(O)\scnrm2.obj $(O)\dznrm2.obj $(O)\qynrm2.obj \
 $(O)\cscal.obj $(O)\zscal.obj $(O)\yscal.obj \
 $(O)\csscal.obj $(O)\zdscal.obj $(O)\yqscal.obj
@@ -461,6 +462,13 @@ $(O)\zhemm.obj: hhemm.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DHHEMM=ZHEMM /c $? /Fo$@
 $(O)\yhemm.obj: hhemm.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DHHEMM=YHEMM /c $? /Fo$@
+
+$(O)\chemv.obj: hhemv.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DHHEMV=CHEMV /c $? /Fo$@
+$(O)\zhemv.obj: hhemv.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DHHEMV=ZHEMV /c $? /Fo$@
+$(O)\yhemv.obj: hhemv.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DHHEMV=YHEMV /c $? /Fo$@
 
 $(O)\scnrm2.obj: ghnrm2.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGHNRM2=SCNRM2 /c $? /Fo$@

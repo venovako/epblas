@@ -309,7 +309,7 @@ dirs:
 	@mkdir -pv $(O)
 	@mkdir -pv $(T)
 
-test:
+test: all
 	@for I in $(E); do echo $$I; $$I; done
 
 ../libepblas_$(INT)$(IEEE).a: $(G) $(H) $(O)/lsame.o $(O)/xerbla.o $(O)/xerbla_array.o

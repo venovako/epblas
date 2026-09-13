@@ -304,10 +304,11 @@ PURE SUBROUTINE HHEMM(SIDE, UPLO, M, N, ALPHA, A, LDA, B, LDB, BETA, C, LDC)
                  C(K,J) = HFMA(TEMP1, A(K,I), C(K,J))
                  TEMP2 = HFMA(B(K,J), CONJG(A(K,I)), TEMP2)
               END DO
+              TEMP1 = CMPLX(REAL(TEMP1) * REAL(A(I,I)), AIMAG(TEMP1) * REAL(A(I,I)), BLAS_REAL_KIND)
               IF (BETA .EQ. ZERO) THEN
-                 C(I,J) = HFMA(ALPHA, TEMP2, TEMP1*REAL(A(I,I)))
+                 C(I,J) = HFMA(ALPHA, TEMP2, TEMP1)
               ELSE
-                 C(I,J) = HFMA(ALPHA, TEMP2, HFMA(BETA, C(I,J), TEMP1*REAL(A(I,I))))
+                 C(I,J) = HFMA(ALPHA, TEMP2, HFMA(BETA, C(I,J), TEMP1))
               END IF
            END DO
         END DO
@@ -320,10 +321,11 @@ PURE SUBROUTINE HHEMM(SIDE, UPLO, M, N, ALPHA, A, LDA, B, LDB, BETA, C, LDC)
                  C(K,J) = HFMA(TEMP1, A(K,I), C(K,J))
                  TEMP2 = HFMA(B(K,J), CONJG(A(K,I)), TEMP2)
               END DO
+              TEMP1 = CMPLX(REAL(TEMP1) * REAL(A(I,I)), AIMAG(TEMP1) * REAL(A(I,I)), BLAS_REAL_KIND)
               IF (BETA .EQ. ZERO) THEN
-                 C(I,J) = HFMA(ALPHA, TEMP2, TEMP1*REAL(A(I,I)))
+                 C(I,J) = HFMA(ALPHA, TEMP2, TEMP1)
               ELSE
-                 C(I,J) = HFMA(ALPHA, TEMP2, HFMA(BETA, C(I,J), TEMP1*REAL(A(I,I))))
+                 C(I,J) = HFMA(ALPHA, TEMP2, HFMA(BETA, C(I,J), TEMP1))
               END IF
            END DO
         END DO

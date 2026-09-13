@@ -103,7 +103,7 @@ dirs:
 	@-MD $(O)
 	@-MD $(T)
 
-test:
+test: all
 	@FOR %%I IN ($(E)) DO %%I
 
 ..\epblas_$(INT)$(IEEE).lib: $(G) $(H) $(O)\lsame.obj $(O)\xerbla.obj $(O)\xerbla_array.obj

@@ -312,7 +312,7 @@ dirs:
 test: all
 	@for I in $(E); do echo $$I; $$I; done
 
-../libepblas_$(INT)$(IEEE).a: $(G) $(H) $(O)/lsame.o $(O)/xerbla.o $(O)/xerbla_array.o
+../libepblas_$(INT)$(IEEE).a: $(G) $(H) $(O)/lsame.o $(O)/xerbla.o $(O)/xerbla_array.o $(O)/xerrno.o
 	$(AR) $(ARFLAGS) $@ $^
 
 ../libeplapack_$(INT)$(IEEE).a: $(F) $(O)/lsamen.o
@@ -485,6 +485,8 @@ $(O)/lsame.o: lsame.F90 $(MK)
 $(O)/xerbla.o: xerbla.F90 $(MK)
 	$(FC) $(FCFLAGS) -c $< -o $@
 $(O)/xerbla_array.o: xerbla_array.F90 $(MK)
+	$(FC) $(FCFLAGS) -c $< -o $@
+$(O)/xerrno.o: xerrno.F90 $(MK)
 	$(FC) $(FCFLAGS) -c $< -o $@
 
 $(O)/isamax.o: igamax.F90 $(MK)

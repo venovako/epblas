@@ -106,7 +106,7 @@ dirs:
 test: all
 	@FOR %%I IN ($(E)) DO %%I
 
-..\epblas_$(INT)$(IEEE).lib: $(G) $(H) $(O)\lsame.obj $(O)\xerbla.obj $(O)\xerbla_array.obj
+..\epblas_$(INT)$(IEEE).lib: $(G) $(H) $(O)\lsame.obj $(O)\xerbla.obj $(O)\xerbla_array.obj $(O)\xerrno.obj
 	$(AR) $(ARFLAGS) /OUT:$@ $**
 
 ..\eplapack_$(INT)$(IEEE).lib: $(F) $(O)\lsamen.obj
@@ -245,6 +245,8 @@ $(O)\lsame.obj: lsame.F90
 $(O)\xerbla.obj: xerbla.F90
 	$(FC) $(FCFLAGS) /c $? /Fo$@
 $(O)\xerbla_array.obj: xerbla_array.F90
+	$(FC) $(FCFLAGS) /c $? /Fo$@
+$(O)\xerrno.obj: xerrno.F90
 	$(FC) $(FCFLAGS) /c $? /Fo$@
 
 $(O)\isamax.obj: igamax.F90

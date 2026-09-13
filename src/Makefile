@@ -85,7 +85,7 @@ $(O)\slaran.obj $(O)\dlaran.obj $(O)\qlaran.obj \
 $(O)\slarnd.obj $(O)\dlarnd.obj $(O)\qlarnd.obj \
 $(O)\clarnd.obj $(O)\zlarnd.obj $(O)\ylarnd.obj
 
-E= \
+E=$(T)\txerbla.exe \
 $(T)\tslamch.exe $(T)\tdlamch.exe $(T)\tqlamch.exe \
 $(T)\tsecond.exe $(T)\tdsecnd.exe $(T)\tqsecnd.exe \
 $(T)\tsnrm2.exe $(T)\tdnrm2.exe $(T)\tqnrm2.exe \
@@ -114,6 +114,9 @@ test:
 
 ..\eptmglib_$(INT)$(IEEE).lib: $(M)
 	$(AR) $(ARFLAGS) /OUT:$@ $**
+
+$(T)\txerbla.exe: txerbla.F90
+	$(FC) $(FCFLAGS) $? /Fe$@ $(LDFLAGS)
 
 $(T)\tslamch.exe: tglamch.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGLAMCH=SLAMCH $? /Fe$@ $(LDFLAGS)

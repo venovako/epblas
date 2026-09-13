@@ -272,7 +272,7 @@ $(O)/qlarnd.o\
 $(O)/ylarnd.o
 endif # REAL128
 
-E=\
+E=$(T)/txerbla.exe\
 $(T)/tslamch.exe $(T)/tdlamch.exe\
 $(T)/tsecond.exe $(T)/tdsecnd.exe\
 $(T)/tsnrm2.exe $(T)/tdnrm2.exe\
@@ -320,6 +320,9 @@ test:
 
 ../libeptmglib_$(INT)$(IEEE).a: $(M)
 	$(AR) $(ARFLAGS) $@ $^
+
+$(T)/txerbla.exe: txerbla.F90 $(L) $(MK)
+	$(FC) $(FCFLAGS) $< -o $@ $(LDFLAGS)
 
 $(T)/tslamch.exe: tglamch.F90 $(L) $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGLAMCH=SLAMCH $< -o $@ $(LDFLAGS)

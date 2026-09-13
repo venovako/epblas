@@ -292,12 +292,12 @@ $(T)/tqnrm2.exe\
 $(T)/tiymax2.exe
 endif # REAL128
 
-.PHONY: all help dirs clean
+.PHONY: all help dirs test clean
 
 all: dirs $(L) $(E)
 
 help:
-	@echo "$(MAKE) [LIBPVN=../../libpvn] [INT=$(INT32)|$(INT64)] [IEEE=0|-1|1|2] [all|help|clean]"
+	@echo "$(MAKE) [LIBPVN=../../libpvn] [INT=$(INT32)|$(INT64)] [IEEE=0|-1|1|2] [all|help|test|clean]"
 
 dirs:
 	@echo "ARCH=$(ARCH)"
@@ -308,6 +308,9 @@ dirs:
 	@echo "HAVE_FMA=$(HAVE_FMA)"
 	@mkdir -pv $(O)
 	@mkdir -pv $(T)
+
+test:
+	@for I in $(E); do echo $$I; $$I; done
 
 ../libepblas_$(INT)$(IEEE).a: $(G) $(H) $(O)/lsame.o $(O)/xerbla.o $(O)/xerbla_array.o
 	$(AR) $(ARFLAGS) $@ $^

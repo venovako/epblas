@@ -61,11 +61,11 @@
 ! Instead, "hijack" errno and set it to a negative value.
 ! PVN_GET_ERRNO can be used to check for errors afterwards.
 ! This way no dependency on the Fortran runtime is introduced.
-SUBROUTINE XERBLA(SRNAME, INFO)
+PURE SUBROUTINE XERBLA(SRNAME, INFO)
   USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT32
   IMPLICIT NONE
   INTERFACE
-     SUBROUTINE PVN_SET_ERRNO(E)
+     PURE SUBROUTINE PVN_SET_ERRNO(E)
        USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY: INT32
        IMPLICIT NONE
        INTEGER(KIND=INT32), INTENT(IN) :: E

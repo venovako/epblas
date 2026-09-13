@@ -66,6 +66,12 @@ PROGRAM TGSECND
 #define GFMA(A,B,C) ((A)*(B)+(C))
 #endif
 #endif
+  INTERFACE
+     PURE FUNCTION GSECND()
+       IMPLICIT NONE
+       REAL(KIND=BLAS_REAL_KIND) :: GSECND
+     END FUNCTION GSECND
+  END INTERFACE
 !
 !  -- LAPACK test routine --
 !
@@ -85,9 +91,6 @@ PROGRAM TGSECND
 !     ..
 !     .. Arrays ..
   REAL(KIND=BLAS_REAL_KIND), SAVE :: X(NMAX), Y(NMAX)
-!     ..
-!     .. External Functions ..
-  REAL(KIND=BLAS_REAL_KIND), EXTERNAL :: GSECND
 !     ..
 !     .. Executable Statements ..
 !

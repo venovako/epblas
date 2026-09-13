@@ -187,7 +187,7 @@
 !> \endverbatim
 !>
 !  =====================================================================
-SUBROUTINE HGEMMTR(UPLO, TRANSA, TRANSB, N, K, ALPHA, A, LDA, B, LDB, BETA, C, LDC)
+PURE SUBROUTINE HGEMMTR(UPLO, TRANSA, TRANSB, N, K, ALPHA, A, LDA, B, LDB, BETA, C, LDC)
 #define HMUL(A,B) ((A)*(B))
 #define HFMA(A,B,C) ((A)*(B)+(C))
 #define HFMMA(A,B,C,D) ((A)*(B)+(C)*(D))
@@ -200,7 +200,7 @@ SUBROUTINE HGEMMTR(UPLO, TRANSA, TRANSB, N, K, ALPHA, A, LDA, B, LDB, BETA, C, L
      END FUNCTION LSAME
   END INTERFACE
   INTERFACE
-     SUBROUTINE XERBLA(SRNAME, INFO)
+     PURE SUBROUTINE XERBLA(SRNAME, INFO)
        IMPLICIT NONE
        CHARACTER(LEN=*), INTENT(IN) :: SRNAME
        INTEGER, INTENT(IN) :: INFO

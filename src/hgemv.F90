@@ -157,7 +157,7 @@
 !> \endverbatim
 !>
 !  =====================================================================
-SUBROUTINE HGEMV(TRANS, M, N, ALPHA, A, LDA, X, INCX, BETA, Y, INCY)
+PURE SUBROUTINE HGEMV(TRANS, M, N, ALPHA, A, LDA, X, INCX, BETA, Y, INCY)
 #define HMUL(A,B) ((A)*(B))
 #define HFMA(A,B,C) ((A)*(B)+(C))
   IMPLICIT NONE
@@ -169,7 +169,7 @@ SUBROUTINE HGEMV(TRANS, M, N, ALPHA, A, LDA, X, INCX, BETA, Y, INCY)
      END FUNCTION LSAME
   END INTERFACE
   INTERFACE
-     SUBROUTINE XERBLA(SRNAME, INFO)
+     PURE SUBROUTINE XERBLA(SRNAME, INFO)
        IMPLICIT NONE
        CHARACTER(LEN=*), INTENT(IN) :: SRNAME
        INTEGER, INTENT(IN) :: INFO

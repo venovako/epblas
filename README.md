@@ -14,7 +14,7 @@ The original source code has been modified and adapted, but the existing interfa
 
 Sometimes a new algorithm has been implemented for an existing interface, e.g., `NRM2` has been provided following [VecNrmP](https://github.com/venovako/VecNrmP).
 
-In several other cases, the basic algorithm has been heavily reworked, but remained in the same spirit, e.g., `AXPBY`, the complex `IAMAX`, and `XERBLA`.
+In several other cases, the basic algorithm has been heavily reworked, but remained in the same spirit, e.g., `AXPBY` and the complex `IAMAX`.
 
 The aim is to have (most of) the routines in single, double, and extended precisions not dependent on the Fortran library when `IEEE<=0` (see below), but many routines instead depend on `libpvn`.
 
@@ -24,6 +24,8 @@ The type-generic prefixes are `g` and `h`.
 
 Note that `XERBLA` no longer stops the program.
 Please see in `src/xerbla.F90` how the error handling is meant to work.
+
+*HACK*: `XERBLA` is declared as `PURE`, what is not exactly correct, since it changes the C runtime environment (the `errno` variable), but this choice was made to make all other BLAS routines `PURE`.
 
 ## Building
 

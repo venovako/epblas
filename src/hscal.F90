@@ -75,7 +75,9 @@
 !>
 !  =====================================================================
 PURE SUBROUTINE HSCAL(N, CA, CX, INCX)
+#ifndef PVN_HMUL
 #define HMUL(A,B) ((A)*(B))
+#endif
   IMPLICIT NONE
 !
 !  -- Reference BLAS level1 routine --
@@ -123,4 +125,6 @@ PURE SUBROUTINE HSCAL(N, CA, CX, INCX)
 !
 !     End of HSCAL
 !
+CONTAINS
+#include "hmul.F90"
 END SUBROUTINE HSCAL

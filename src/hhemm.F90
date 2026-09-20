@@ -189,7 +189,9 @@
 !>
 !  =====================================================================
 PURE SUBROUTINE HHEMM(SIDE, UPLO, M, N, ALPHA, A, LDA, B, LDB, BETA, C, LDC)
+#ifndef PVN_HMUL
 #define HMUL(A,B) ((A)*(B))
+#endif
 #define HFMA(A,B,C) ((A)*(B)+(C))
 #define HFMMA(A,B,C,D) ((A)*(B)+(C)*(D))
   IMPLICIT NONE
@@ -335,7 +337,7 @@ PURE SUBROUTINE HHEMM(SIDE, UPLO, M, N, ALPHA, A, LDA, B, LDB, BETA, C, LDC)
 !        Form  C := alpha*B*A + beta*C.
 !
      DO J = 1, N
-        TEMP1 = HMUL(ALPHA, REAL(A(J,J)))
+        TEMP1 = CMPLX(REAL(ALPHA) * REAL(A(J,J)), AIMAG(ALPHA) * REAL(A(J,J)), BLAS_REAL_KIND)
         IF (BETA .EQ. ZERO) THEN
            DO I = 1, M
               C(I,J) = HMUL(TEMP1, B(I,J))
@@ -370,4 +372,6 @@ PURE SUBROUTINE HHEMM(SIDE, UPLO, M, N, ALPHA, A, LDA, B, LDB, BETA, C, LDC)
 !
 !     End of HHEMM
 !
+CONTAINS
+#include "hmul.F90"
 END SUBROUTINE HHEMM

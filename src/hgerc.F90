@@ -128,7 +128,9 @@
 !>
 !  =====================================================================
 PURE SUBROUTINE HGERC(M, N, ALPHA, X, INCX, Y, INCY, A, LDA)
+#ifndef PVN_HMUL
 #define HMUL(A,B) ((A)*(B))
+#endif
 #define HFMA(A,B,C) ((A)*(B)+(C))
   IMPLICIT NONE
 !
@@ -216,4 +218,6 @@ PURE SUBROUTINE HGERC(M, N, ALPHA, X, INCX, Y, INCY, A, LDA)
 !
 !     End of HGERC
 !
+CONTAINS
+#include "hmul.F90"
 END SUBROUTINE HGERC

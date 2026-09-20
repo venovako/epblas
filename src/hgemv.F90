@@ -158,7 +158,9 @@
 !>
 !  =====================================================================
 PURE SUBROUTINE HGEMV(TRANS, M, N, ALPHA, A, LDA, X, INCX, BETA, Y, INCY)
+#ifndef PVN_HMUL
 #define HMUL(A,B) ((A)*(B))
+#endif
 #define HFMA(A,B,C) ((A)*(B)+(C))
   IMPLICIT NONE
   INTERFACE
@@ -349,4 +351,6 @@ PURE SUBROUTINE HGEMV(TRANS, M, N, ALPHA, A, LDA, X, INCX, BETA, Y, INCY)
 !
 !     End of HGEMV
 !
+CONTAINS
+#include "hmul.F90"
 END SUBROUTINE HGEMV

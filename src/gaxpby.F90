@@ -133,7 +133,9 @@ PURE SUBROUTINE GAXPBY(N, SA, SX, INCX, SB, SY, INCY)
 #define GFMA(A,B,C) ((A)*(B)+(C))
 #endif
 #endif
+#ifndef PVN_GDET
 #define GFMMA(A,B,C,D) ((A)*(B)+(C)*(D))
+#endif
 !
 !  -- Reference BLAS level1 routine --
 !  -- Reference BLAS is a software package provided by Univ. of Tennessee,    --
@@ -269,4 +271,6 @@ PURE SUBROUTINE GAXPBY(N, SA, SX, INCX, SB, SY, INCY)
 !
 !     End of GAXPBY
 !
+CONTAINS
+#include "gfmma.F90"
 END SUBROUTINE GAXPBY

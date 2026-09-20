@@ -264,11 +264,11 @@ $(O)\qasum.obj: gasum.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGASUM=QASUM /c $? /Fo$@
 
 $(O)\saxpby.obj: gaxpby.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGAXPBY=SAXPBY /c $? /Fo$@
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGAXPBY=SAXPBY /DPVN_GDET=PVN_SDET /c $? /Fo$@
 $(O)\daxpby.obj: gaxpby.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DGAXPBY=DAXPBY /c $? /Fo$@
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DGAXPBY=DAXPBY /DPVN_GDET=PVN_DDET /c $? /Fo$@
 $(O)\qaxpby.obj: gaxpby.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGAXPBY=QAXPBY /c $? /Fo$@
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGAXPBY=QAXPBY /DPVN_GDET=PVN_QDET /c $? /Fo$@
 
 $(O)\saxpy.obj: gaxpy.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGAXPY=SAXPY /c $? /Fo$@
@@ -299,18 +299,18 @@ $(O)\qgbmv.obj: ggbmv.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGGBMV=QGBMV /c $? /Fo$@
 
 $(O)\sgemm.obj: ggemm.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGGEMM=SGEMM /c $? /Fo$@
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGGEMM=SGEMM /DPVN_GDET=PVN_SDET /c $? /Fo$@
 $(O)\dgemm.obj: ggemm.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DGGEMM=DGEMM /c $? /Fo$@
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DGGEMM=DGEMM /DPVN_GDET=PVN_DDET /c $? /Fo$@
 $(O)\qgemm.obj: ggemm.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGGEMM=QGEMM /c $? /Fo$@
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGGEMM=QGEMM /DPVN_GDET=PVN_QDET /c $? /Fo$@
 
 $(O)\sgemmtr.obj: ggemmtr.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGGEMMTR=SGEMMTR /c $? /Fo$@
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGGEMMTR=SGEMMTR /DPVN_GDET=PVN_SDET /c $? /Fo$@
 $(O)\dgemmtr.obj: ggemmtr.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DGGEMMTR=DGEMMTR /c $? /Fo$@
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DGGEMMTR=DGEMMTR /DPVN_GDET=PVN_DDET /c $? /Fo$@
 $(O)\qgemmtr.obj: ggemmtr.F90
-	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGGEMMTR=QGEMMTR /c $? /Fo$@
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGGEMMTR=QGEMMTR /DPVN_GDET=PVN_QDET /c $? /Fo$@
 
 $(O)\sgemv.obj: ggemv.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGGEMV=SGEMV /c $? /Fo$@

@@ -258,7 +258,9 @@ PURE SUBROUTINE GGEMM(TRANSA, TRANSB, M, N, K, ALPHA, A, LDA, B, LDB, BETA, C, L
 #define GFMA(A,B,C) ((A)*(B)+(C))
 #endif
 #endif
+#ifndef PVN_GDET
 #define GFMMA(A,B,C,D) ((A)*(B)+(C)*(D))
+#endif
   INTERFACE
      PURE FUNCTION LSAME(CA, CB)
        IMPLICIT NONE
@@ -451,4 +453,6 @@ PURE SUBROUTINE GGEMM(TRANSA, TRANSB, M, N, K, ALPHA, A, LDA, B, LDB, BETA, C, L
 !
 !     End of GGEMM
 !
+CONTAINS
+#include "gfmma.F90"
 END SUBROUTINE GGEMM

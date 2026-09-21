@@ -219,5 +219,7 @@ PURE SUBROUTINE HGERC(M, N, ALPHA, X, INCX, Y, INCY, A, LDA)
 !     End of HGERC
 !
 CONTAINS
+#ifdef PVN_HMUL
 #include "hmul.F90"
+#endif
 END SUBROUTINE HGERC

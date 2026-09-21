@@ -230,5 +230,7 @@ PURE SUBROUTINE HAXPBY(N, CA, CX, INCX, CB, CY, INCY)
 !     End of HAXPBY
 !  
 CONTAINS
+#ifdef PVN_HMUL
 #include "hmul.F90"
+#endif
 END SUBROUTINE HAXPBY

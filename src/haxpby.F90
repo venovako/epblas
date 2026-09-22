@@ -90,7 +90,9 @@ PURE SUBROUTINE HAXPBY(N, CA, CX, INCX, CB, CY, INCY)
 #ifndef PVN_HMUL
 #define HMUL(A,B) ((A)*(B))
 #endif
+#ifndef PVN_HFMA
 #define HFMA(A,B,C) ((A)*(B)+(C))
+#endif
 #define HFMMA(A,B,C,D) ((A)*(B)+(C)*(D))
   IMPLICIT NONE
 !
@@ -232,5 +234,8 @@ PURE SUBROUTINE HAXPBY(N, CA, CX, INCX, CB, CY, INCY)
 CONTAINS
 #ifdef PVN_HMUL
 #include "hmul.F90"
+#endif
+#ifdef PVN_HFMA
+#include "hfma.F90"
 #endif
 END SUBROUTINE HAXPBY

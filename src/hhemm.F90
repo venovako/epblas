@@ -192,7 +192,9 @@ PURE SUBROUTINE HHEMM(SIDE, UPLO, M, N, ALPHA, A, LDA, B, LDB, BETA, C, LDC)
 #ifndef PVN_HMUL
 #define HMUL(A,B) ((A)*(B))
 #endif
+#ifndef PVN_HFMA
 #define HFMA(A,B,C) ((A)*(B)+(C))
+#endif
 #define HFMMA(A,B,C,D) ((A)*(B)+(C)*(D))
   IMPLICIT NONE
   INTERFACE
@@ -375,5 +377,8 @@ PURE SUBROUTINE HHEMM(SIDE, UPLO, M, N, ALPHA, A, LDA, B, LDB, BETA, C, LDC)
 CONTAINS
 #ifdef PVN_HMUL
 #include "hmul.F90"
+#endif
+#ifdef PVN_HFMA
+#include "hfma.F90"
 #endif
 END SUBROUTINE HHEMM

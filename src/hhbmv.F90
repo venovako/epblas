@@ -192,7 +192,9 @@ PURE SUBROUTINE HHBMV(UPLO, N, K, ALPHA, A, LDA, X, INCX, BETA, Y, INCY)
 #ifndef PVN_HMUL
 #define HMUL(A,B) ((A)*(B))
 #endif
+#ifndef PVN_HFMA
 #define HFMA(A,B,C) ((A)*(B)+(C))
+#endif
   IMPLICIT NONE
 #ifndef USE_IEEE_INTRINSIC
 #if ((BLAS_REAL_KIND == 4) && ((HAVE_FMA & 1) == 0))
@@ -430,5 +432,8 @@ PURE SUBROUTINE HHBMV(UPLO, N, K, ALPHA, A, LDA, X, INCX, BETA, Y, INCY)
 CONTAINS
 #ifdef PVN_HMUL
 #include "hmul.F90"
+#endif
+#ifdef PVN_HFMA
+#include "hfma.F90"
 #endif
 END SUBROUTINE HHBMV

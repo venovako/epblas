@@ -86,7 +86,9 @@
 !>
 !  =====================================================================
 PURE SUBROUTINE HAXPY(N, CA, CX, INCX, CY, INCY)
+#ifndef PVN_HFMA
 #define HFMA(A,B,C) ((A)*(B)+(C))
+#endif
   IMPLICIT NONE
 !
 !  -- Reference BLAS level1 routine --
@@ -141,4 +143,8 @@ PURE SUBROUTINE HAXPY(N, CA, CX, INCX, CY, INCY)
 !
 !     End of HAXPY
 !
+#ifdef PVN_HFMA
+CONTAINS
+#include "hfma.F90"
+#endif
 END SUBROUTINE HAXPY

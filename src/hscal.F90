@@ -125,8 +125,8 @@ PURE SUBROUTINE HSCAL(N, CA, CX, INCX)
 !
 !     End of HSCAL
 !
+#ifdef PVN_HMUL  
 CONTAINS
-#ifdef PVN_HMUL
 #include "hmul.F90"
 #endif
 END SUBROUTINE HSCAL

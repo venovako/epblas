@@ -131,7 +131,9 @@ PURE SUBROUTINE HGERU(M, N, ALPHA, X, INCX, Y, INCY, A, LDA)
 #ifndef PVN_HMUL
 #define HMUL(A,B) ((A)*(B))
 #endif
+#ifndef PVN_HFMA
 #define HFMA(A,B,C) ((A)*(B)+(C))
+#endif
   IMPLICIT NONE
 !
 !  -- Reference BLAS level2 routine --
@@ -219,5 +221,8 @@ PURE SUBROUTINE HGERU(M, N, ALPHA, X, INCX, Y, INCY, A, LDA)
 CONTAINS
 #ifdef PVN_HMUL
 #include "hmul.F90"
+#endif
+#ifdef PVN_HFMA
+#include "hfma.F90"
 #endif
 END SUBROUTINE HGERU

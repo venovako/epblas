@@ -81,7 +81,9 @@
 !>
 !  =====================================================================
 PURE FUNCTION HDOTU(N, CX, INCX, CY, INCY)
+#ifndef PVN_HFMA
 #define HFMA(A,B,C) ((A)*(B)+(C))
+#endif
   IMPLICIT NONE
 !
 !  -- Reference BLAS level1 routine --
@@ -134,4 +136,8 @@ PURE FUNCTION HDOTU(N, CX, INCX, CY, INCY)
 !
 !     End of HDOTU
 !
+#ifdef PVN_HFMA
+CONTAINS
+#include "hfma.F90"
+#endif
 END FUNCTION HDOTU

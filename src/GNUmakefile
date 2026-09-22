@@ -488,14 +488,14 @@ $(O)/xasum.o: gasum.F90 $(MK)
 $(O)/qasum.o: gasum.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGASUM=QASUM -c $< -o $@
 
-$(O)/saxpby.o: gaxpby.F90 gfmma.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGAXPBY=SAXPBY -DPVN_GDET=PVN_SDET -c $< -o $@
-$(O)/daxpby.o: gaxpby.F90 gfmma.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGAXPBY=DAXPBY -DPVN_GDET=PVN_DDET -c $< -o $@
-$(O)/xaxpby.o: gaxpby.F90 gfmma.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGAXPBY=XAXPBY -DPVN_GDET=PVN_XDET -c $< -o $@
-$(O)/qaxpby.o: gaxpby.F90 gfmma.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGAXPBY=QAXPBY -DPVN_GDET=PVN_QDET -c $< -o $@
+$(O)/saxpby.o: gaxpby.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGAXPBY=SAXPBY -DGFMMA=PVN_SFMMA -c $< -o $@
+$(O)/daxpby.o: gaxpby.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGAXPBY=DAXPBY -DGFMMA=PVN_DFMMA -c $< -o $@
+$(O)/xaxpby.o: gaxpby.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGAXPBY=XAXPBY -DGFMMA=PVN_XFMMA -c $< -o $@
+$(O)/qaxpby.o: gaxpby.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGAXPBY=QAXPBY -DGFMMA=PVN_QFMMA -c $< -o $@
 
 $(O)/saxpy.o: gaxpy.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGAXPY=SAXPY -c $< -o $@
@@ -533,23 +533,23 @@ $(O)/xgbmv.o: ggbmv.F90 $(MK)
 $(O)/qgbmv.o: ggbmv.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGGBMV=QGBMV -c $< -o $@
 
-$(O)/sgemm.o: ggemm.F90 gfmma.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGGEMM=SGEMM -DPVN_GDET=PVN_SDET -c $< -o $@
-$(O)/dgemm.o: ggemm.F90 gfmma.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGGEMM=DGEMM -DPVN_GDET=PVN_DDET -c $< -o $@
-$(O)/xgemm.o: ggemm.F90 gfmma.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGGEMM=XGEMM -DPVN_GDET=PVN_XDET -c $< -o $@
-$(O)/qgemm.o: ggemm.F90 gfmma.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGGEMM=QGEMM -DPVN_GDET=PVN_QDET -c $< -o $@
+$(O)/sgemm.o: ggemm.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGGEMM=SGEMM -DGFMMA=PVN_SFMMA -c $< -o $@
+$(O)/dgemm.o: ggemm.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGGEMM=DGEMM -DGFMMA=PVN_DFMMA -c $< -o $@
+$(O)/xgemm.o: ggemm.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGGEMM=XGEMM -DGFMMA=PVN_XFMMA -c $< -o $@
+$(O)/qgemm.o: ggemm.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGGEMM=QGEMM -DGFMMA=PVN_QFMMA -c $< -o $@
 
-$(O)/sgemmtr.o: ggemmtr.F90 gfmma.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGGEMMTR=SGEMMTR -DPVN_GDET=PVN_SDET -c $< -o $@
-$(O)/dgemmtr.o: ggemmtr.F90 gfmma.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGGEMMTR=DGEMMTR -DPVN_GDET=PVN_DDET -c $< -o $@
-$(O)/xgemmtr.o: ggemmtr.F90 gfmma.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGGEMMTR=XGEMMTR -DPVN_GDET=PVN_XDET -c $< -o $@
-$(O)/qgemmtr.o: ggemmtr.F90 gfmma.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGGEMMTR=QGEMMTR -DPVN_GDET=PVN_QDET -c $< -o $@
+$(O)/sgemmtr.o: ggemmtr.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGGEMMTR=SGEMMTR -DGFMMA=PVN_SFMMA -c $< -o $@
+$(O)/dgemmtr.o: ggemmtr.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGGEMMTR=DGEMMTR -DGFMMA=PVN_DFMMA -c $< -o $@
+$(O)/xgemmtr.o: ggemmtr.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGGEMMTR=XGEMMTR -DGFMMA=PVN_XFMMA -c $< -o $@
+$(O)/qgemmtr.o: ggemmtr.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGGEMMTR=QGEMMTR -DGFMMA=PVN_QFMMA -c $< -o $@
 
 $(O)/sgemv.o: ggemv.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGGEMV=SGEMV -c $< -o $@
@@ -625,14 +625,14 @@ $(O)/iwmax2.o: ihmax2.F90 $(MK)
 $(O)/iymax2.o: ihmax2.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DIHMAX2=IYMAX2 -c $< -o $@
 
-$(O)/caxpby.o: haxpby.F90 hmul.F90 hfma.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHAXPBY=CAXPBY -DPVN_HMUL=PVN_CMUL -DPVN_HFMA=PVN_CFMA -c $< -o $@
-$(O)/zaxpby.o: haxpby.F90 hmul.F90 hfma.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHAXPBY=ZAXPBY -DPVN_HMUL=PVN_ZMUL -DPVN_HFMA=PVN_ZFMA -c $< -o $@
-$(O)/waxpby.o: haxpby.F90 hmul.F90 hfma.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHAXPBY=WAXPBY -DPVN_HMUL=PVN_WMUL -DPVN_HFMA=PVN_WFMA -c $< -o $@
-$(O)/yaxpby.o: haxpby.F90 hmul.F90 hfma.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHAXPBY=YAXPBY -DPVN_HMUL=PVN_YMUL -DPVN_HFMA=PVN_YFMA -c $< -o $@
+$(O)/caxpby.o: haxpby.F90 hmul.F90 hfma.F90 hfmma.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHAXPBY=CAXPBY -DPVN_HMUL=PVN_CMUL -DPVN_HFMA=PVN_CFMA -DPVN_HFMMA=PVN_CFMMA -c $< -o $@
+$(O)/zaxpby.o: haxpby.F90 hmul.F90 hfma.F90 hfmma.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHAXPBY=ZAXPBY -DPVN_HMUL=PVN_ZMUL -DPVN_HFMA=PVN_ZFMA -DPVN_HFMMA=PVN_ZFMMA -c $< -o $@
+$(O)/waxpby.o: haxpby.F90 hmul.F90 hfma.F90 hfmma.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHAXPBY=WAXPBY -DPVN_HMUL=PVN_WMUL -DPVN_HFMA=PVN_WFMA -DPVN_HFMMA=PVN_WFMMA -c $< -o $@
+$(O)/yaxpby.o: haxpby.F90 hmul.F90 hfma.F90 hfmma.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHAXPBY=YAXPBY -DPVN_HMUL=PVN_YMUL -DPVN_HFMA=PVN_YFMA -DPVN_HFMMA=PVN_YFMMA -c $< -o $@
 
 $(O)/caxpy.o: haxpy.F90 hfma.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHAXPY=CAXPY -DPVN_HFMA=PVN_CFMA -c $< -o $@
@@ -670,58 +670,58 @@ $(O)/wcopy.o: hcopy.F90 $(MK)
 $(O)/ycopy.o: hcopy.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHCOPY=YCOPY -c $< -o $@
 
-$(O)/cdotc.o: hdotc.F90 $(MK)
+$(O)/cdotc.o: hdotc.F90 hfma.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHDOTC=CDOTC -DPVN_HFMA=PVN_CFMA -c $< -o $@
-$(O)/zdotc.o: hdotc.F90 $(MK)
+$(O)/zdotc.o: hdotc.F90 hfma.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHDOTC=ZDOTC -DPVN_HFMA=PVN_ZFMA -c $< -o $@
-$(O)/wdotc.o: hdotc.F90 $(MK)
+$(O)/wdotc.o: hdotc.F90 hfma.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHDOTC=WDOTC -DPVN_HFMA=PVN_WFMA  -c $< -o $@
-$(O)/ydotc.o: hdotc.F90 $(MK)
+$(O)/ydotc.o: hdotc.F90 hfma.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHDOTC=YDOTC -DPVN_HFMA=PVN_YFMA -c $< -o $@
 
-$(O)/cdotu.o: hdotu.F90 $(MK)
+$(O)/cdotu.o: hdotu.F90 hfma.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHDOTU=CDOTU -DPVN_HFMA=PVN_CFMA -c $< -o $@
-$(O)/zdotu.o: hdotu.F90 $(MK)
+$(O)/zdotu.o: hdotu.F90 hfma.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHDOTU=ZDOTU -DPVN_HFMA=PVN_ZFMA -c $< -o $@
-$(O)/wdotu.o: hdotu.F90 $(MK)
+$(O)/wdotu.o: hdotu.F90 hfma.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHDOTU=WDOTU -DPVN_HFMA=PVN_WFMA -c $< -o $@
-$(O)/ydotu.o: hdotu.F90 $(MK)
+$(O)/ydotu.o: hdotu.F90 hfma.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHDOTU=YDOTU -DPVN_HFMA=PVN_YFMA -c $< -o $@
 
-$(O)/cgbmv.o: hgbmv.F90 hmul.F90 $(MK)
+$(O)/cgbmv.o: hgbmv.F90 hfma.F90 hmul.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHGBMV=CGBMV -DPVN_HMUL=PVN_CMUL -DPVN_HFMA=PVN_CFMA -c $< -o $@
-$(O)/zgbmv.o: hgbmv.F90 hmul.F90 $(MK)
+$(O)/zgbmv.o: hgbmv.F90 hfma.F90 hmul.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHGBMV=ZGBMV -DPVN_HMUL=PVN_ZMUL -DPVN_HFMA=PVN_ZFMA -c $< -o $@
-$(O)/wgbmv.o: hgbmv.F90 hmul.F90 $(MK)
+$(O)/wgbmv.o: hgbmv.F90 hfma.F90 hmul.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHGBMV=WGBMV -DPVN_HMUL=PVN_WMUL -DPVN_HFMA=PVN_WFMA -c $< -o $@
-$(O)/ygbmv.o: hgbmv.F90 hmul.F90 $(MK)
+$(O)/ygbmv.o: hgbmv.F90 hfma.F90 hmul.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHGBMV=YGBMV -DPVN_HMUL=PVN_YMUL -DPVN_HFMA=PVN_YFMA -c $< -o $@
 
-$(O)/cgemm.o: hgemm.F90 hmul.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHGEMM=CGEMM -DPVN_HMUL=PVN_CMUL -DPVN_HFMA=PVN_CFMA -c $< -o $@
-$(O)/zgemm.o: hgemm.F90 hmul.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHGEMM=ZGEMM -DPVN_HMUL=PVN_ZMUL -DPVN_HFMA=PVN_ZFMA -c $< -o $@
-$(O)/wgemm.o: hgemm.F90 hmul.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHGEMM=WGEMM -DPVN_HMUL=PVN_WMUL -DPVN_HFMA=PVN_WFMA -c $< -o $@
-$(O)/ygemm.o: hgemm.F90 hmul.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHGEMM=YGEMM -DPVN_HMUL=PVN_YMUL -DPVN_HFMA=PVN_YFMA -c $< -o $@
+$(O)/cgemm.o: hgemm.F90 hmul.F90 hfma.F90 hfmma.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHGEMM=CGEMM -DPVN_HMUL=PVN_CMUL -DPVN_HFMA=PVN_CFMA -DPVN_HFMMA=PVN_CFMMA -c $< -o $@
+$(O)/zgemm.o: hgemm.F90 hmul.F90 hfma.F90 hfmma.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHGEMM=ZGEMM -DPVN_HMUL=PVN_ZMUL -DPVN_HFMA=PVN_ZFMA -DPVN_HFMMA=PVN_ZFMMA -c $< -o $@
+$(O)/wgemm.o: hgemm.F90 hmul.F90 hfma.F90 hfmma.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHGEMM=WGEMM -DPVN_HMUL=PVN_WMUL -DPVN_HFMA=PVN_WFMA -DPVN_HFMMA=PVN_WFMMA -c $< -o $@
+$(O)/ygemm.o: hgemm.F90 hmul.F90 hfma.F90 hfmma.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHGEMM=YGEMM -DPVN_HMUL=PVN_YMUL -DPVN_HFMA=PVN_YFMA -DPVN_HFMMA=PVN_YFMMA -c $< -o $@
 
-$(O)/cgemmtr.o: hgemmtr.F90 hmul.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHGEMMTR=CGEMMTR -DPVN_HMUL=PVN_CMUL -DPVN_HFMA=PVN_CFMA -c $< -o $@
-$(O)/zgemmtr.o: hgemmtr.F90 hmul.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHGEMMTR=ZGEMMTR -DPVN_HMUL=PVN_ZMUL -DPVN_HFMA=PVN_ZFMA -c $< -o $@
-$(O)/wgemmtr.o: hgemmtr.F90 hmul.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHGEMMTR=WGEMMTR -DPVN_HMUL=PVN_WMUL -DPVN_HFMA=PVN_WFMA -c $< -o $@
-$(O)/ygemmtr.o: hgemmtr.F90 hmul.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHGEMMTR=YGEMMTR -DPVN_HMUL=PVN_YMUL -DPVN_HFMA=PVN_YFMA -c $< -o $@
+$(O)/cgemmtr.o: hgemmtr.F90 hmul.F90 hfma.F90 hfmma.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHGEMMTR=CGEMMTR -DPVN_HMUL=PVN_CMUL -DPVN_HFMA=PVN_CFMA -DPVN_HFMMA=PVN_CFMMA -c $< -o $@
+$(O)/zgemmtr.o: hgemmtr.F90 hmul.F90 hfma.F90 hfmma.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHGEMMTR=ZGEMMTR -DPVN_HMUL=PVN_ZMUL -DPVN_HFMA=PVN_ZFMA -DPVN_HFMMA=PVN_ZFMMA -c $< -o $@
+$(O)/wgemmtr.o: hgemmtr.F90 hmul.F90 hfma.F90 hfmma.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHGEMMTR=WGEMMTR -DPVN_HMUL=PVN_WMUL -DPVN_HFMA=PVN_WFMA -DPVN_HFMMA=PVN_WFMMA -c $< -o $@
+$(O)/ygemmtr.o: hgemmtr.F90 hmul.F90 hfma.F90 hfmma.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHGEMMTR=YGEMMTR -DPVN_HMUL=PVN_YMUL -DPVN_HFMA=PVN_YFMA -DPVN_HFMMA=PVN_YFMMA -c $< -o $@
 
-$(O)/cgemv.o: hgemv.F90 hmul.F90 $(MK)
+$(O)/cgemv.o: hgemv.F90 hmul.F90 hfma.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHGEMV=CGEMV -DPVN_HMUL=PVN_CMUL -DPVN_HFMA=PVN_CFMA -c $< -o $@
-$(O)/zgemv.o: hgemv.F90 hmul.F90 $(MK)
+$(O)/zgemv.o: hgemv.F90 hmul.F90 hfma.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHGEMV=ZGEMV -DPVN_HMUL=PVN_ZMUL -DPVN_HFMA=PVN_ZFMA -c $< -o $@
-$(O)/wgemv.o: hgemv.F90 hmul.F90 $(MK)
+$(O)/wgemv.o: hgemv.F90 hmul.F90 hfma.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHGEMV=WGEMV -DPVN_HMUL=PVN_WMUL -DPVN_HFMA=PVN_WFMA -c $< -o $@
-$(O)/ygemv.o: hgemv.F90 hmul.F90 $(MK)
+$(O)/ygemv.o: hgemv.F90 hmul.F90 hfma.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHGEMV=YGEMV -DPVN_HMUL=PVN_YMUL -DPVN_HFMA=PVN_YFMA -c $< -o $@
 
 $(O)/cgerc.o: hgerc.F90 hmul.F90 hfma.F90 $(MK)
@@ -742,31 +742,31 @@ $(O)/wgeru.o: hgeru.F90 hmul.F90 hfma.F90 $(MK)
 $(O)/ygeru.o: hgeru.F90 hmul.F90 hfma.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHGERU=YGERU -DPVN_HMUL=PVN_YMUL -DPVN_HFMA=PVN_YFMA -c $< -o $@
 
-$(O)/chbmv.o: hhbmv.F90 hmul.F90 $(MK)
+$(O)/chbmv.o: hhbmv.F90 hmul.F90 hfma.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHHBMV=CHBMV -DPVN_HMUL=PVN_CMUL -DPVN_HFMA=PVN_CFMA -c $< -o $@
-$(O)/zhbmv.o: hhbmv.F90 hmul.F90 $(MK)
+$(O)/zhbmv.o: hhbmv.F90 hmul.F90 hfma.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHHBMV=ZHBMV -DPVN_HMUL=PVN_ZMUL -DPVN_HFMA=PVN_ZFMA -c $< -o $@
-$(O)/whbmv.o: hhbmv.F90 hmul.F90 $(MK)
+$(O)/whbmv.o: hhbmv.F90 hmul.F90 hfma.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHHBMV=WHBMV -DPVN_HMUL=PVN_WMUL -DPVN_HFMA=PVN_WFMA -c $< -o $@
-$(O)/yhbmv.o: hhbmv.F90 hmul.F90 $(MK)
+$(O)/yhbmv.o: hhbmv.F90 hmul.F90 hfma.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHHBMV=YHBMV -DPVN_HMUL=PVN_YMUL -DPVN_HFMA=PVN_YFMA -c $< -o $@
 
-$(O)/chemm.o: hhemm.F90 hmul.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHHEMM=CHEMM -DPVN_HMUL=PVN_CMUL -DPVN_HFMA=PVN_CFMA -c $< -o $@
-$(O)/zhemm.o: hhemm.F90 hmul.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHHEMM=ZHEMM -DPVN_HMUL=PVN_ZMUL -DPVN_HFMA=PVN_ZFMA -c $< -o $@
-$(O)/whemm.o: hhemm.F90 hmul.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHHEMM=WHEMM -DPVN_HMUL=PVN_WMUL -DPVN_HFMA=PVN_WFMA -c $< -o $@
-$(O)/yhemm.o: hhemm.F90 hmul.F90 $(MK)
-	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHHEMM=YHEMM -DPVN_HMUL=PVN_YMUL -DPVN_HFMA=PVN_YFMA -c $< -o $@
+$(O)/chemm.o: hhemm.F90 hmul.F90 hfma.F90 hfmma.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHHEMM=CHEMM -DPVN_HMUL=PVN_CMUL -DPVN_HFMA=PVN_CFMA -DPVN_HFMMA=PVN_CFMMA -c $< -o $@
+$(O)/zhemm.o: hhemm.F90 hmul.F90 hfma.F90 hfmma.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHHEMM=ZHEMM -DPVN_HMUL=PVN_ZMUL -DPVN_HFMA=PVN_ZFMA -DPVN_HFMMA=PVN_ZFMMA -c $< -o $@
+$(O)/whemm.o: hhemm.F90 hmul.F90 hfma.F90 hfmma.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHHEMM=WHEMM -DPVN_HMUL=PVN_WMUL -DPVN_HFMA=PVN_WFMA -DPVN_HFMMA=PVN_WFMMA -c $< -o $@
+$(O)/yhemm.o: hhemm.F90 hmul.F90 hfma.F90 hfmma.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHHEMM=YHEMM -DPVN_HMUL=PVN_YMUL -DPVN_HFMA=PVN_YFMA -DPVN_HFMMA=PVN_YFMMA -c $< -o $@
 
-$(O)/chemv.o: hhemv.F90 hmul.F90 $(MK)
+$(O)/chemv.o: hhemv.F90 hmul.F90 hfma.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHHEMV=CHEMV -DPVN_HMUL=PVN_CMUL -DPVN_HFMA=PVN_CFMA -c $< -o $@
-$(O)/zhemv.o: hhemv.F90 hmul.F90 $(MK)
+$(O)/zhemv.o: hhemv.F90 hmul.F90 hfma.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHHEMV=ZHEMV -DPVN_HMUL=PVN_ZMUL -DPVN_HFMA=PVN_ZFMA -c $< -o $@
-$(O)/whemv.o: hhemv.F90 hmul.F90 $(MK)
+$(O)/whemv.o: hhemv.F90 hmul.F90 hfma.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHHEMV=WHEMV -DPVN_HMUL=PVN_WMUL -DPVN_HFMA=PVN_WFMA -c $< -o $@
-$(O)/yhemv.o: hhemv.F90 hmul.F90 $(MK)
+$(O)/yhemv.o: hhemv.F90 hmul.F90 hfma.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHHEMV=YHEMV -DPVN_HMUL=PVN_YMUL -DPVN_HFMA=PVN_YFMA -c $< -o $@
 
 $(O)/scnrm2.o: ghnrm2.F90 $(MK)

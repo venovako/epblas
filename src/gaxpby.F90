@@ -133,7 +133,15 @@ PURE SUBROUTINE GAXPBY(N, SA, SX, INCX, SB, SY, INCY)
 #define GFMA(A,B,C) ((A)*(B)+(C))
 #endif
 #endif
-#ifndef PVN_GDET
+#ifdef GFMMA
+  INTERFACE
+     ELEMENTAL FUNCTION GFMMA(A, B, C, D)
+       IMPLICIT NONE
+       REAL(KIND=BLAS_REAL_KIND), INTENT(IN) :: A, B, C, D
+       REAL(KIND=BLAS_REAL_KIND) :: GFMMA
+     END FUNCTION GFMMA
+  END INTERFACE
+#else
 #define GFMMA(A,B,C,D) ((A)*(B)+(C)*(D))
 #endif
 !
@@ -271,6 +279,4 @@ PURE SUBROUTINE GAXPBY(N, SA, SX, INCX, SB, SY, INCY)
 !
 !     End of GAXPBY
 !
-CONTAINS
-#include "gfmma.F90"
 END SUBROUTINE GAXPBY

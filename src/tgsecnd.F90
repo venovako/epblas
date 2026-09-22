@@ -42,7 +42,7 @@ PROGRAM TGSECND
        REAL(KIND=BLAS_REAL_KIND) :: GFMA
      END FUNCTION GFMA
   END INTERFACE
-#elif ((BLAS_REAL_KIND == 10) && ((HAVE_FMA & 4) == 0))
+#elif (BLAS_REAL_KIND == 10)
   INTERFACE
      PURE FUNCTION GFMA(A, B, C) BIND(C,NAME='fmal')
        IMPLICIT NONE
@@ -50,7 +50,7 @@ PROGRAM TGSECND
        REAL(KIND=BLAS_REAL_KIND) :: GFMA
      END FUNCTION GFMA
   END INTERFACE
-#elif ((BLAS_REAL_KIND == 16) && ((HAVE_FMA & 8) == 0))
+#elif ((BLAS_REAL_KIND == 16) && ((HAVE_FMA & 4) == 0))
   INTERFACE
 #ifdef __GFORTRAN__
      PURE FUNCTION GFMA(A, B, C) BIND(C,NAME='fmaq')
@@ -97,11 +97,6 @@ PROGRAM TGSECND
 !    .. Figure TOTAL flops ..
   AVG = REAL(ITS, BLAS_REAL_KIND)
   TOTAL = REAL(NMAX, BLAS_REAL_KIND) * AVG
-#ifndef USE_IEEE_INTRINSIC
-#if ((BLAS_REAL_KIND == 10) && defined(GFMA))
-  TOTAL = TOTAL + TOTAL
-#endif
-#endif
 !
 !     Initialize X and Y
 !

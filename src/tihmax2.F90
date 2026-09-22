@@ -31,9 +31,6 @@ PROGRAM TIHMAX2
   END INTERFACE
 #define HYPOT CR_HYPOTL
 #elif (BLAS_REAL_KIND == 16)
-#if (HAVE_FMA == 15)
-#warning IEEE quad not yet available
-#else
   INTERFACE
      PURE FUNCTION CR_HYPOTQ(X, Y) BIND(C,NAME='cr_hypotq')
        IMPLICIT NONE
@@ -42,7 +39,6 @@ PROGRAM TIHMAX2
      END FUNCTION CR_HYPOTQ
   END INTERFACE
 #define HYPOT CR_HYPOTQ
-#endif
 #else
 #error CR_HYPOT not defined
 #endif

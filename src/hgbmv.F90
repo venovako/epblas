@@ -187,13 +187,29 @@
 !>
 !  =====================================================================
 PURE SUBROUTINE HGBMV(TRANS, M, N, KL, KU, ALPHA, A, LDA, X, INCX, BETA, Y, INCY)
-#ifndef PVN_HMUL
+  IMPLICIT NONE
+#ifdef HMUL
+  INTERFACE
+     ELEMENTAL FUNCTION HMUL(A, B)
+       IMPLICIT NONE
+       COMPLEX(KIND=BLAS_REAL_KIND), INTENT(IN) :: A, B
+       COMPLEX(KIND=BLAS_REAL_KIND) :: HMUL
+     END FUNCTION HMUL
+  END INTERFACE
+#else
 #define HMUL(A,B) ((A)*(B))
 #endif
-#ifndef PVN_HFMA
+#ifdef HFMA
+  INTERFACE
+     ELEMENTAL FUNCTION HFMA(A, B, C)
+       IMPLICIT NONE
+       COMPLEX(KIND=BLAS_REAL_KIND), INTENT(IN) :: A, B, C
+       COMPLEX(KIND=BLAS_REAL_KIND) :: HFMA
+     END FUNCTION HFMA
+  END INTERFACE
+#else
 #define HFMA(A,B,C) ((A)*(B)+(C))
 #endif
-  IMPLICIT NONE
   INTERFACE
      PURE FUNCTION LSAME(CA, CB)
        IMPLICIT NONE
@@ -393,11 +409,4 @@ PURE SUBROUTINE HGBMV(TRANS, M, N, KL, KU, ALPHA, A, LDA, X, INCX, BETA, Y, INCY
 !
 !     End of HGBMV
 !
-CONTAINS
-#ifdef PVN_HMUL
-#include "hmul.F90"
-#endif
-#ifdef PVN_HFMA
-#include "hfma.F90"
-#endif
 END SUBROUTINE HGBMV

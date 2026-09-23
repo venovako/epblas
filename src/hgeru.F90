@@ -128,13 +128,29 @@
 !>
 !  =====================================================================
 PURE SUBROUTINE HGERU(M, N, ALPHA, X, INCX, Y, INCY, A, LDA)
-#ifndef PVN_HMUL
+  IMPLICIT NONE
+#ifdef HMUL
+  INTERFACE
+     ELEMENTAL FUNCTION HMUL(A, B)
+       IMPLICIT NONE
+       COMPLEX(KIND=BLAS_REAL_KIND), INTENT(IN) :: A, B
+       COMPLEX(KIND=BLAS_REAL_KIND) :: HMUL
+     END FUNCTION HMUL
+  END INTERFACE
+#else
 #define HMUL(A,B) ((A)*(B))
 #endif
-#ifndef PVN_HFMA
+#ifdef HFMA
+  INTERFACE
+     ELEMENTAL FUNCTION HFMA(A, B, C)
+       IMPLICIT NONE
+       COMPLEX(KIND=BLAS_REAL_KIND), INTENT(IN) :: A, B, C
+       COMPLEX(KIND=BLAS_REAL_KIND) :: HFMA
+     END FUNCTION HFMA
+  END INTERFACE
+#else
 #define HFMA(A,B,C) ((A)*(B)+(C))
 #endif
-  IMPLICIT NONE
 !
 !  -- Reference BLAS level2 routine --
 !  -- Reference BLAS is a software package provided by Univ. of Tennessee,    --
@@ -218,11 +234,4 @@ PURE SUBROUTINE HGERU(M, N, ALPHA, X, INCX, Y, INCY, A, LDA)
 !
 !     End of HGERU
 !
-CONTAINS
-#ifdef PVN_HMUL
-#include "hmul.F90"
-#endif
-#ifdef PVN_HFMA
-#include "hfma.F90"
-#endif
 END SUBROUTINE HGERU

@@ -188,16 +188,40 @@
 !>
 !  =====================================================================
 PURE SUBROUTINE HGEMMTR(UPLO, TRANSA, TRANSB, N, K, ALPHA, A, LDA, B, LDB, BETA, C, LDC)
-#ifndef PVN_HMUL
+  IMPLICIT NONE
+#ifdef HMUL
+  INTERFACE
+     ELEMENTAL FUNCTION HMUL(A, B)
+       IMPLICIT NONE
+       COMPLEX(KIND=BLAS_REAL_KIND), INTENT(IN) :: A, B
+       COMPLEX(KIND=BLAS_REAL_KIND) :: HMUL
+     END FUNCTION HMUL
+  END INTERFACE
+#else
 #define HMUL(A,B) ((A)*(B))
 #endif
-#ifndef PVN_HFMA
+#ifdef HFMA
+  INTERFACE
+     ELEMENTAL FUNCTION HFMA(A, B, C)
+       IMPLICIT NONE
+       COMPLEX(KIND=BLAS_REAL_KIND), INTENT(IN) :: A, B, C
+       COMPLEX(KIND=BLAS_REAL_KIND) :: HFMA
+     END FUNCTION HFMA
+  END INTERFACE
+#else
 #define HFMA(A,B,C) ((A)*(B)+(C))
 #endif
-#ifndef PVN_HFMMA
+#ifdef HFMMA
+  INTERFACE
+     ELEMENTAL FUNCTION HFMMA(A, B, C, D)
+       IMPLICIT NONE
+       COMPLEX(KIND=BLAS_REAL_KIND), INTENT(IN) :: A, B, C, D
+       COMPLEX(KIND=BLAS_REAL_KIND) :: HFMMA
+     END FUNCTION HFMMA
+  END INTERFACE
+#else
 #define HFMMA(A,B,C,D) ((A)*(B)+(C)*(D))
 #endif
-  IMPLICIT NONE
   INTERFACE
      PURE FUNCTION LSAME(CA, CB)
        IMPLICIT NONE
@@ -575,14 +599,4 @@ PURE SUBROUTINE HGEMMTR(UPLO, TRANSA, TRANSB, N, K, ALPHA, A, LDA, B, LDB, BETA,
 !
 !     End of HGEMMTR
 !
-CONTAINS
-#ifdef PVN_HMUL
-#include "hmul.F90"
-#endif
-#ifdef PVN_HFMA
-#include "hfma.F90"
-#endif
-#ifdef PVN_HFMMA
-#include "hfmma.F90"
-#endif
 END SUBROUTINE HGEMMTR

@@ -189,12 +189,6 @@ PURE SUBROUTINE HHBMV(UPLO, N, K, ALPHA, A, LDA, X, INCX, BETA, Y, INCY)
   USE, INTRINSIC :: IEEE_ARITHMETIC, ONLY: IEEE_FMA
 #define GFMA IEEE_FMA
 #endif
-#ifndef PVN_HMUL
-#define HMUL(A,B) ((A)*(B))
-#endif
-#ifndef PVN_HFMA
-#define HFMA(A,B,C) ((A)*(B)+(C))
-#endif
   IMPLICIT NONE
 #ifndef USE_IEEE_INTRINSIC
 #if ((BLAS_REAL_KIND == 4) && ((HAVE_FMA & 1) == 0))
@@ -236,6 +230,28 @@ PURE SUBROUTINE HHBMV(UPLO, N, K, ALPHA, A, LDA, X, INCX, BETA, Y, INCY)
 #else
 #define GFMA(A,B,C) ((A)*(B)+(C))
 #endif
+#endif
+#ifdef HMUL
+  INTERFACE
+     ELEMENTAL FUNCTION HMUL(A, B)
+       IMPLICIT NONE
+       COMPLEX(KIND=BLAS_REAL_KIND), INTENT(IN) :: A, B
+       COMPLEX(KIND=BLAS_REAL_KIND) :: HMUL
+     END FUNCTION HMUL
+  END INTERFACE
+#else
+#define HMUL(A,B) ((A)*(B))
+#endif
+#ifdef HFMA
+  INTERFACE
+     ELEMENTAL FUNCTION HFMA(A, B, C)
+       IMPLICIT NONE
+       COMPLEX(KIND=BLAS_REAL_KIND), INTENT(IN) :: A, B, C
+       COMPLEX(KIND=BLAS_REAL_KIND) :: HFMA
+     END FUNCTION HFMA
+  END INTERFACE
+#else
+#define HFMA(A,B,C) ((A)*(B)+(C))
 #endif
   INTERFACE
      PURE FUNCTION LSAME(CA, CB)
@@ -429,11 +445,4 @@ PURE SUBROUTINE HHBMV(UPLO, N, K, ALPHA, A, LDA, X, INCX, BETA, Y, INCY)
 !
 !     End of HHBMV
 !
-CONTAINS
-#ifdef PVN_HMUL
-#include "hmul.F90"
-#endif
-#ifdef PVN_HFMA
-#include "hfma.F90"
-#endif
 END SUBROUTINE HHBMV

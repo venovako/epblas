@@ -81,10 +81,18 @@
 !>
 !  =====================================================================
 PURE FUNCTION HDOTU(N, CX, INCX, CY, INCY)
-#ifndef PVN_HFMA
+  IMPLICIT NONE
+#ifdef HFMA
+  INTERFACE
+     ELEMENTAL FUNCTION HFMA(A, B, C)
+       IMPLICIT NONE
+       COMPLEX(KIND=BLAS_REAL_KIND), INTENT(IN) :: A, B, C
+       COMPLEX(KIND=BLAS_REAL_KIND) :: HFMA
+     END FUNCTION HFMA
+  END INTERFACE
+#else
 #define HFMA(A,B,C) ((A)*(B)+(C))
 #endif
-  IMPLICIT NONE
 !
 !  -- Reference BLAS level1 routine --
 !  -- Reference BLAS is a software package provided by Univ. of Tennessee,    --
@@ -136,8 +144,4 @@ PURE FUNCTION HDOTU(N, CX, INCX, CY, INCY)
 !
 !     End of HDOTU
 !
-#ifdef PVN_HFMA
-CONTAINS
-#include "hfma.F90"
-#endif
 END FUNCTION HDOTU

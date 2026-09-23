@@ -75,10 +75,18 @@
 !>
 !  =====================================================================
 PURE SUBROUTINE HSCAL(N, CA, CX, INCX)
-#ifndef PVN_HMUL
+  IMPLICIT NONE
+#ifdef HMUL
+  INTERFACE
+     ELEMENTAL FUNCTION HMUL(A, B)
+       IMPLICIT NONE
+       COMPLEX(KIND=BLAS_REAL_KIND), INTENT(IN) :: A, B
+       COMPLEX(KIND=BLAS_REAL_KIND) :: HMUL
+     END FUNCTION HMUL
+  END INTERFACE
+#else
 #define HMUL(A,B) ((A)*(B))
 #endif
-  IMPLICIT NONE
 !
 !  -- Reference BLAS level1 routine --
 !  -- Reference BLAS is a software package provided by Univ. of Tennessee,    --
@@ -125,8 +133,4 @@ PURE SUBROUTINE HSCAL(N, CA, CX, INCX)
 !
 !     End of HSCAL
 !
-#ifdef PVN_HMUL  
-CONTAINS
-#include "hmul.F90"
-#endif
 END SUBROUTINE HSCAL

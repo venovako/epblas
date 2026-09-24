@@ -36,9 +36,10 @@ Only `gfortran`, `ifx`, and `nvfortran` compilers will be supported.
 
 Then, from within the `src` subdirectory, call
 ```bash
-make [LIBPVN=../../libpvn] [INT=4|8] [IEEE=0|1] [all|help|test|clean]
+make [LIBPVN=../../libpvn] [INT=4|8] [IEEE=0|1|2|3] [all|help|test|clean]
 ```
-where `LIBPVN` is the libpvn's directory, `INT` specifies the default integer width (4 or 8 bytes), and `IEEE=1` allows the intrinsic module `IEEE_ARITHMETIC` to be used.
+where `LIBPVN` is the libpvn's directory, `INT` specifies the default integer width (4 or 8 bytes), while `IEEE=1` and `IEEE=3` allow the intrinsic module `IEEE_ARITHMETIC` to be used.
+If `IEEE=2` or `IEEE=3`, several (mostly complex) arithmetic operations are taken from `libpvn`.
 
 On Windows, please use `nmake.exe` instead of `make` (or `gmake`), which in turn processes `src\Makefile` and expects the Intel's oneAPI toolchain.
 

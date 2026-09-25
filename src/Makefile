@@ -111,7 +111,7 @@ $(T)\ticmax2.exe $(T)\tizmax2.exe $(T)\tiymax2.exe
 all: dirs $(L) $(E)
 
 help:
-	@ECHO "nmake.exe [LIBPVN=..\..\libpvn] [INT=4|8] [IEEE=0|1] [all|help|test|clean]"
+	@ECHO "nmake.exe [LIBPVN=..\..\libpvn] [INT=4|8] [IEEE=0|1|2|3] [all|help|test|clean]"
 
 dirs:
 	@ECHO LIBPVN=$(LIBPVN)

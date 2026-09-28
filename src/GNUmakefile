@@ -174,6 +174,7 @@ $(O)/chbmv.o $(O)/zhbmv.o\
 $(O)/chemm.o $(O)/zhemm.o\
 $(O)/chemv.o $(O)/zhemv.o\
 $(O)/cher.o $(O)/zher.o\
+$(O)/cher2.o $(O)/zher2.o\
 $(O)/scnrm2.o $(O)/dznrm2.o\
 $(O)/cscal.o $(O)/zscal.o\
 $(O)/csscal.o $(O)/zdscal.o
@@ -198,6 +199,7 @@ $(O)/whbmv.o\
 $(O)/whemm.o\
 $(O)/whemv.o\
 $(O)/wher.o\
+$(O)/wher2.o\
 $(O)/xwnrm2.o\
 $(O)/wscal.o\
 $(O)/wxscal.o
@@ -223,6 +225,7 @@ $(O)/yhbmv.o\
 $(O)/yhemm.o\
 $(O)/yhemv.o\
 $(O)/yher.o\
+$(O)/yher2.o\
 $(O)/qynrm2.o\
 $(O)/yscal.o\
 $(O)/yqscal.o
@@ -801,6 +804,15 @@ $(O)/wher.o: hher.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHHER=WHER $(PVN_WARITH) -c $< -o $@
 $(O)/yher.o: hher.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHHER=YHER $(PVN_YARITH) -c $< -o $@
+
+$(O)/cher2.o: hher2.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHHER2=CHER2 $(PVN_CARITH) -c $< -o $@
+$(O)/zher2.o: hher2.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHHER2=ZHER2 $(PVN_ZARITH) -c $< -o $@
+$(O)/wher2.o: hher2.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHHER2=WHER2 $(PVN_WARITH) -c $< -o $@
+$(O)/yher2.o: hher2.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHHER2=YHER2 $(PVN_YARITH) -c $< -o $@
 
 $(O)/scnrm2.o: ghnrm2.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGHNRM2=SCNRM2 -c $< -o $@

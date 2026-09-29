@@ -83,6 +83,7 @@ $(O)\chemm.obj $(O)\zhemm.obj $(O)\yhemm.obj \
 $(O)\chemv.obj $(O)\zhemv.obj $(O)\yhemv.obj \
 $(O)\cher.obj $(O)\zher.obj $(O)\yher.obj \
 $(O)\cher2.obj $(O)\zher2.obj $(O)\yher2.obj \
+$(O)\cher2k.obj $(O)\zher2k.obj $(O)\yher2k.obj \
 $(O)\scnrm2.obj $(O)\dznrm2.obj $(O)\qynrm2.obj \
 $(O)\cscal.obj $(O)\zscal.obj $(O)\yscal.obj \
 $(O)\csscal.obj $(O)\zdscal.obj $(O)\yqscal.obj
@@ -510,6 +511,13 @@ $(O)\zher2.obj: hher2.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DHHER2=ZHER2 $(PVN_ZARITH) /c $? /Fo$@
 $(O)\yher2.obj: hher2.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DHHER2=YHER2 $(PVN_YARITH) /c $? /Fo$@
+
+$(O)\cher2k.obj: hher2k.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DHHER2K=CHER2K $(PVN_CARITH) /c $? /Fo$@
+$(O)\zher2k.obj: hher2k.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DHHER2K=ZHER2K $(PVN_ZARITH) /c $? /Fo$@
+$(O)\yher2k.obj: hher2k.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DHHER2K=YHER2K $(PVN_YARITH) /c $? /Fo$@
 
 $(O)\scnrm2.obj: ghnrm2.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGHNRM2=SCNRM2 /c $? /Fo$@

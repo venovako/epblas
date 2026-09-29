@@ -224,7 +224,7 @@ PURE SUBROUTINE HHER(UPLO, N, ALPHA, X, INCX, A, LDA)
      IF (INCX .EQ. 1) THEN
         DO J = 1, N
            IF (X(J) .NE. ZERO) THEN
-              TEMP = CMPLX(ALPHA * REAL(X(J)), ALPHA * -AIMAG(X(J)), BLAS_REAL_KIND)
+              TEMP = CMPLX(ALPHA * REAL(X(J)), -ALPHA * AIMAG(X(J)), BLAS_REAL_KIND)
               DO I = 1, J-1
                  A(I,J) = HFMA(X(I), TEMP, A(I,J))
               END DO
@@ -237,7 +237,7 @@ PURE SUBROUTINE HHER(UPLO, N, ALPHA, X, INCX, A, LDA)
         JX = KX
         DO J = 1, N
            IF (X(JX) .NE. ZERO) THEN
-              TEMP = CMPLX(ALPHA * REAL(X(JX)), ALPHA * -AIMAG(X(JX)), BLAS_REAL_KIND)
+              TEMP = CMPLX(ALPHA * REAL(X(JX)), -ALPHA * AIMAG(X(JX)), BLAS_REAL_KIND)
               IX = KX
               DO I = 1, J-1
                  A(I,J) = HFMA(X(IX), TEMP, A(I,J))
@@ -257,7 +257,7 @@ PURE SUBROUTINE HHER(UPLO, N, ALPHA, X, INCX, A, LDA)
      IF (INCX .EQ. 1) THEN
         DO J = 1, N
            IF (X(J) .NE. ZERO) THEN
-              TEMP = CMPLX(ALPHA * REAL(X(J)), ALPHA * -AIMAG(X(J)), BLAS_REAL_KIND)
+              TEMP = CMPLX(ALPHA * REAL(X(J)), -ALPHA * AIMAG(X(J)), BLAS_REAL_KIND)
               A(J,J) = REAL(HFMA(TEMP, X(J), A(J,J)))
               DO I = J+1, N
                  A(I,J) = HFMA(X(I), TEMP, A(I,J))
@@ -270,7 +270,7 @@ PURE SUBROUTINE HHER(UPLO, N, ALPHA, X, INCX, A, LDA)
         JX = KX
         DO J = 1, N
            IF (X(JX) .NE. ZERO) THEN
-              TEMP = CMPLX(ALPHA * REAL(X(JX)), ALPHA * -AIMAG(X(JX)), BLAS_REAL_KIND)
+              TEMP = CMPLX(ALPHA * REAL(X(JX)), -ALPHA * AIMAG(X(JX)), BLAS_REAL_KIND)
               A(J,J) = REAL(HFMA(TEMP, X(JX), A(J,J)))
               IX = JX
               DO I = J+1, N

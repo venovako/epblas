@@ -160,10 +160,14 @@ PURE SUBROUTINE GGER(M, N, ALPHA, X, INCX, Y, INCY, A, LDA)
   END INTERFACE
 #elif ((BLAS_REAL_KIND == 16) && ((HAVE_FMA & 4) == 0))
   INTERFACE
+#ifdef PVN_QUADMATH
 #ifdef __GFORTRAN__
      PURE FUNCTION GFMA(A, B, C) BIND(C,NAME='fmaq')
 #else
      PURE FUNCTION GFMA(A, B, C) BIND(C,NAME='__fmaq')
+#endif
+#else
+     PURE FUNCTION GFMA(A, B, C) BIND(C,NAME='fmal')
 #endif
        IMPLICIT NONE
        REAL(KIND=BLAS_REAL_KIND), INTENT(IN), VALUE :: A, B, C

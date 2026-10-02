@@ -59,7 +59,15 @@ REAL_KINDS:=$(REAL32),$(REAL64),$(REAL128)
 endif # ?nvfortran
 endif # ?gfortran
 ifndef IEEE
+ifeq ($(findstring aarch64,$(ARCH)),aarch64)
+IEEE:=1
+else # !aarch64
+ifeq ($(findstring arm64,$(ARCH)),arm64)
+IEEE:=1
+else # !arm64
 IEEE:=0
+endif # ?arm64
+endif # ?aarch64
 endif # !IEEE
 ifeq ($(IEEE),1)
 FCFLAGS += -DUSE_IEEE_INTRINSIC=$(IEEE)

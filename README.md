@@ -43,6 +43,8 @@ If `IEEE=2` or `IEEE=3`, several (mostly complex) arithmetic operations are take
 
 On Windows, please use `nmake.exe` instead of `make` (or `gmake`), which in turn processes `src\Makefile` and expects the Intel's oneAPI toolchain.
 
+On ARM64, it is expected that `long double` in C is `REAL(KIND=REAL128)` in Fortran; otherwise, set the `HAVE_FMA` variable in `src/GNUmakefile` to `7`.
+
 The outputs on Windows are:
 * `epblas_$(INT)$(IEEE).lib`,
 * `eplapack_$(INT)$(IEEE).lib`, and

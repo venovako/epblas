@@ -1,4 +1,5 @@
 ! by venovako
+! TODO: test, a better scaling
 PURE SUBROUTINE HROTG(A, B, C, S)
   IMPLICIT NONE
 #ifdef PVN_CR_MATH

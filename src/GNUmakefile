@@ -177,6 +177,7 @@ $(O)/cher.o $(O)/zher.o\
 $(O)/cher2.o $(O)/zher2.o\
 $(O)/cher2k.o $(O)/zher2k.o\
 $(O)/scnrm2.o $(O)/dznrm2.o\
+$(O)/crotg.o $(O)/zrotg.o\
 $(O)/cscal.o $(O)/zscal.o\
 $(O)/csscal.o $(O)/zdscal.o
 ifeq ($(findstring $(REAL80),$(REAL_KINDS)),$(REAL80))
@@ -203,6 +204,7 @@ $(O)/wher.o\
 $(O)/wher2.o\
 $(O)/wher2k.o\
 $(O)/xwnrm2.o\
+$(O)/wrotg.o\
 $(O)/wscal.o\
 $(O)/wxscal.o
 endif # REAL80
@@ -230,6 +232,7 @@ $(O)/yher.o\
 $(O)/yher2.o\
 $(O)/yher2k.o\
 $(O)/qynrm2.o\
+$(O)/yrotg.o\
 $(O)/yscal.o\
 $(O)/yqscal.o
 endif # REAL128
@@ -834,6 +837,15 @@ $(O)/xwnrm2.o: ghnrm2.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGHNRM2=XWNRM2 -c $< -o $@
 $(O)/qynrm2.o: ghnrm2.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGHNRM2=QYNRM2 -c $< -o $@
+
+$(O)/crotg.o: hrotg.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHROTG=CROTG $(PVN_CARITH) -c $< -o $@
+$(O)/zrotg.o: hrotg.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHROTG=ZROTG $(PVN_ZARITH) -c $< -o $@
+$(O)/wrotg.o: hrotg.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHROTG=WROTG $(PVN_WARITH) -c $< -o $@
+$(O)/yrotg.o: hrotg.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHROTG=YROTG $(PVN_YARITH) -c $< -o $@
 
 $(O)/cscal.o: hscal.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHSCAL=CSCAL $(PVN_CARITH) -c $< -o $@

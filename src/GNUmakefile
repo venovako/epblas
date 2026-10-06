@@ -290,20 +290,23 @@ E=$(T)/txerbla.exe\
 $(T)/tslamch.exe $(T)/tdlamch.exe\
 $(T)/tsecond.exe $(T)/tdsecnd.exe\
 $(T)/tsnrm2.exe $(T)/tdnrm2.exe\
-$(T)/ticmax2.exe $(T)/tizmax2.exe
+$(T)/ticmax2.exe $(T)/tizmax2.exe\
+$(T)/tcrotg.exe $(T)/tzrotg.exe
 ifeq ($(findstring $(REAL80),$(REAL_KINDS)),$(REAL80))
 E += \
 $(T)/txsecnd.exe\
 $(T)/txlamch.exe\
 $(T)/txnrm2.exe\
-$(T)/tiwmax2.exe
+$(T)/tiwmax2.exe\
+$(T)/twrotg.exe
 endif # REAL80
 ifeq ($(findstring $(REAL128),$(REAL_KINDS)),$(REAL128))
 E += \
 $(T)/tqsecnd.exe\
 $(T)/tqlamch.exe\
 $(T)/tqnrm2.exe\
-$(T)/tiymax2.exe
+$(T)/tiymax2.exe\
+$(T)/tyrotg.exe
 endif # REAL128
 
 .PHONY: all help dirs test clean
@@ -373,6 +376,15 @@ $(T)/tiwmax2.exe: tihmax2.F90 $(L) $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DIHAMAX=IWAMAX -DIHMAX2=IWMAX2 $< -o $@ $(LDFLAGS)
 $(T)/tiymax2.exe: tihmax2.F90 $(L) $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DIHAMAX=IYAMAX -DIHMAX2=IYMAX2 $< -o $@ $(LDFLAGS)
+
+$(T)/tcrotg.exe: throtg.F90 $(L) $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DHROTG=CROTG $< -o $@ $(LDFLAGS)
+$(T)/tzrotg.exe: throtg.F90 $(L) $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DHROTG=ZROTG $< -o $@ $(LDFLAGS)
+$(T)/twrotg.exe: throtg.F90 $(L) $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DHROTG=WROTG $< -o $@ $(LDFLAGS)
+$(T)/tyrotg.exe: throtg.F90 $(L) $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DHROTG=YROTG $< -o $@ $(LDFLAGS)
 
 $(O)/slaran.o: glaran.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGLARAN=SLARAN -c $< -o $@

@@ -1,5 +1,4 @@
 ! by venovako
-! TODO: test, a better scaling
 PURE SUBROUTINE HROTG(A, B, C, S)
   IMPLICIT NONE
 #ifdef PVN_CR_MATH
@@ -58,8 +57,9 @@ PURE SUBROUTINE HROTG(A, B, C, S)
   COMPLEX(KIND=BLAS_REAL_KIND), INTENT(IN) :: B
   REAL(KIND=BLAS_REAL_KIND), INTENT(OUT) :: C
   COMPLEX(KIND=BLAS_REAL_KIND), INTENT(OUT) :: S
-  REAL(KIND=BLAS_REAL_KIND), PARAMETER :: ZERO = 0.0, HALF = 0.5, ONE = 1.0
+  REAL(KIND=BLAS_REAL_KIND), PARAMETER :: ZERO = 0.0, ONE = 1.0
   REAL(KIND=BLAS_REAL_KIND) :: AR, AI, BR, BI, MA, MB, M
+  INTEGER :: E
   C = ONE
   S = CMPLX(ZERO, ZERO, BLAS_REAL_KIND)
   AR = REAL(A)
@@ -68,55 +68,58 @@ PURE SUBROUTINE HROTG(A, B, C, S)
   IF (.NOT. (ABS(AI) .LE. HUGE(AI))) RETURN
   BR = REAL(B)
   BI = -AIMAG(B)
-  IF ((AR .EQ. ZERO) .AND. (AI .EQ. ZERO) .AND. ((.NOT. (BR .EQ. ZERO)) .OR. (.NOT. (BI .EQ. ZERO)))) THEN
-     C = ZERO
-     S = CMPLX(ONE, ZERO, BLAS_REAL_KIND)
-     A = B
+  IF ((AR .EQ. ZERO) .AND. (AI .EQ. ZERO)) THEN
+     IF ((.NOT. (BR .EQ. ZERO)) .OR. (.NOT. (BI .EQ. ZERO))) THEN
+        C = ZERO
+        S = CMPLX(ONE, ZERO, BLAS_REAL_KIND)
+        A = B
+     END IF
      RETURN
   END IF
   IF (.NOT. (ABS(BR) .LE. HUGE(BR))) RETURN
   IF (.NOT. (ABS(BI) .LE. HUGE(BI))) RETURN
-1 IF (AR .EQ. ZERO) THEN
-     MA = ABS(AI)
-  ELSE IF (AI .EQ. ZERO) THEN
+  ! max safe exponent
+  E = MAXEXPONENT(M) - 2
+  ! the scaling exponent
+  E = E - MAX(MAX(EXPONENT(AR), EXPONENT(AI)), MAX(EXPONENT(BR), EXPONENT(BI)))
+  IF (E .NE. 0) THEN
+     AR = SCALE(AR, E)
+     AI = SCALE(AI, E)
+     BR = SCALE(BR, E)
+     BI = SCALE(BI, E)
+  END IF
+  IF (AI .EQ. ZERO) THEN
      MA = ABS(AR)
+  ELSE IF (AR .EQ. ZERO) THEN
+     MA = ABS(AI)
   ELSE ! A complex
      MA = HYPOT(AR, AI)
   END IF
-  IF (.NOT. (MA .LE. HUGE(MA))) GOTO 2
-  IF (BR .EQ. ZERO) THEN
-     MB = ABS(BI)
-  ELSE IF (BI .EQ. ZERO) THEN
+  IF (BI .EQ. ZERO) THEN
      MB = ABS(BR)
+  ELSE IF (BR .EQ. ZERO) THEN
+     MB = ABS(BI)
   ELSE ! B complex
      MB = HYPOT(BR, BI)
   END IF
-  IF (.NOT. (MB .LE. HUGE(MB))) GOTO 2
-  IF (MA .EQ. ZERO) THEN
-     M = MB
-  ELSE IF (MB .EQ. ZERO) THEN
+  IF (MB .EQ. ZERO) THEN
      M = MA
-  ELSE ! MA*MB > 0
+  ELSE IF (MA .EQ. ZERO) THEN
+     M = MB
+  ELSE ! A*B .NE. 0
      M = HYPOT(MA, MB)
   END IF
-  IF (.NOT. (M .LE. HUGE(M))) GOTO 2
   IF (MA .EQ. ZERO) THEN
-     AR = ONE
-     AI = ZERO
-     C = ZERO
-     S = CMPLX(BR / M, BI / M, BLAS_REAL_KIND)
-     A = CMPLX(M, ZERO, BLAS_REAL_KIND)
+     MA = HYPOT(REAL(A), AIMAG(A))
+     AR = REAL(A) / MA
+     AI = AIMAG(A) / MA
+     MA = SCALE(MA, E)
   ELSE ! MA > 0
      AR = AR / MA
      AI = AI / MA
-     C = MA / M
-     S = HMUL(CMPLX(AR, AI, BLAS_REAL_KIND), CMPLX(BR / M, BI / M, BLAS_REAL_KIND))
-     A = CMPLX(AR * M, AI * M, BLAS_REAL_KIND)
   END IF
-  RETURN
-2 AR = AR * HALF
-  AI = AI * HALF
-  BR = BR * HALF
-  BI = BI * HALF
-  GOTO 1
+  E = -E
+  C = MA / M
+  S = HMUL(CMPLX(AR, AI, BLAS_REAL_KIND), CMPLX(BR / M, BI / M, BLAS_REAL_KIND))
+  A = CMPLX(SCALE(AR * M, E), SCALE(AI * M, E), BLAS_REAL_KIND)
 END SUBROUTINE HROTG

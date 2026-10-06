@@ -110,7 +110,8 @@ E=$(T)\txerbla.exe \
 $(T)\tslamch.exe $(T)\tdlamch.exe $(T)\tqlamch.exe \
 $(T)\tsecond.exe $(T)\tdsecnd.exe $(T)\tqsecnd.exe \
 $(T)\tsnrm2.exe $(T)\tdnrm2.exe $(T)\tqnrm2.exe \
-$(T)\ticmax2.exe $(T)\tizmax2.exe $(T)\tiymax2.exe
+$(T)\ticmax2.exe $(T)\tizmax2.exe $(T)\tiymax2.exe \
+$(T)\tcrotg.exe $(T)\tzrotg.exe $(T)\tyrotg.exe
 
 all: dirs $(L) $(E)
 
@@ -166,6 +167,13 @@ $(T)\tizmax2.exe: tihmax2.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DIHAMAX=IZAMAX /DIHMAX2=IZMAX2 $? /Fe$@ $(LDFLAGS)
 $(T)\tiymax2.exe: tihmax2.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DIHAMAX=IYAMAX /DIHMAX2=IYMAX2 $? /Fe$@ $(LDFLAGS)
+
+$(T)\tcrotg.exe: throtg.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DHROTG=CROTG $? /Fe$@ $(LDFLAGS)
+$(T)\tzrotg.exe: throtg.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DHROTG=ZROTG $? /Fe$@ $(LDFLAGS)
+$(T)\tyrotg.exe: throtg.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DHROTG=YROTG $? /Fe$@ $(LDFLAGS)
 
 $(O)\slaran.obj: glaran.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGLARAN=SLARAN /c $? /Fo$@

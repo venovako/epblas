@@ -86,7 +86,7 @@ PROGRAM TGSECND
 ! =====================================================================
 !
 !     .. Parameters ..
-  INTEGER, PARAMETER :: NMAX = 100000, ITS = 50000, KILO = 1000, MEGA = 1000000
+  INTEGER, PARAMETER :: NMAX = (400000 / BLAS_REAL_KIND), ITS = 50000, KILO = 1000, MEGA = 1000000
   REAL(KIND=BLAS_REAL_KIND), PARAMETER :: ZERO = 0.0, A = 0.315
 !     ..
 !     .. Local Scalars ..

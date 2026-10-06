@@ -33,11 +33,11 @@ PROGRAM THROTG
   DO I = 1, NAB
      A = AB(1,I)
      B = AB(2,I)
-     WRITE (*,'(A,2(ES18.9,A))') 'A=(', REAL(A), ',', AIMAG(A), ')'
-     WRITE (*,'(A,2(ES18.9,A))') 'B=(', REAL(B), ',', AIMAG(B), ')'
+     WRITE (*,'(A,2(ES18.9E4,A))') 'A=(', REAL(A), ',', AIMAG(A), ')'
+     WRITE (*,'(A,2(ES18.9E4,A))') 'B=(', REAL(B), ',', AIMAG(B), ')'
      CALL HROTG(A, B, C, S)
-     WRITE (*,'(A,2(ES18.9,A))') 'R=(', REAL(A), ',', AIMAG(A), ')'
-     WRITE (*,'(A,2(ES18.9,A))') 'S=(', REAL(S), ',', AIMAG(S), ')'
-     WRITE (*,'(A,ES18.9)') 'C=', C
+     WRITE (*,'(A,2(ES18.9E4,A))') 'R=(', REAL(A), ',', AIMAG(A), ')'
+     WRITE (*,'(A,2(ES18.9E4,A))') 'S=(', REAL(S), ',', AIMAG(S), ')'
+     WRITE (*,'(A,ES18.9E4)') 'C=', C
   END DO
 END PROGRAM THROTG

@@ -126,7 +126,7 @@ dirs:
 	@-MD $(T)
 
 test: all
-	@FOR %%I IN ($(E)) DO %%I
+	@FOR %I IN ($(E)) DO %I
 
 ..\epblas_$(INT)$(IEEE).lib: $(G) $(H) $(O)\lsame.obj $(O)\xerbla.obj $(O)\xerbla_array.obj $(O)\xerrno.obj
 	$(AR) $(ARFLAGS) /OUT:$@ $**

@@ -66,16 +66,10 @@ PURE SUBROUTINE HROTG(A, B, C, S)
   IF (.NOT. (ABS(AI) .LE. HUGE(AI))) RETURN
   BR = REAL(B)
   BI = -AIMAG(B)
-  IF ((AR .EQ. ZERO) .AND. (AI .EQ. ZERO)) THEN
-     IF ((.NOT. (BR .EQ. ZERO)) .OR. (.NOT. (BI .EQ. ZERO))) THEN
-        C = ZERO
-        S = CMPLX(ONE, ZERO, BLAS_REAL_KIND)
-        A = B
-     END IF
-     RETURN
-  END IF
-  IF (.NOT. (ABS(BR) .LE. HUGE(BR))) RETURN
-  IF (.NOT. (ABS(BI) .LE. HUGE(BI))) RETURN
+  IF (.NOT. (ABS(BR) .LE. HUGE(BR))) GOTO 1
+  IF (.NOT. (ABS(BI) .LE. HUGE(BI))) GOTO 1
+  IF ((BR .EQ. ZERO) .AND. (BI .EQ. ZERO)) RETURN
+  IF ((AR .EQ. ZERO) .AND. (AI .EQ. ZERO)) GOTO 1
   ! max safe exponent
   E = MAXEXPONENT(M) - 2
   ! the scaling exponent
@@ -108,9 +102,18 @@ PURE SUBROUTINE HROTG(A, B, C, S)
      M = HYPOT(MA, MB)
   END IF
   IF (MA .EQ. ZERO) THEN
-     MA = HYPOT(REAL(A), AIMAG(A))
-     AR = REAL(A) / MA
-     AI = AIMAG(A) / MA
+     ! underflow of MA, recompute
+     AR = REAL(A)
+     AI = AIMAG(A)
+     IF (AI .EQ. ZERO) THEN
+        MA = ABS(AR)
+     ELSE IF (AR .EQ. ZERO) THEN
+        MA = ABS(AI)
+     ELSE ! A complex
+        MA = HYPOT(AR, AI)
+     END IF
+     AR = AR / MA
+     AI = AI / MA
      MA = SCALE(MA, E)
   ELSE ! MA > 0
      AR = AR / MA
@@ -136,4 +139,8 @@ PURE SUBROUTINE HROTG(A, B, C, S)
      E = -E
      A = CMPLX(SCALE(AR, E), SCALE(AI, E), BLAS_REAL_KIND)
   END IF
+  RETURN
+1 C = ZERO
+  S = CMPLX(ONE, ZERO, BLAS_REAL_KIND)
+  A = B
 END SUBROUTINE HROTG

@@ -86,7 +86,12 @@ PROGRAM TGSECND
 ! =====================================================================
 !
 !     .. Parameters ..
-  INTEGER, PARAMETER :: NMAX = (400000 / BLAS_REAL_KIND), ITS = (80000 / BLAS_REAL_KIND), KILO = 1000, MEGA = 1000000
+#if ((BLAS_REAL_KIND == 16) && ((HAVE_FMA & 4) == 0))
+  INTEGER, PARAMETER :: ITS = 1000
+#else
+  INTEGER, PARAMETER :: ITS = (80000 / BLAS_REAL_KIND)
+#endif
+  INTEGER, PARAMETER :: NMAX = (400000 / BLAS_REAL_KIND), KILO = 1000, MEGA = 1000000
   REAL(KIND=BLAS_REAL_KIND), PARAMETER :: ZERO = 0.0, A = 0.315
 !     ..
 !     .. Local Scalars ..
@@ -101,6 +106,9 @@ PROGRAM TGSECND
 !    .. Figure TOTAL flops ..
   AVG = REAL(ITS, BLAS_REAL_KIND)
   TOTAL = REAL(NMAX, BLAS_REAL_KIND) * AVG
+#if ((BLAS_REAL_KIND == 10) && ((HAVE_FMA & 8) == 8))
+  TOTAL = TOTAL + TOTAL
+#endif
 !
 !     Initialize X and Y
 !

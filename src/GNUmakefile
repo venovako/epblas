@@ -88,7 +88,12 @@ endif # ?IEEE
 ifeq ($(findstring ppc64,$(ARCH)),ppc64)
 HAVE_FMA:=7
 else # !ppc64*
+ifeq ($(IEEE),0)
+# HACK: speed up the extended precision routines by issuing MUL+ADD instead of calling fmal(3)
+HAVE_FMA:=11
+else # IEEE > 0
 HAVE_FMA:=3
+endif # ?IEEE
 endif # ?ppc64*
 FCFLAGS += -DBLAS_INT_KIND=$(INT) -DHAVE_FMA=$(HAVE_FMA)
 FCFLAGS += $(PVN_CPPFLAGS)

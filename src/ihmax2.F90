@@ -86,8 +86,6 @@ PURE FUNCTION IHMAX2(N, CX, INCX)
      END FUNCTION CR_HYPOTQ
   END INTERFACE
 #define HYPOT CR_HYPOTQ
-#else
-#error CR_HYPOT not defined
 #endif
 #endif
 !

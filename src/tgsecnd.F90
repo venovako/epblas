@@ -42,7 +42,7 @@ PROGRAM TGSECND
        REAL(KIND=BLAS_REAL_KIND) :: GFMA
      END FUNCTION GFMA
   END INTERFACE
-#elif (BLAS_REAL_KIND == 10)
+#elif ((BLAS_REAL_KIND == 10) && ((HAVE_FMA & 8) == 0))
   INTERFACE
      PURE FUNCTION GFMA(A, B, C) BIND(C,NAME='fmal')
        IMPLICIT NONE
@@ -86,7 +86,7 @@ PROGRAM TGSECND
 ! =====================================================================
 !
 !     .. Parameters ..
-  INTEGER, PARAMETER :: NMAX = (400000 / BLAS_REAL_KIND), ITS = 50000, KILO = 1000, MEGA = 1000000
+  INTEGER, PARAMETER :: NMAX = (400000 / BLAS_REAL_KIND), ITS = (80000 / BLAS_REAL_KIND), KILO = 1000, MEGA = 1000000
   REAL(KIND=BLAS_REAL_KIND), PARAMETER :: ZERO = 0.0, A = 0.315
 !     ..
 !     .. Local Scalars ..

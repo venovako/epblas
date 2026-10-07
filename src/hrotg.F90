@@ -38,8 +38,6 @@ PURE SUBROUTINE HROTG(A, B, C, S)
      END FUNCTION CR_HYPOTQ
   END INTERFACE
 #define HYPOT CR_HYPOTQ
-#else
-#error CR_HYPOT not defined
 #endif
 #endif
 #ifdef HMUL
@@ -118,8 +116,24 @@ PURE SUBROUTINE HROTG(A, B, C, S)
      AR = AR / MA
      AI = AI / MA
   END IF
-  E = -E
   C = MA / M
-  S = HMUL(CMPLX(AR, AI, BLAS_REAL_KIND), CMPLX(BR / M, BI / M, BLAS_REAL_KIND))
-  A = CMPLX(SCALE(AR * M, E), SCALE(AI * M, E), BLAS_REAL_KIND)
+  BR = BR / M
+  BI = BI / M
+  IF (AI .EQ. ZERO) THEN
+     IF (AR .EQ. ONE) THEN
+        S = CMPLX(BR, BI, BLAS_REAL_KIND)
+     ELSE ! AR .NE. ONE
+        S = CMPLX(AR * BR, AR * BI, BLAS_REAL_KIND)
+     END IF
+  ELSE ! A complex
+     S = HMUL(CMPLX(AR, AI, BLAS_REAL_KIND), CMPLX(BR, BI, BLAS_REAL_KIND))
+  END IF
+  AR = AR * M
+  AI = AI * M
+  IF (E .EQ. 0) THEN
+     A = CMPLX(AR, AI, BLAS_REAL_KIND)
+  ELSE ! E .NE. 0
+     E = -E
+     A = CMPLX(SCALE(AR, E), SCALE(AI, E), BLAS_REAL_KIND)
+  END IF
 END SUBROUTINE HROTG

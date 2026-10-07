@@ -39,8 +39,6 @@ PROGRAM TIHMAX2
      END FUNCTION CR_HYPOTQ
   END INTERFACE
 #define HYPOT CR_HYPOTQ
-#else
-#error CR_HYPOT not defined
 #endif
 #endif
   INTEGER, PARAMETER :: M = 2 * 3 * 5, N = M / 2

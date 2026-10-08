@@ -1,0 +1,95 @@
+! by venovako
+PURE SUBROUTINE GROTG(A, B, C, S)
+  IMPLICIT NONE
+#ifdef PVN_CR_MATH
+#if (BLAS_REAL_KIND == 4)
+  INTERFACE
+     PURE FUNCTION CR_HYPOTF(X, Y) BIND(C,NAME='cr_hypotf')
+       IMPLICIT NONE
+       REAL(KIND=BLAS_REAL_KIND), INTENT(IN), VALUE :: X, Y
+       REAL(KIND=BLAS_REAL_KIND) :: CR_HYPOTF
+     END FUNCTION CR_HYPOTF
+  END INTERFACE
+#define HYPOT CR_HYPOTF
+#elif (BLAS_REAL_KIND == 8)
+  INTERFACE
+     PURE FUNCTION CR_HYPOTD(X, Y) BIND(C,NAME='cr_hypot')
+       IMPLICIT NONE
+       REAL(KIND=BLAS_REAL_KIND), INTENT(IN), VALUE :: X, Y
+       REAL(KIND=BLAS_REAL_KIND) :: CR_HYPOTD
+     END FUNCTION CR_HYPOTD
+  END INTERFACE
+#define HYPOT CR_HYPOTD
+#elif (BLAS_REAL_KIND == 10)
+  INTERFACE
+     PURE FUNCTION CR_HYPOTL(X, Y) BIND(C,NAME='cr_hypotl')
+       IMPLICIT NONE
+       REAL(KIND=BLAS_REAL_KIND), INTENT(IN), VALUE :: X, Y
+       REAL(KIND=BLAS_REAL_KIND) :: CR_HYPOTL
+     END FUNCTION CR_HYPOTL
+  END INTERFACE
+#define HYPOT CR_HYPOTL
+#elif (BLAS_REAL_KIND == 16)
+  INTERFACE
+     PURE FUNCTION CR_HYPOTQ(X, Y) BIND(C,NAME='cr_hypotq')
+       IMPLICIT NONE
+       REAL(KIND=BLAS_REAL_KIND), INTENT(IN), VALUE :: X, Y
+       REAL(KIND=BLAS_REAL_KIND) :: CR_HYPOTQ
+     END FUNCTION CR_HYPOTQ
+  END INTERFACE
+#define HYPOT CR_HYPOTQ
+#endif
+#endif
+  REAL(KIND=BLAS_REAL_KIND), INTENT(INOUT) :: A, B
+  REAL(KIND=BLAS_REAL_KIND), INTENT(OUT) :: C, S
+  REAL(KIND=BLAS_REAL_KIND), PARAMETER :: ZERO = 0.0, ONE = 1.0
+  REAL(KIND=BLAS_REAL_KIND) :: M
+  INTEGER :: E
+  C = ONE
+  S = ZERO
+  M = B
+  B = ONE
+  IF (.NOT. (ABS(A) .LE. HUGE(A))) RETURN
+  IF (.NOT. (ABS(M) .LE. HUGE(M))) GOTO 9
+  IF (M .EQ. ZERO) RETURN
+  IF (A .EQ. ZERO) GOTO 9
+  B = M
+  ! max safe exponent
+  E = MAXEXPONENT(M) - 1
+  ! the scaling exponent
+  E = E - MAX(EXPONENT(A), EXPONENT(B))
+  ! try to compute R without downscaling (but downscale if necessary)
+  IF (E .LE. 0) THEN
+     M = HYPOT(A, B)
+     IF (M .LE. HUGE(M)) E = 0
+  END IF
+  IF (E .NE. 0) THEN
+     A = SCALE(A, E)
+     B = SCALE(B, E)
+     M = HYPOT(A, B)
+  END IF
+  IF (ABS(A) .GT. ABS(B)) THEN
+     M = SIGN(M, A)
+     C = A / M
+     S = B / M
+     B = S
+  ELSE ! |B| >= |A|
+     M = SIGN(M, B)
+     C = A / M
+     S = B / M
+     IF (C .EQ. ZERO) THEN
+        B = ONE
+     ELSE ! C .NE. 0
+        B = ONE / C
+     END IF
+  END IF
+  IF (E .EQ. ZERO) THEN
+     A = M
+  ELSE ! E .NE. 0
+     A = SCALE(M, -E)
+  END IF
+  RETURN
+9 C = ZERO
+  S = ONE
+  A = M
+END SUBROUTINE GROTG

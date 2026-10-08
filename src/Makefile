@@ -58,6 +58,7 @@ $(O)\sgemmtr.obj $(O)\dgemmtr.obj $(O)\qgemmtr.obj \
 $(O)\sgemv.obj $(O)\dgemv.obj $(O)\qgemv.obj \
 $(O)\sger.obj $(O)\dger.obj $(O)\qger.obj \
 $(O)\snrm2.obj $(O)\dnrm2.obj $(O)\qnrm2.obj \
+$(O)\srotg.obj $(O)\drotg.obj $(O)\qrotg.obj \
 $(O)\sscal.obj $(O)\dscal.obj $(O)\qscal.obj \
 $(O)\stbmv.obj $(O)\dtbmv.obj $(O)\qtbmv.obj \
 $(O)\dsdot.obj $(O)\qddot.obj
@@ -361,6 +362,13 @@ $(O)\dnrm2.obj: gnrm2.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DGNRM2=DNRM2 /c $? /Fo$@
 $(O)\qnrm2.obj: gnrm2.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGNRM2=QNRM2 /c $? /Fo$@
+
+$(O)\srotg.obj: grotg.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGROTG=SROTG /c $? /Fo$@
+$(O)\drotg.obj: grotg.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=8 /DGROTG=DROTG /c $? /Fo$@
+$(O)\qrotg.obj: grotg.F90
+	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=16 /DGROTG=QROTG /c $? /Fo$@
 
 $(O)\sscal.obj: gscal.F90
 	$(FC) $(FCFLAGS) /DBLAS_REAL_KIND=4 /DGSCAL=SSCAL /c $? /Fo$@

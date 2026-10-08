@@ -117,6 +117,7 @@ $(O)/sgemmtr.o $(O)/dgemmtr.o\
 $(O)/sgemv.o $(O)/dgemv.o\
 $(O)/sger.o $(O)/dger.o\
 $(O)/snrm2.o $(O)/dnrm2.o\
+$(O)/srotg.o $(O)/drotg.o\
 $(O)/sscal.o $(O)/dscal.o\
 $(O)/stbmv.o $(O)/dtbmv.o\
 $(O)/dsdot.o
@@ -134,6 +135,7 @@ $(O)/xgemmtr.o\
 $(O)/xgemv.o\
 $(O)/xger.o\
 $(O)/xnrm2.o\
+$(O)/xrotg.o\
 $(O)/xscal.o\
 $(O)/xtbmv.o\
 $(O)/xsdot.o\
@@ -154,6 +156,7 @@ $(O)/qgemmtr.o\
 $(O)/qgemv.o\
 $(O)/qger.o\
 $(O)/qnrm2.o\
+$(O)/qrotg.o\
 $(O)/qscal.o\
 $(O)/qtbmv.o\
 $(O)/qddot.o
@@ -627,6 +630,15 @@ $(O)/xnrm2.o: gnrm2.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGNRM2=XNRM2 -c $< -o $@
 $(O)/qnrm2.o: gnrm2.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGNRM2=QNRM2 -c $< -o $@
+
+$(O)/srotg.o: grotg.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGROTG=SROTG -c $< -o $@
+$(O)/drotg.o: grotg.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL64) -DGROTG=DROTG -c $< -o $@
+$(O)/xrotg.o: grotg.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL80) -DGROTG=XROTG -c $< -o $@
+$(O)/qrotg.o: grotg.F90 $(MK)
+	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL128) -DGROTG=QROTG -c $< -o $@
 
 $(O)/sscal.o: gscal.F90 $(MK)
 	$(FC) $(FCFLAGS) -DBLAS_REAL_KIND=$(REAL32) -DGSCAL=SSCAL -c $< -o $@

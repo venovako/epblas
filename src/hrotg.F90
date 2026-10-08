@@ -66,40 +66,61 @@ PURE SUBROUTINE HROTG(A, B, C, S)
   IF (.NOT. (ABS(AI) .LE. HUGE(AI))) RETURN
   BR = REAL(B)
   BI = -AIMAG(B)
-  IF (.NOT. (ABS(BR) .LE. HUGE(BR))) GOTO 1
-  IF (.NOT. (ABS(BI) .LE. HUGE(BI))) GOTO 1
+  IF (.NOT. (ABS(BR) .LE. HUGE(BR))) GOTO 9
+  IF (.NOT. (ABS(BI) .LE. HUGE(BI))) GOTO 9
   IF ((BR .EQ. ZERO) .AND. (BI .EQ. ZERO)) RETURN
-  IF ((AR .EQ. ZERO) .AND. (AI .EQ. ZERO)) GOTO 1
+  IF ((AR .EQ. ZERO) .AND. (AI .EQ. ZERO)) GOTO 9
   ! max safe exponent
   E = MAXEXPONENT(M) - 2
   ! the scaling exponent
   E = E - MAX(MAX(EXPONENT(AR), EXPONENT(AI)), MAX(EXPONENT(BR), EXPONENT(BI)))
-  IF (E .NE. 0) THEN
+  ! try to compute R without downscaling (but downscale if necessary)
+  IF (E .LE. 0) THEN
+     IF (AI .EQ. ZERO) THEN
+        MA = ABS(AR)
+     ELSE IF (AR .EQ. ZERO) THEN
+        MA = ABS(AI)
+     ELSE ! A complex
+        MA = HYPOT(AR, AI)
+     END IF
+     IF (.NOT. (MA .LE. HUGE(MA))) GOTO 1
+     IF (BI .EQ. ZERO) THEN
+        MB = ABS(BR)
+     ELSE IF (BR .EQ. ZERO) THEN
+        MB = ABS(BI)
+     ELSE ! B complex
+        MB = HYPOT(BR, BI)
+     END IF
+     IF (.NOT. (MB .LE. HUGE(MB))) GOTO 1
+     M = HYPOT(MA, MB)
+     IF (M .LE. HUGE(M)) E = 0
+  END IF
+1 IF (E .NE. 0) THEN
      AR = SCALE(AR, E)
      AI = SCALE(AI, E)
      BR = SCALE(BR, E)
      BI = SCALE(BI, E)
-  END IF
-  IF (AI .EQ. ZERO) THEN
-     MA = ABS(AR)
-  ELSE IF (AR .EQ. ZERO) THEN
-     MA = ABS(AI)
-  ELSE ! A complex
-     MA = HYPOT(AR, AI)
-  END IF
-  IF (BI .EQ. ZERO) THEN
-     MB = ABS(BR)
-  ELSE IF (BR .EQ. ZERO) THEN
-     MB = ABS(BI)
-  ELSE ! B complex
-     MB = HYPOT(BR, BI)
-  END IF
-  IF (MB .EQ. ZERO) THEN
-     M = MA
-  ELSE IF (MA .EQ. ZERO) THEN
-     M = MB
-  ELSE ! A*B .NE. 0
-     M = HYPOT(MA, MB)
+     IF (AI .EQ. ZERO) THEN
+        MA = ABS(AR)
+     ELSE IF (AR .EQ. ZERO) THEN
+        MA = ABS(AI)
+     ELSE ! A complex
+        MA = HYPOT(AR, AI)
+     END IF
+     IF (BI .EQ. ZERO) THEN
+        MB = ABS(BR)
+     ELSE IF (BR .EQ. ZERO) THEN
+        MB = ABS(BI)
+     ELSE ! B complex
+        MB = HYPOT(BR, BI)
+     END IF
+     IF (MB .EQ. ZERO) THEN
+        M = MA
+     ELSE IF (MA .EQ. ZERO) THEN
+        M = MB
+     ELSE ! A*B .NE. 0
+        M = HYPOT(MA, MB)
+     END IF
   END IF
   IF (MA .EQ. ZERO) THEN
      ! underflow of MA, recompute
@@ -140,7 +161,7 @@ PURE SUBROUTINE HROTG(A, B, C, S)
      A = CMPLX(SCALE(AR, E), SCALE(AI, E), BLAS_REAL_KIND)
   END IF
   RETURN
-1 C = ZERO
+9 C = ZERO
   S = CMPLX(ONE, ZERO, BLAS_REAL_KIND)
   A = B
 END SUBROUTINE HROTG

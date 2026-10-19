@@ -97,11 +97,13 @@ PURE FUNCTION IGAMAX(N, SX, INCX)
 !        code for increment equal to 1
 !
      SMAX = ABS(SX(1))
+     IF (SMAX .NE. SMAX) RETURN
      DO I = 2, N
         A = ABS(SX(I))
-        IF (A .GT. SMAX) THEN
+        IF (.NOT. (A .LE. SMAX)) THEN
            IGAMAX = I
            SMAX = A
+           IF (SMAX .NE. SMAX) RETURN
         END IF
      END DO
   ELSE
@@ -114,12 +116,14 @@ PURE FUNCTION IGAMAX(N, SX, INCX)
         IX = 1
      END IF
      SMAX = ABS(SX(IX))
+     IF (SMAX .NE. SMAX) RETURN
      IX = IX + INCX
      DO I = 2, N
         A = ABS(SX(IX))
-        IF (A .GT. SMAX) THEN
+        IF (.NOT. (A .LE. SMAX)) THEN
            IGAMAX = I
            SMAX = A
+           IF (SMAX .NE. SMAX) RETURN
         END IF
         IX = IX + INCX
      END DO

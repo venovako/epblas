@@ -183,17 +183,6 @@ PURE SUBROUTINE HHERK(UPLO, TRANS, N, K, ALPHA, A, LDA, BETA, C, LDC)
 #else
 #define GFMMA(A,B,C,D) ((A)*(B)+(C)*(D))
 #endif
-#ifdef HMUL
-  INTERFACE
-     ELEMENTAL FUNCTION HMUL(A, B)
-       IMPLICIT NONE
-       COMPLEX(KIND=BLAS_REAL_KIND), INTENT(IN) :: A, B
-       COMPLEX(KIND=BLAS_REAL_KIND) :: HMUL
-     END FUNCTION HMUL
-  END INTERFACE
-#else
-#define HMUL(A,B) ((A)*(B))
-#endif
 #ifdef HFMA
   INTERFACE
      ELEMENTAL FUNCTION HFMA(A, B, C)
@@ -342,7 +331,7 @@ PURE SUBROUTINE HHERK(UPLO, TRANS, N, K, ALPHA, A, LDA, BETA, C, LDC)
                  DO I = 1, J-1
                     C(I,J) = HFMA(TEMP, A(I,L), C(I,J))
                  END DO
-                 C(J,J) = REAL(C(J,J)) + REAL(HMUL(TEMP, A(I,L)))
+                 C(J,J) = REAL(HFMA(TEMP, A(I,L), C(J,J)))
               END IF
            END DO
         END DO
@@ -363,7 +352,7 @@ PURE SUBROUTINE HHERK(UPLO, TRANS, N, K, ALPHA, A, LDA, BETA, C, LDC)
            DO L = 1, K
               IF (A(J,L) .NE. CMPLX(ZERO, ZERO, BLAS_REAL_KIND)) THEN
                  TEMP = CMPLX(ALPHA * REAL(A(J,L)), -ALPHA * AIMAG(A(J,L)), BLAS_REAL_KIND)
-                 C(J,J) = REAL(C(J,J)) + REAL(HMUL(TEMP, A(J,L)))
+                 C(J,J) = REAL(HFMA(TEMP, A(J,L), C(J,J)))
                  DO I = J+1, N
                     C(I,J) = HFMA(TEMP, A(I,L), C(I,J))
                  END DO

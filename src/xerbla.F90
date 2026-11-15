@@ -119,8 +119,8 @@ SUBROUTINE DEF_BLAS_XERBLA(SRNAME, INFO)
      E = -INT(INFO, INT32)
      CALL PVN_SET_ERRNO(E)
   ELSE ! the old default
-     WRITE (*,9) SRNAME(1:LEN_TRIM(SRNAME)), -INFO
-     STOP
+     IF (INFO .GE. -HUGE(INFO)) WRITE (*,9) SRNAME(1:LEN_TRIM(SRNAME)), -INFO
+     IF (INFO .NE. 0) STOP
   END IF
 9 FORMAT(' ** On entry to ', A, ' parameter number ', I2, ' had an illegal value')
 END SUBROUTINE DEF_BLAS_XERBLA

@@ -50,13 +50,17 @@ REAL_KINDS:=$(REAL32),$(REAL64),$(REAL128)
 endif # ?x86_64
 else # !gfortran
 ifeq ($(INT),$(INT64))
+ifeq ($(findstring flang,$(FC)),flang)
+FCFLAGS += -fdefault-integer-8
+else # !flang
 FCFLAGS += -i8
+endif # ?flang
 endif # ?INT
-ifeq ($(findstring nvfortran,$(FC)),nvfortran)
-REAL_KINDS:=$(REAL32),$(REAL64)
-else # !nvfortran
+ifeq ($(findstring ifx,$(FC)),ifx)
 REAL_KINDS:=$(REAL32),$(REAL64),$(REAL128)
-endif # ?nvfortran
+else # !ifx
+REAL_KINDS:=$(REAL32),$(REAL64)
+endif # ?ifx
 endif # ?gfortran
 ifndef IEEE
 IEEE:=0

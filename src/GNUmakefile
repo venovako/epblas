@@ -43,24 +43,34 @@ ifeq ($(findstring gfortran,$(FC)),gfortran)
 ifeq ($(INT),$(INT64))
 FCFLAGS += -fdefault-integer-8
 endif # ?INT
+FCFLAGS += -DHAVE_FNPI=3
 ifeq ($(ARCH),x86_64)
 REAL_KINDS:=$(REAL32),$(REAL64),$(REAL80),$(REAL128)
 else # !x86_64
 REAL_KINDS:=$(REAL32),$(REAL64),$(REAL128)
 endif # ?x86_64
 else # !gfortran
-ifeq ($(INT),$(INT64))
 ifeq ($(findstring flang,$(FC)),flang)
+ifeq ($(INT),$(INT64))
 FCFLAGS += -fdefault-integer-8
+endif # INT64
+ifeq ($(ARCH),x86_64)
+REAL_KINDS:=$(REAL32),$(REAL64)
+else # !x86_64
+FCFLAGS += -DHAVE_FNPI=3
+REAL_KINDS:=$(REAL32),$(REAL64),$(REAL128)
+endif # ?x86_64
 else # !flang
+ifeq ($(INT),$(INT64))
 FCFLAGS += -i8
-endif # ?flang
-endif # ?INT
+endif # INT64
 ifeq ($(findstring ifx,$(FC)),ifx)
+FCFLAGS += -DHAVE_FNPI=3
 REAL_KINDS:=$(REAL32),$(REAL64),$(REAL128)
 else # !ifx
 REAL_KINDS:=$(REAL32),$(REAL64)
 endif # ?ifx
+endif # ?flang
 endif # ?gfortran
 ifndef IEEE
 IEEE:=0

@@ -1,8 +1,8 @@
 #!/bin/bash
 # !!! has to be run from this directory !!!
 cd ../../libpvn/src
-make COMPILER=clang NDEBUG=3 SAFE=SV2,NRM OPENMP=0 clean
-make COMPILER=clang NDEBUG=3 SAFE=SV2,NRM OPENMP=0 -j
+make COMPILER=clang COMPILER_PREFIX=$2 NDEBUG=3 SAFE=SV2,NRM OPENMP=0 clean
+make COMPILER=clang COMPILER_PREFIX=$2 NDEBUG=3 SAFE=SV2,NRM OPENMP=0 -j
 cd ../../epblas/src
 make IEEE=$1 clean
 make IEEE=$1 -j test

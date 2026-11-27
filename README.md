@@ -25,14 +25,13 @@ The type-generic prefixes are `g` and `h`.
 Note that `XERBLA` no longer stops the program by default.
 Please see in `src/txerbla.F90` how the error handling is meant to work.
 
-**HACK**: `XERBLA` is declared as `PURE`, what is not exactly correct, since it changes the C runtime environment (the `errno` variable), but this choice was made to make all other BLAS routines `PURE`.
+**HACK**: `XERBLA` is declared as `PURE`, what is not exactly correct, since it at least changes the C runtime environment (the `errno` variable), but this choice was made to make all other BLAS routines `PURE`.
 
 ## Building
 
 First, clone and build [libpvn](https://github.com/venovako/libpvn).
 
 Please adjust `src/GNUmakefile` according to the comments within.
-Only `gfortran`, `ifx`, and `nvfortran` compilers will be supported.
 
 Then, from within the `src` subdirectory, call
 ```bash

@@ -97,7 +97,7 @@
 PURE SUBROUTINE HLARNV(IDIST, ISEED, N, X)
   IMPLICIT NONE
 #ifdef PVN_CR_MATH
-#if ((BLAS_REAL_KIND == 16) && ((HAVE_FMA & 4) == 0))
+#if (((PVN_CR_MATH & 4) == 4) && (BLAS_REAL_KIND == 16))
   INTERFACE
      PURE FUNCTION CR_SQRTQ(X) BIND(C,NAME='cr_sqrtq')
        IMPLICIT NONE
@@ -133,8 +133,10 @@ PURE SUBROUTINE HLARNV(IDIST, ISEED, N, X)
 !
 !     .. Parameters ..
   REAL(KIND=BLAS_REAL_KIND), PARAMETER :: ZERO = 0.0, ONE = 1.0, TWO = 2.0, MTWO = -2.0
+#ifndef HAVE_FNPI
+#define TWOPI 6.28318530717958647692528676655900576839
+#endif
   INTEGER, PARAMETER :: LV = 128
-  REAL(KIND=BLAS_REAL_KIND), PARAMETER :: TWOPI = 6.28318530717958647692528676655900576839
 !     ..
 !     .. Local Scalars ..
   INTEGER :: I, IL, IV
@@ -171,8 +173,13 @@ PURE SUBROUTINE HLARNV(IDIST, ISEED, N, X)
 !           Convert generated numbers to normal (0,1) distribution
 !
         DO I = 1, IL
+#ifdef HAVE_FNPI
+           T = TWO * U(2*I)
+           X(IV+I-1) = CMPLX(COSPI(T), SINPI(T), BLAS_REAL_KIND)
+#else
            T = TWOPI * U(2*I)
            X(IV+I-1) = CMPLX(COS(T), SIN(T), BLAS_REAL_KIND)
+#endif
            T = SQRT(MTWO * LOG(U(2*I-1)))
            X(IV+I-1) = T * X(IV+I-1)
         END DO
@@ -182,8 +189,13 @@ PURE SUBROUTINE HLARNV(IDIST, ISEED, N, X)
 !           distributed on the unit disk
 !
         DO I = 1, IL
+#ifdef HAVE_FNPI
+           T = TWO * U(2*I)
+           X(IV+I-1) = CMPLX(COSPI(T), SINPI(T), BLAS_REAL_KIND)
+#else
            T = TWOPI * U(2*I)
            X(IV+I-1) = CMPLX(COS(T), SIN(T), BLAS_REAL_KIND)
+#endif
            T = SQRT(U(2*I-1))
            X(IV+I-1) = T * X(IV+I-1)
         END DO
@@ -193,8 +205,13 @@ PURE SUBROUTINE HLARNV(IDIST, ISEED, N, X)
 !           distributed on the unit circle
 !
         DO I = 1, IL
+#ifdef HAVE_FNPI
+           T = TWO * U(2*I)
+           X(IV+I-1) = CMPLX(COSPI(T), SINPI(T), BLAS_REAL_KIND)
+#else
            T = TWOPI * U(2*I)
            X(IV+I-1) = CMPLX(COS(T), SIN(T), BLAS_REAL_KIND)
+#endif
         END DO
      ELSE ! ERROR
         DO I = 1, IL

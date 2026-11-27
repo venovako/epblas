@@ -95,7 +95,7 @@
 PURE SUBROUTINE GLARNV(IDIST, ISEED, N, X)
   IMPLICIT NONE
 #ifdef PVN_CR_MATH
-#if ((BLAS_REAL_KIND == 16) && ((HAVE_FMA & 4) == 0))
+#if (((PVN_CR_MATH & 4) == 4) && (BLAS_REAL_KIND == 16))
   INTERFACE
      PURE FUNCTION CR_SQRTQ(X) BIND(C,NAME='cr_sqrtq')
        IMPLICIT NONE
@@ -132,7 +132,9 @@ PURE SUBROUTINE GLARNV(IDIST, ISEED, N, X)
 !     .. Parameters ..
   REAL(KIND=BLAS_REAL_KIND), PARAMETER :: ZERO = 0.0, ONE = 1.0, TWO = 2.0, MTWO = -2.0
   INTEGER, PARAMETER :: LV = 128
-  REAL(KIND=BLAS_REAL_KIND), PARAMETER :: TWOPI = 6.28318530717958647692528676655900576839
+#ifndef HAVE_FNPI
+#define TWOPI 6.28318530717958647692528676655900576839
+#endif
 !     ..
 !     .. Local Scalars ..
   INTEGER :: I, IL, IL2, IV
@@ -174,7 +176,11 @@ PURE SUBROUTINE GLARNV(IDIST, ISEED, N, X)
 !           Convert generated numbers to normal (0,1) distribution
 !
         DO I = 1, IL
+#ifdef HAVE_FNPI
+           X(IV+I-1) = COSPI(TWO * U(2*I))
+#else
            X(IV+I-1) = COS(TWOPI * U(2*I))
+#endif
            X(IV+I-1) = SQRT(MTWO * LOG(U(2*I-1))) * X(IV+I-1)
         END DO
      ELSE ! ERROR

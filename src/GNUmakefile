@@ -43,7 +43,7 @@ ifeq ($(findstring gfortran,$(FC)),gfortran)
 ifeq ($(INT),$(INT64))
 FCFLAGS += -fdefault-integer-8
 endif # ?INT
-FCFLAGS += -DHAVE_FNPI=3
+FCFLAGS += $(shell if [ `$(FC) -dumpversion | cut -f1 -d.` -ge 16 ]; then echo -DHAVE_FNPI=3; fi)
 ifeq ($(ARCH),x86_64)
 REAL_KINDS:=$(REAL32),$(REAL64),$(REAL80),$(REAL128)
 else # !x86_64
